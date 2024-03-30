@@ -32,7 +32,6 @@ class Login(customtkinter.CTk):
         CTkLabel(master=self.main_frame, text="Sign in to your account", text_color="#7E7E7E", anchor="w", justify="left", font=("Arial", 14, "bold")).pack(anchor="w", pady=(10, 5), padx=(25, 0))
 
         self.user_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14)).pack(anchor="w", padx=(25, 25), pady=(50, 0))
-        username = self.user_entry.
         self.u_password = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14), show="●").pack(anchor="w", padx=(25, 25), pady=(25, 0))
         self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?", text_color="#7E7E7E").pack(anchor="w", padx=(180, 0), pady=(5, 0))
 
@@ -40,12 +39,10 @@ class Login(customtkinter.CTk):
         self.switch = CTkButton(master=self.main_frame, text="Switch to Admin", fg_color="transparent", hover_color="#ffffff", font=("Arial", 12), text_color="#7E7E7E", command=self.switch_to_admin).pack(anchor="w", padx=(100, 0), pady=(50, 0))
 
     def get_entries(self):
-        # global username
-        username = self.user_entr
-        print(username)
-        # global password
+        global username
+        username = self.user_entry.get()
+        global password
         password = self.u_password.get()
-        print(password)
 
         try:
             db = connection.Connection().get_connection()

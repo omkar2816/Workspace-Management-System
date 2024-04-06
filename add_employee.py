@@ -74,13 +74,10 @@ class AddEmployee(customtkinter.CTk):
             sql = "select * from user_login;"
             cursor.execute(sql)
             users = cursor.fetchall()
-            print(users[0][0])
             for user in users:
                 db_username = user[0]
                 if e_username == db_username:
                     messagebox.showinfo("Already Exist", "Username already exist")
-                else:
-                    print("omakr")
         except mysql.connector.Error as e:
             messagebox.showerror("Database error", f"Error occured: {e}")
 

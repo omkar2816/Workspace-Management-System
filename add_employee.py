@@ -47,25 +47,36 @@ class AddEmployee(customtkinter.CTk):
         emergency_contact = self.emergency_contact_entry.get()
         username = self.username_entry.get()
         password = self.password_entry.get()
-        try:
-            if employee_name == '' or profession == '' or date_of_birth == '' or contact == '' or username == '' or password == '':
-                messagebox.showinfo("Null Info", "All fields are required to create profile")
-            elif self.check_duplicate_user(username) or self.check_contacts(contact, emergency_contact) or self.check_password(password):
+
+        if employee_name == '' or profession == '' or date_of_birth == '' or contact == '' or username == '' or password == '':
+            messagebox.showinfo("Null Info", "All fields are required to create profile")
+        elif contact.isdigit() is not True or emergency_contact.isdigit() is not True:
+            messagebox.showinfo("Invalid", "Contact number should contain only digits")
+        elif len(contact) != 10 or len(emergency_contact) != 10:
+            messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
+        elif password.isdigit() is not True:
+            messagebox.showinfo("Invalid", "Password should contain digits only")
+        elif self.check_duplicate_user(username):
+            try:
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
+
                 sql = "INSERT INTO employee_details (employee_name, profession, date_of_birth, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
                 val = (employee_name, profession, date_of_birth, contact, emergency_contact)
+
                 sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
                 val_1 = (username, password)
+
                 cursor.execute(sql, val)
                 cursor.execute(sql_1, val_1)
+
                 db.commit()
                 app.destroy()
                 messagebox.showinfo("Successful", "Employee profile is created successfully")
-            else:
-                pass
-        except mysql.connector.Error as e:
-            messagebox.showerror("Database Error", f"Error occured: {e}")
+            except mysql.connector.Error as e:
+                messagebox.showerror("Database Error", f"Error occured: {e}")
+        else:
+            pass
 
     def check_duplicate_user(self, e_username):
         try:
@@ -75,22 +86,13 @@ class AddEmployee(customtkinter.CTk):
             sql = "select * from user_login;"
             cursor.execute(sql)
             users = cursor.fetchall()
+
             for user in users:
                 db_username = user[0]
                 if e_username == db_username:
                     messagebox.showinfo("Already Exist", "Username already exist")
         except mysql.connector.Error as e:
             messagebox.showerror("Database error", f"Error occured: {e}")
-
-    def check_contacts(self, e_contact, e_emergency):
-        if e_contact.isdigit() is not True or e_emergency.isdigit() is not True:
-            messagebox.showinfo("Invalid", "Contact number should contain only digits")
-        elif len(e_contact) != 10 or len(e_emergency) != 10:
-            messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
-
-    def check_password(self, e_password):
-        if e_password.isdigit() is not True:
-            messagebox.showinfo("Invalid", "Password should contain digits only")
 
 
 if __name__ == '__main__':

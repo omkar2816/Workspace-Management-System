@@ -75,6 +75,8 @@ class Login(customtkinter.CTk):
                 db_password = user[1]
                 if e_username == db_username and e_password == db_password:
                     return True
+                elif e_username == '' and e_password == '':
+                    messagebox.showinfo("Null fields", "Null value cannot be accepted\nAll fields are required")
                 elif e_username != db_username and e_password != db_password:
                     messagebox.showinfo("Not exist", "User doesn't exist\nAdd your details to employee list")
                 elif e_username != db_username and e_password == db_password:

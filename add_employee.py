@@ -19,7 +19,7 @@ class AddEmployee(customtkinter.CTk):
         self.name_entry.pack(anchor="n", padx=(25, 25), pady=(40, 0))
         self.profession_entry = CTkComboBox(master=self, height=35, width=330, border_color="#601e88", button_color="#601e88", dropdown_fg_color="#601e88", dropdown_text_color="#ffffff", dropdown_hover_color="#491669", button_hover_color="#601e88", values=["Select Job role", "Administrator", "Engineer", "Management"])
         self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.date_of_birth_entry = CTkEntry(master=self, placeholder_text="Select Date of Birth", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        self.date_of_birth_entry = CTkEntry(master=self, placeholder_text="Enter Date of Birth i.e. dd/mm/yyyy", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
         self.date_of_birth_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
         self.contact_entry = CTkEntry(master=self, placeholder_text="Contact No.", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
         self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
@@ -49,8 +49,8 @@ class AddEmployee(customtkinter.CTk):
         password = self.password_entry.get()
         try:
             if employee_name == '' or profession == '' or date_of_birth == '' or contact == '' or username == '' or password == '':
-                messagebox.showinfo("Null Info", "All feilds are required to create profile")
-            elif self.check_duplicate_user(username):
+                messagebox.showinfo("Null Info", "All fields are required to create profile")
+            elif self.check_duplicate_user(username) or self.check_contacts(contact, emergency_contact) or self.check_password(password):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
                 sql = "INSERT INTO employee_details (employee_name, profession, date_of_birth, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
@@ -60,6 +60,7 @@ class AddEmployee(customtkinter.CTk):
                 cursor.execute(sql, val)
                 cursor.execute(sql_1, val_1)
                 db.commit()
+                app.destroy()
                 messagebox.showinfo("Successful", "Employee profile is created successfully")
             else:
                 pass
@@ -80,6 +81,17 @@ class AddEmployee(customtkinter.CTk):
                     messagebox.showinfo("Already Exist", "Username already exist")
         except mysql.connector.Error as e:
             messagebox.showerror("Database error", f"Error occured: {e}")
+
+    def check_contacts(self, e_contact, e_emergency):
+        if e_contact.isdigit() is not True or e_emergency.isdigit() is not True:
+            messagebox.showinfo("Invalid", "Contact number should contain only digits")
+        elif len(e_contact) != 10 or len(e_emergency) != 10:
+            messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
+
+    def check_password(self, e_password):
+        if e_password.isdigit() is not True:
+            messagebox.showinfo("Invalid", "Password should contain digits only")
+
 
 if __name__ == '__main__':
     app = AddEmployee()

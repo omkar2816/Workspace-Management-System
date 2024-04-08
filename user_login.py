@@ -5,9 +5,9 @@ from tkinter import messagebox
 from PIL import Image
 import connection
 
-SIDE_IMG_DATA = Image.open("side-img.png")
-USER_SIDE_IMAGE_DATA = Image.open("side-image.jpg")
-ADMIN_SIDE_IMAGE_DATA = Image.open("admin_side_img.png")
+SIDE_IMG_DATA = Image.open("images/side-img.png")
+USER_SIDE_IMAGE_DATA = Image.open("images/side-image.jpg")
+ADMIN_SIDE_IMAGE_DATA = Image.open("images/admin_side_img.png")
 
 
 class Login(customtkinter.CTk):

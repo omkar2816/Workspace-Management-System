@@ -19,8 +19,10 @@ class Connection:
         except mysql.connector.Error as e:
             print("Connection failed", e)
 
+    @staticmethod
     def get_connection(self):
-        return self.cnx
+        # return self.cnx
+        return connection._instance.cnx
 
 if __name__ == "__main__":
     connection = Connection()

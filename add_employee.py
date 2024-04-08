@@ -19,8 +19,8 @@ class AddEmployee(customtkinter.CTk):
         self.name_entry.pack(anchor="n", padx=(25, 25), pady=(40, 0))
         self.profession_entry = CTkComboBox(master=self, height=35, width=330, border_color="#601e88", button_color="#601e88", dropdown_fg_color="#601e88", dropdown_text_color="#ffffff", dropdown_hover_color="#491669", button_hover_color="#601e88", values=["Select Job role", "Administrator", "Engineer", "Management"])
         self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.date_of_birth_entry = CTkEntry(master=self, placeholder_text="Enter Date of Birth i.e. dd/mm/yyyy", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.date_of_birth_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        self.date_of_joining_entry = CTkEntry(master=self, placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        self.date_of_joining_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
         self.contact_entry = CTkEntry(master=self, placeholder_text="Contact No.", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
         self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
         self.emergency_contact_entry = CTkEntry(master=self, placeholder_text="Emergency Contact No.", height=35, width=330, fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
@@ -42,13 +42,13 @@ class AddEmployee(customtkinter.CTk):
         global username
         employee_name = self.name_entry.get()
         profession = self.profession_entry.get()
-        date_of_birth = self.date_of_birth_entry.get()
+        date_of_joining = self.date_of_joining_entry.get()
         contact = self.contact_entry.get()
         emergency_contact = self.emergency_contact_entry.get()
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        if employee_name == '' or profession == '' or date_of_birth == '' or contact == '' or username == '' or password == '':
+        if employee_name == '' or profession == '' or date_of_joining == '' or contact == '' or username == '' or password == '':
             messagebox.showinfo("Null Info", "All fields are required to create profile")
         elif contact.isdigit() is not True or emergency_contact.isdigit() is not True:
             messagebox.showinfo("Invalid", "Contact number should contain only digits")
@@ -61,8 +61,8 @@ class AddEmployee(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "INSERT INTO employee_details (employee_name, profession, date_of_birth, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
-                val = (employee_name, profession, date_of_birth, contact, emergency_contact)
+                sql = "INSERT INTO employee_details (employee_name, profession, date_of_joining, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
+                val = (employee_name, profession, date_of_joining, contact, emergency_contact)
 
                 sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
                 val_1 = (username, password)

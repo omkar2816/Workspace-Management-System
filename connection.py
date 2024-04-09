@@ -15,14 +15,14 @@ class Connection:
                     port='3306',
                     database='wms'
                 )
+                print("Connection done")
             return cls._instance
+
         except mysql.connector.Error as e:
             print("Connection failed", e)
 
-    @staticmethod
     def get_connection(self):
-        # return self.cnx
-        return connection._instance.cnx
+        return self.cnx
 
 if __name__ == "__main__":
     connection = Connection()

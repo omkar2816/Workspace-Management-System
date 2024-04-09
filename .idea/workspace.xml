@@ -5,33 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e78766d-d8c5-4b96-99f3-65bc1cc254a9" name="Changes" comment="workspace management system">
-      <change afterPath="$PROJECT_DIR$/app_windows.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/chatroom.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/dashboard_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/delivered_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/employee_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/log-out.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/logistics_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/logout_set.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/open.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/package_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/person_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/project.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/returns_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/settings_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/shipping_icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/add_employee.py" beforeDir="false" afterPath="$PROJECT_DIR$/add_employee.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin_side_img.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/admin_side_img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_windows.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/email-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/email-icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/google-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/google-icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/password-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/password-icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/side-image.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/images/side-image.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/side-img.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/side-img.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_login.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wms.sql" beforeDir="false" afterPath="$PROJECT_DIR$/wms.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,35 +74,6 @@
       <recent name="C:\Users\Omkar Korgaonkar\PycharmProjects\Workspace Management System\images" />
       <recent name="C:\Users\Omkar Korgaonkar\PycharmProjects\Workspace Management System" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration name="app_windows" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Workspace Management System" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app_windows.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.app_windows" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -207,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712437011012</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1712605236657</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1712605236657</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

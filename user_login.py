@@ -71,18 +71,22 @@ class Login(customtkinter.CTk):
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "SELECT * FROM user_login;"
-            cursor.execute(sql)
+            sql = "SELECT * FROM user_login WHERE username=%s;"
+            val = (e_username, )
+            cursor.execute(sql, val)
             users = cursor.fetchall()
+            if e_username == '' and e_password == '':
+                messagebox.showinfo("Null fields", "Null value cannot be accepted\nAll fields are required")
             for user in users:
                 db_username = user[0]
                 db_password = user[1]
+                print(db_username)
+                print(db_password)
+
                 if e_username == db_username and e_password == db_password:
                     return True
-                elif e_username == '' and e_password == '':
-                    messagebox.showinfo("Null fields", "Null value cannot be accepted\nAll fields are required")
-                # elif e_username != db_username and e_password != db_password:
-                #     messagebox.showinfo("Not exist", "User doesn't exist\nAdd your details to employee list")
+                elif e_username != db_username and e_password != db_password:
+                    messagebox.showinfo("Not exist", "User doesn't exist\nAdd your details to employee list")
                 elif e_username != db_username and e_password == db_password:
                     messagebox.showerror("Invalid", "Invalid username")
                 elif e_username == db_username and e_password != db_password:
@@ -105,6 +109,5 @@ class Login(customtkinter.CTk):
         login_main.mainloop()
 
 if __name__ == '__main__':
-
     app = Login()
     app.mainloop()

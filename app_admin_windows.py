@@ -4,11 +4,17 @@ import time
 import customtkinter
 from tkinter import *
 import mysql.connector
+import pandas as pd
 from customtkinter import *
 from tkinter import messagebox, ttk
 from CTkTable import CTkTable
 from PIL import Image
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import connection
+from screentime import fig
+import test
 from tkcalendar import Calendar
 from calendar import Calendar
 
@@ -104,6 +110,7 @@ class DashboardWindow(customtkinter.CTk):
 
         if self.window_count == self.window_count:
             pass
+
         self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
@@ -119,6 +126,32 @@ class DashboardWindow(customtkinter.CTk):
 
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor="center", padx=27, pady=(20, 0))
+
+        global df
+        # create a connection to the database
+        try:
+            db = connection.Connection().get_connection()
+
+            # read the data from the database
+            query = 'SELECT employee_name, working_hours  FROM salary'
+            df = pd.read_sql(query, con=db)
+            print(df)
+        except mysql.connector.Error as e:
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+            print(e)
+        # plot the data as a bar graph
+        plt.figure(figsize=(10, 6))
+        plt.bar(df['employee_name'], df['working_hours'])
+        plt.xlabel('employee name')
+        plt.ylabel('time (in hrs)')
+        plt.title('analytics')
+        # plt.show()
+        self.fig = plt.gcf()
+        canvas = FigureCanvasTkAgg(fig, master=self.graph_frame)
+        canvas.get_tk_widget().configure(width=720, height=200)
+        ctk_canvas = canvas.get_tk_widget()
+        ctk_canvas.place(relx=0, rely=0, anchor="nw")
+
 
         self.task_number = 5
         self.complete_task = 10

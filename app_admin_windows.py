@@ -13,8 +13,6 @@ from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import connection
-from screentime import fig
-import test
 from tkcalendar import Calendar
 from calendar import Calendar
 
@@ -73,7 +71,7 @@ class DashboardWindow(customtkinter.CTk):
         self.settings_button = CTkButton(master=self.side_frame, image=self.settings_img, text="Settings", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.settings)
         self.settings_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
-        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w")
+        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.logout_listner)
         self.logout_button.pack(anchor="center", ipady=5, pady=(160, 0))
 
         self.window_count = 1
@@ -89,8 +87,9 @@ class DashboardWindow(customtkinter.CTk):
 
             cursor.execute(sql, val)
             job = cursor.fetchall()
-            job = job[0][2]
             print(job)
+            job = job[0][2]
+
 
         except mysql.connector.Error as e:
             print(e)
@@ -140,15 +139,18 @@ class DashboardWindow(customtkinter.CTk):
             messagebox.showerror("Database Error", f"Error Occured: {e}")
             print(e)
         # plot the data as a bar graph
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(12, 9))
         plt.bar(df['employee_name'], df['working_hours'])
         plt.xlabel('employee name')
         plt.ylabel('time (in hrs)')
         plt.title('analytics')
+        # plt.style.use("Solarize_light2")
+
+
         # plt.show()
-        self.fig = plt.gcf()
-        canvas = FigureCanvasTkAgg(fig, master=self.graph_frame)
-        canvas.get_tk_widget().configure(width=720, height=200)
+        self.add = plt.gcf()
+        canvas = FigureCanvasTkAgg(self.add, master=self.graph_frame)
+        canvas.get_tk_widget().configure(width=900, height=360)
         ctk_canvas = canvas.get_tk_widget()
         ctk_canvas.place(relx=0, rely=0, anchor="nw")
 
@@ -177,17 +179,17 @@ class DashboardWindow(customtkinter.CTk):
                                             corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
         self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
 
-        self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[2], border_color="#491669", border_width=2)
-        self.progress_bar4.pack(anchor="n", padx=10, pady=(5, 0))
-
-        self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
-        self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
+        # self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        #     anchor="ne", padx=(0, 25), pady=(35, 0))
+        # self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+        #                                     corner_radius=8, progress_color=COLORS[2], border_color="#491669", border_width=2)
+        # self.progress_bar4.pack(anchor="n", padx=10, pady=(5, 0))
+        #
+        # self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        #     anchor="ne", padx=(0, 25), pady=(35, 0))
+        # self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+        #                                     corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
+        # self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
 
         self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230, corner_radius=13)
         self.calendar_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
@@ -218,7 +220,7 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "UPDATE salary SET working_hours=%s, monthly_salary=%s WHERE username=%s"
+                sql = "UPDATE salary SET working_hours=%s, salary=%s WHERE username=%s"
                 val = (final_time, salary, self.username, )
                 cursor.execute(sql, val)
 
@@ -820,6 +822,12 @@ class DashboardWindow(customtkinter.CTk):
                     messagebox.showinfo("Already Exist", "Username already exist")
         except mysql.connector.Error as e:
             messagebox.showerror("Database error", f"Error occured: {e}")
+
+    def logout_listner(self):
+        self.destroy()
+        import user_login
+        app = user_login.Login()
+        app.mainloop()
 
 
 # if __name__ == '__main__':

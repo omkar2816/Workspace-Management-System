@@ -13,7 +13,7 @@ class Connection:
                     password='Omkar@2802',
                     host='localhost',
                     port='3306',
-                    database='wms'
+                    database='w_ms'
                 )
                 print("Connection done")
             return cls._instance

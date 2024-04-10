@@ -29,8 +29,9 @@ CREATE TABLE `employee_details` (
   `date_of_joining` varchar(20) NOT NULL,
   `contact_no` varchar(10) NOT NULL,
   `emergency_contact_no` varchar(10) NOT NULL,
+  `username` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +40,7 @@ CREATE TABLE `employee_details` (
 
 LOCK TABLES `employee_details` WRITE;
 /*!40000 ALTER TABLE `employee_details` DISABLE KEYS */;
-INSERT INTO `employee_details` VALUES (1,'Omkar','Engineer','28/02/2005','9136898004','8169570160'),(2,'Jayesh','Administrator','29/05/2004','1234567891','9874561231'),(3,'Chetan','Engineer','30/06/2005','5467891231','5467895461'),(4,'jayhesh','Engineer','12/01/2012','1234567894','4561237984'),(5,'asdfg','Administrator','28/02/2004','1234567891','1234567891'),(6,'Pushkar','Engineer','17/05/2004','6547891234','4569871231'),(7,'Omkar','Administrator','28/02/2005','4567894564','3213214564');
+INSERT INTO `employee_details` VALUES (1,'Omkar','Engineer','28/02/2005','9136898004','8169570160','asdf123'),(2,'Jayesh','Administrator','29/05/2004','1234567891','9874561231','chetan23'),(3,'Chetan','Engineer','30/06/2005','5467891231','5467895461','jayesh12'),(4,'jayhesh','Engineer','12/01/2012','1234567894','4561237984','omkar28'),(5,'asdfg','Administrator','28/02/2004','1234567891','1234567891','omkar456'),(6,'Pushkar','Engineer','17/05/2004','6547891234','4569871231','pushkar234'),(7,'Omkar','Administrator','28/02/2005','4567894564','3213214564','pushkar54'),(10,'Pushkar','Management','28/02/2005','9136898004','8169570160','radsa');
 /*!40000 ALTER TABLE `employee_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,11 +54,13 @@ DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `unique_id` int NOT NULL AUTO_INCREMENT,
   `project_name` varchar(45) NOT NULL,
-  `project_description` varchar(65) NOT NULL,
   `start_date` varchar(10) NOT NULL,
-  `due_date` varchar(45) NOT NULL,
+  `due_date` varchar(10) NOT NULL,
+  `employee_name` varchar(45) NOT NULL,
+  `total_tasks` varchar(5) NOT NULL,
+  `tasks_done` varchar(5) NOT NULL,
   PRIMARY KEY (`unique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,8 +69,37 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Library Managemnet','pknbvcxsdntyguhkijhvgcfbvnjhvcbbbvnmnj','28/02/2025','28/02/2026');
+INSERT INTO `project` VALUES (1,'Library Managemnet','28/02/2025','28/02/2026','Omkar','5','2'),(2,'Workspace','31/03/2023','31/08/2023','Jayesh','10','5'),(3,'Whatsapp Clone','20/05/2019','21/03/2020','Chetan','8','3');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `salary`
+--
+
+DROP TABLE IF EXISTS `salary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `salary` (
+  `employee_id` int NOT NULL AUTO_INCREMENT,
+  `employee_name` varchar(45) NOT NULL,
+  `profession` varchar(20) NOT NULL,
+  `hourly_salary` varchar(20) NOT NULL,
+  `working_hours` varchar(20) DEFAULT NULL,
+  `salary` varchar(20) DEFAULT NULL,
+  `username` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `salary`
+--
+
+LOCK TABLES `salary` WRITE;
+/*!40000 ALTER TABLE `salary` DISABLE KEYS */;
+INSERT INTO `salary` VALUES (1,'Omkar','Engineer','400','1.0','400.0','asdf123'),(2,'Jayesh','Administrator','300','2.0','600.0','chetan23'),(3,'Chetan','Engineer','400','3.0','1200.0','jayesh12'),(4,'jayhesh','Engineer','400','1.0','400.0','omkar28'),(5,'asdfg','Administrator','300','2.0','600.0','omkar456'),(6,'Pushkar','Engineer','400','3.0','1200.0','pushkar234'),(7,'Omkar','Administrator','300','1.0','300.0','pushkar54'),(8,'Pushkar','Management','500','2.0','1000.0','radsa');
+/*!40000 ALTER TABLE `salary` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -90,7 +122,7 @@ CREATE TABLE `user_login` (
 
 LOCK TABLES `user_login` WRITE;
 /*!40000 ALTER TABLE `user_login` DISABLE KEYS */;
-INSERT INTO `user_login` VALUES ('asdf123','1231'),('chetan23','1324'),('jayesh12','2802'),('omkar28','1234'),('omkar456','2343'),('pushkar234','2342'),('radsa','1230');
+INSERT INTO `user_login` VALUES ('asdf123','1231'),('chetan23','1324'),('jayesh12','2802'),('omkar28','1234'),('omkar456','2343'),('pushkar234','2342'),('pushkar54','2323'),('radsa','1230');
 /*!40000 ALTER TABLE `user_login` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -103,4 +135,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-09  3:26:12
+-- Dump completed on 2024-04-10  8:00:29

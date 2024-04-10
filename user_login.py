@@ -4,6 +4,7 @@ from customtkinter import *
 from tkinter import messagebox
 from PIL import Image
 import connection
+from app_admin_windows import DashboardWindow
 
 SIDE_IMG_DATA = Image.open("images/side-img.png")
 USER_SIDE_IMAGE_DATA = Image.open("images/side-image.jpg")
@@ -59,6 +60,9 @@ class Login(customtkinter.CTk):
             # db.close()
             if self.check_user(username, password):
                 messagebox.showinfo("Success", "Successfully Logged in to your account.")
+                self.destroy()
+                dashboard = DashboardWindow(username=username, password=password)
+                dashboard.mainloop()
         except mysql.connector.Error as e:
             messagebox.showerror("Database Error", f"Error occured: {e}")
 
@@ -77,8 +81,8 @@ class Login(customtkinter.CTk):
                     return True
                 elif e_username == '' and e_password == '':
                     messagebox.showinfo("Null fields", "Null value cannot be accepted\nAll fields are required")
-                elif e_username != db_username and e_password != db_password:
-                    messagebox.showinfo("Not exist", "User doesn't exist\nAdd your details to employee list")
+                # elif e_username != db_username and e_password != db_password:
+                #     messagebox.showinfo("Not exist", "User doesn't exist\nAdd your details to employee list")
                 elif e_username != db_username and e_password == db_password:
                     messagebox.showerror("Invalid", "Invalid username")
                 elif e_username == db_username and e_password != db_password:
@@ -101,5 +105,6 @@ class Login(customtkinter.CTk):
         login_main.mainloop()
 
 if __name__ == '__main__':
+
     app = Login()
     app.mainloop()

@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e78766d-d8c5-4b96-99f3-65bc1cc254a9" name="Changes" comment="workspace management system">
+      <change afterPath="$PROJECT_DIR$/app_user_windows.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screentime.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_windows.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_admin_windows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wms.sql" beforeDir="false" afterPath="$PROJECT_DIR$/wms.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,12 +56,15 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.add_employee.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_admin_windows.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_user_windows.executor&quot;: &quot;Run&quot;,
     &quot;Python.app_windows.executor&quot;: &quot;Run&quot;,
     &quot;Python.connection.executor&quot;: &quot;Run&quot;,
     &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,
     &quot;Python.demo2.executor&quot;: &quot;Run&quot;,
     &quot;Python.ex.executor&quot;: &quot;Run&quot;,
     &quot;Python.login_main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.screentime.executor&quot;: &quot;Run&quot;,
     &quot;Python.user_admin.executor&quot;: &quot;Run&quot;,
     &quot;Python.user_login.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -163,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712605236657</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1712657978163</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1712657978163</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

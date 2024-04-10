@@ -20,6 +20,8 @@ SALARY_IMG_DATA = Image.open("images/salary_icon.png")
 SETTINGS_IMG_DATA = Image.open("images/settings_icon.png")
 LOGOUT_IMG_DATA = Image.open("images/log-out.png")
 SEARCH_IMG_DATA = Image.open("images/search-icon.png")
+OPEN_IMG_DATA = Image.open("images/open.png")
+LOGOUT_IMG2_DATA = Image.open("images/logout_set.png")
 
 COLORS = ["#D60000", "#FF9700", "#005DFF", "#42F200", "#DAE801"]
 
@@ -38,6 +40,8 @@ class DashboardWindow(customtkinter.CTk):
         self.settings_img = CTkImage(dark_image=SETTINGS_IMG_DATA, light_image=SETTINGS_IMG_DATA)
         self.logout_img = CTkImage(dark_image=LOGOUT_IMG_DATA, light_image=LOGOUT_IMG_DATA)
         self.search_img = CTkImage(dark_image=SEARCH_IMG_DATA, light_image=SEARCH_IMG_DATA)
+        self.open_img = CTkImage(dark_image=OPEN_IMG_DATA, light_image=OPEN_IMG_DATA)
+        self.logout_img2 = CTkImage(dark_image=LOGOUT_IMG2_DATA, light_image=LOGOUT_IMG2_DATA)
 
         # Frame creation
         self.side_frame = CTkFrame(master=self, fg_color="#601e88", width=176, height=650, corner_radius=0)
@@ -161,19 +165,14 @@ class DashboardWindow(customtkinter.CTk):
         title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
         title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
-        self.label = CTkLabel(master=title_frame, text="Employee & their details", font=("Arial Black", 23),
+        self.label = CTkLabel(master=title_frame, text="Your Colleagues", font=("Arial Black", 23),
                               text_color="#601e88")
         self.label.pack(anchor="nw", side="left", pady=(8, 0))
-
-        self.add_employee_button = CTkButton(master=title_frame, text="+ New Employee", font=("Arial Black", 15),
-                                             text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                             corner_radius=15, command=self.add_employee)
-        self.add_employee_button.pack(anchor="ne", side="right", ipady=10)
 
         self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
         self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Employee with its ID or Name",
+        self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Colleague with its ID or Name",
                                      border_color="#70438C", border_width=2)
         self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
@@ -184,7 +183,7 @@ class DashboardWindow(customtkinter.CTk):
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "SELECT * FROM employee_details"
+            sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details"
             cursor.execute(sql)
             results = cursor.fetchall()
             for result in results:
@@ -193,7 +192,7 @@ class DashboardWindow(customtkinter.CTk):
             print(e)
 
         self.table_data = [
-            [("ID", "Name", "Profession", "Date of Joining", "Contact No.", "Emergency\nContact No.")]
+            [("ID", "Name", "Profession", "Contact No.")]
         ]
         self.table_data.append(results)
         self.table_data = list(itertools.chain(*self.table_data))
@@ -204,115 +203,77 @@ class DashboardWindow(customtkinter.CTk):
                               hover_color="#DCDCDC")
         self.table.edit_row(0, font=("Arial Bold", 14))
         self.table.edit_row(0, text_color="#fff", hover_color="#491669")
-        self.table.pack(expand=True)
+        self.table.pack(expand=True, fill="x")
 
         self.window_count = 2
-
-    def add_employee(self):
-        self.main_frame.destroy()
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
-
-        self.s_pass = IntVar(value=0)
-        self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35, width=330,
-                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.name_entry.pack(anchor="n", padx=(25, 25), pady=(80, 0))
-        self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color="#601e88",
-                                            button_color="#601e88", dropdown_fg_color="#601e88",
-                                            dropdown_text_color="#ffffff", dropdown_hover_color="#491669",
-                                            button_hover_color="#601e88",
-                                            values=["Select Job role", "Administrator", "Engineer", "Management"])
-        self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.date_of_joining_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy",
-                                              height=35, width=330, fg_color="#EEEEEE", border_color="#601e88",
-                                              font=("Arial", 14))
-        self.date_of_joining_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Contact No.", height=35, width=330,
-                                      fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.emergency_contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Emergency Contact No.", height=35,
-                                                width=330, fg_color="#EEEEEE", border_color="#601e88",
-                                                font=("Arial", 14))
-        self.emergency_contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.username_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=330,
-                                       fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.username_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.password_entry = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=330,
-                                       fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14), show="●")
-        self.password_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?",
-                                         text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
-                                         command=self.toggle_password).pack(anchor="n", padx=(200, 0), pady=(5, 0))
-        self.add_button = CTkButton(master=self.main_frame, text="Add Employee", height=35, fg_color="#601e88",
-                                    hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
-                                    command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
     def search(self):
         search_data = self.search_entry.get()
         global data
+        if search_data == '':
+            messagebox.showinfo("Null", "Their is nothing to search")
+        else:
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
 
-        try:
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
+                sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details WHERE employee_name=%s"
+                val = (search_data, )
 
-            sql = "SELECT * FROM employee_details WHERE employee_name=%s"
-            val = (search_data, )
+                cursor.execute(sql, val)
+                data_fetch = cursor.fetchall()
+                for data in data_fetch:
+                    print(data)
+            except mysql.connector.Error as e:
+                messagebox.showerror("Database Error", f"Error Occured: {e}")
+                print(e)
+            self.main_frame.destroy()
 
-            cursor.execute(sql, val)
-            data_fetch = cursor.fetchall()
-            for data in data_fetch:
-                print(data)
-        except mysql.connector.Error as e:
-            messagebox.showerror("Database Error", f"Error Occured: {e}")
-            print(e)
-        self.main_frame.destroy()
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
 
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
+            title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+            title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
-        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
-        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+            self.label = CTkLabel(master=title_frame, text="Your Colleagues", font=("Arial Black", 23),
+                                  text_color="#601e88")
+            self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
-        self.label = CTkLabel(master=title_frame, text="Employee & their details", font=("Arial Black", 23),
-                              text_color="#601e88")
-        self.label.pack(anchor="nw", side="left", pady=(8, 0))
+            # self.add_employee_button = CTkButton(master=title_frame, text="+ New Employee", font=("Arial Black", 15),
+            #                                      text_color="#fff", fg_color="#601e88", hover_color="#491669",
+            #                                      corner_radius=15, command=self.add_employee)
+            # self.add_employee_button.pack(anchor="ne", side="right", ipady=10)
 
-        self.add_employee_button = CTkButton(master=title_frame, text="+ New Employee", font=("Arial Black", 15),
-                                             text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                             corner_radius=15, command=self.add_employee)
-        self.add_employee_button.pack(anchor="ne", side="right", ipady=10)
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+            self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
-        self.search_container.pack(fill="x", pady=(30, 0), padx=27)
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Employee with its ID or Name",
+                                         border_color="#70438C", border_width=2)
+            self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650,
-                                     placeholder_text="Search Employee with its ID or Name",
-                                     border_color="#70438C", border_width=2)
-        self.search_entry.pack(side="left", padx=(13, 0), pady=15)
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                           hover_color="#491669", width=28, command=self.search)
+            self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
-        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
-                                       hover_color="#491669", width=28, command=self.search)
-        self.search_button.pack(side="left", padx=(13, 0), pady=15)
+            self.table_data = [
+                [("ID", "Name", "Profession", "Contact No.")]
+            ]
+            self.table_data.append(data_fetch)
+            # print(self.table_data)
+            self.table_data = list(itertools.chain(*self.table_data))
 
-        self.table_data = [
-            [("ID", "Name", "Profession", "Date of Joining", "Contact No.", "Emergency\nContact No.")]
-        ]
-        self.table_data.append(data_fetch)
-        # print(self.table_data)
-        self.table_data = list(itertools.chain(*self.table_data))
+            self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+            self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                                  header_color="#601e88",
+                                  hover_color="#DCDCDC")
+            self.table.edit_row(0, font=("Arial Bold", 14))
+            self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+            self.table.pack(expand=True, fill="x")
 
-        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
-        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
-                              header_color="#601e88",
-                              hover_color="#DCDCDC")
-        self.table.edit_row(0, font=("Arial Bold", 14))
-        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
-        self.table.pack(expand=True)
-
-        self.window_count = 2
+            self.window_count = 2
 
     def projects(self):
         if self.window_count == 1:
@@ -330,6 +291,7 @@ class DashboardWindow(customtkinter.CTk):
 
         if self.window_count == self.window_count:
             pass
+        self.main_frame.destroy()
         self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
@@ -341,10 +303,10 @@ class DashboardWindow(customtkinter.CTk):
                               text_color="#601e88")
         self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
-        self.add_project_button = CTkButton(master=title_frame, text="Create New Project", font=("Arial Black", 15),
+        self.tasks_button = CTkButton(master=title_frame, text="My Tasks", font=("Arial Black", 15),
                                             text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                            corner_radius=15, command=self.create_new_project)
-        self.add_project_button.pack(anchor="ne", side="right", ipady=10)
+                                            corner_radius=15)
+        self.tasks_button.pack(anchor="ne", side="right", ipady=10)
 
         self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
         self.search_container.pack(fill="x", pady=(30, 0), padx=27)
@@ -361,7 +323,7 @@ class DashboardWindow(customtkinter.CTk):
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "SELECT * FROM project"
+            sql = "SELECT unique_id, project_name, start_date, due_date, employee_name FROM project"
             cursor.execute(sql)
             results = cursor.fetchall()
             for result in results:
@@ -371,7 +333,7 @@ class DashboardWindow(customtkinter.CTk):
             print(e)
 
         self.table_data = [
-            [("Unique\nID", "Project Name", "Start Date", "Due Date")]
+            [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead")]
         ]
 
         self.table_data.append(results)
@@ -384,106 +346,77 @@ class DashboardWindow(customtkinter.CTk):
         self.table.edit_row(0, font=("Arial Bold", 14))
         self.table.edit_row(0, text_color="#fff", hover_color="#491669")
         self.table.edit_column(1, width=200)
-        self.table.pack(expand=True)
+        self.table.pack(expand=True, fill="x")
 
         self.window_count = 3
-
-    def create_new_project(self):
-        self.main_frame.destroy()
-
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
-
-        self.s_pass = IntVar(value=0)
-        self.project_name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35, width=330,
-                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.project_name_entry.pack(anchor="n", padx=(25, 25), pady=(120, 0))
-        self.start_date_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Start Date of project i.e. dd/mm/yyyy", height=35, width=330,
-                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.start_date_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-
-        self.due_date_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Due date of project i.e. dd/mm/yyyy", height=35, width=330,
-                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.due_date_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-
-        self.assign_task_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee to assign this project", height=35, width=330,
-                                           fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.assign_task_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-
-        self.no_of_tasks_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Number of Tasks", height=35, width=330,
-                                           fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.no_of_tasks_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-
-        self.create_project_button = CTkButton(master=self.main_frame, text="Create Project", height=35, fg_color="#601e88",
-                                    hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
-                                    command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
     def search_project(self):
         search_project = self.search_entry.get()
+        if search_project == '':
+            messagebox.showinfo("Null", "Their is nothing to search")
+        else:
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
 
-        try:
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
+                sql = "SELECT unique_id, project_name, start_date, due_date, employee_name FROM project WHERE %s IN (unique_id, project_name, start_date, due_date, employee_name)"
+                val = (search_project, )
+                cursor.execute(sql, val)
 
-            sql = "SELECT * FROM project WHERE project_name=%s"
-            val = (search_project, )
-            cursor.execute(sql, val)
+                fetch_project = cursor.fetchall()
+                for project in fetch_project:
+                    print(project)
+            except mysql.connector.Error as e:
+                messagebox.showerror("Database Error", f"Error Occured: {e}")
+                print(e)
+            self.main_frame.destroy()
 
-            fetch_project = cursor.fetchall()
-            for project in fetch_project:
-                print(project)
-        except mysql.connector.Error as e:
-            messagebox.showerror("Database Error", f"Error Occured: {e}")
-            print(e)
-        self.main_frame.destroy()
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
 
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
+            title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+            title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
-        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
-        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+            self.label = CTkLabel(master=title_frame, text="Project Details", font=("Arial Black", 23),
+                                  text_color="#601e88")
+            self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
-        self.label = CTkLabel(master=title_frame, text="Project Details", font=("Arial Black", 23),
-                              text_color="#601e88")
-        self.label.pack(anchor="nw", side="left", pady=(8, 0))
+            self.tasks_button = CTkButton(master=title_frame, text="My Tasks", font=("Arial Black", 15),
+                                                text_color="#fff", fg_color="#601e88", hover_color="#491669",
+                                                corner_radius=15)
+            self.tasks_button.pack(anchor="ne", side="right", ipady=10)
 
-        self.add_project_button = CTkButton(master=title_frame, text="Create New Project", font=("Arial Black", 15),
-                                            text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                            corner_radius=15)
-        self.add_project_button.pack(anchor="ne", side="right", ipady=10)
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+            self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
-        self.search_container.pack(fill="x", pady=(30, 0), padx=27)
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Project with Unique ID",
+                                         border_color="#70438C", border_width=2)
+            self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650,
-                                     placeholder_text="Search Project with Unique ID",
-                                     border_color="#70438C", border_width=2)
-        self.search_entry.pack(side="left", padx=(13, 0), pady=15)
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                           hover_color="#491669", width=28)
+            self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
-        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
-                                       hover_color="#491669", width=28)
-        self.search_button.pack(side="left", padx=(13, 0), pady=15)
+            self.table_data = [
+                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead")]
+            ]
 
-        self.table_data = [
-            [("Unique\nID", "Project Name", "Start Date", "Due Date")]
-        ]
+            self.table_data.append(fetch_project)
+            self.table_data = list(itertools.chain(*self.table_data))
 
-        self.table_data.append(fetch_project)
-        self.table_data = list(itertools.chain(*self.table_data))
+            self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+            self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                                  header_color="#601e88",
+                                  hover_color="#DCDCDC")
+            self.table.edit_row(0, font=("Arial Bold", 14))
+            self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+            self.table.edit_column(1, width=200)
+            self.table.pack(expand=True, fill="x")
 
-        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
-        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
-                              header_color="#601e88",
-                              hover_color="#DCDCDC")
-        self.table.edit_row(0, font=("Arial Bold", 14))
-        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
-        self.table.edit_column(1, width=200)
-        self.table.pack(expand=True)
-
-        self.window_count = 3
+            self.window_count = 3
 
     def salary(self):
         if self.window_count == 1:
@@ -501,6 +434,7 @@ class DashboardWindow(customtkinter.CTk):
 
         if self.window_count == self.window_count:
             pass
+        self.main_frame.destroy()
         self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
@@ -534,82 +468,27 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.destroy()
         elif self.window_count == 4:
             self.main_frame.destroy()
-        elif self.window_count == 5:
+        if self.window_count == 5:
             pass
-        elif self.window_count == self.window_count:
-            pass
-
-        if self.window_count == self.window_count:
-            pass
-
-        self.window_count = 5
-        pass
-
-    def toggle_password(self):
-        if self.s_pass.get() == 1:
-            self.password_entry.configure(show='')
         else:
-            self.password_entry.configure(show='●')
+            self.main_frame.destroy()
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
 
-    def get_entries(self):
-        global username
-        employee_name = self.name_entry.get()
-        profession = self.profession_entry.get()
-        date_of_joining = self.date_of_joining_entry.get()
-        contact = self.contact_entry.get()
-        emergency_contact = self.emergency_contact_entry.get()
-        username = self.username_entry.get()
-        password = self.password_entry.get()
+            self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Edit Profile                                                                                             ", width=620, height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(70, 0))
+            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Set appearance mode                                                                         ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
+            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2, text="     Log out                                                                                                    ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
 
-        if (employee_name == '' or profession == '' or date_of_joining == '' or contact == '' or username == '' or password == ''):
-            messagebox.showinfo("Null Info", "All fields are required to create profile")
-        elif contact.isdigit() is not True or emergency_contact.isdigit() is not True:
-            messagebox.showinfo("Invalid", "Contact number should contain only digits")
-        elif len(contact) != 10 or len(emergency_contact) != 10:
-            messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
-        elif password.isdigit() is not True:
-            messagebox.showinfo("Invalid", "Password should contain digits only")
-        elif not self.check_duplicate_user(username):
-            try:
-                db = connection.Connection().get_connection()
-                cursor = db.cursor()
+            self.window_count = 5
 
-                sql = "INSERT INTO employee_details (employee_name, profession, date_of_joining, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
-                val = (employee_name, profession, date_of_joining, contact, emergency_contact)
 
-                sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
-                val_1 = (username, password)
-
-                cursor.execute(sql, val)
-                cursor.execute(sql_1, val_1)
-                print("name")
-
-                db.commit()
-                self.main_frame.destroy()
-                messagebox.showinfo("Successful", "Employee profile is created successfully")
-                self.main_frame.destroy()
-            except mysql.connector.Error as e:
-                messagebox.showerror("Database Error", f"Error occured: {e}")
-        else:
-            print("hello")
-        self.employees()
-
-    def check_duplicate_user(self, e_username):
-        try:
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
-
-            sql = "select * from user_login;"
-            cursor.execute(sql)
-            users = cursor.fetchall()
-
-            for user in users:
-                db_username = user[0]
-                if e_username == db_username:
-                    messagebox.showinfo("Already Exist", "Username already exist")
-        except mysql.connector.Error as e:
-            messagebox.showerror("Database error", f"Error occured: {e}")
-
+    # def update_profile(self):
+    #     self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+    #     self.main_frame.pack_propagate(0)
+    #     self.main_frame.pack(side="left")
+    #
+    #     self.
 
 if __name__ == '__main__':
     app = DashboardWindow()

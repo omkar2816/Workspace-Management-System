@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: localhost    Database: wms
+-- Host: localhost    Database: w_ms
 -- ------------------------------------------------------
 -- Server version	8.0.35
 
@@ -31,7 +31,7 @@ CREATE TABLE `employee_details` (
   `emergency_contact_no` varchar(10) NOT NULL,
   `username` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `employee_details` (
 
 LOCK TABLES `employee_details` WRITE;
 /*!40000 ALTER TABLE `employee_details` DISABLE KEYS */;
-INSERT INTO `employee_details` VALUES (1,'Omkar','Engineer','28/02/2005','9136898004','8169570160','asdf123'),(2,'Jayesh','Administrator','29/05/2004','1234567891','9874561231','chetan23'),(3,'Chetan','Engineer','30/06/2005','5467891231','5467895461','jayesh12'),(4,'jayhesh','Engineer','12/01/2012','1234567894','4561237984','omkar28'),(5,'asdfg','Administrator','28/02/2004','1234567891','1234567891','omkar456'),(6,'Pushkar','Engineer','17/05/2004','6547891234','4569871231','pushkar234'),(7,'Omkar','Administrator','28/02/2005','4567894564','3213214564','pushkar54'),(10,'Pushkar','Management','28/02/2005','9136898004','8169570160','radsa');
+INSERT INTO `employee_details` VALUES (1,'Omkar','Engineer','28/02/2005','9136898004','8169570160','asdf123'),(2,'Jayesh','Administrator','29/05/2004','1234567891','9874561231','jayesh24'),(3,'Chetan','Engineer','30/06/2005','5467891231','5467895461','chetan12'),(4,'jayhesh','Engineer','12/01/2012','1234567894','4561237984','omkar28'),(5,'asdfg','Administrator','28/02/2004','1234567891','1234567891','omkar456'),(6,'Pushkar','Engineer','17/05/2004','6547891234','4569871231','pushkar234'),(7,'Omkar','Administrator','28/02/2005','4567894564','3213214564','pushkar54'),(10,'Pushkar','Management','28/02/2005','9136898004','8169570160','radsa');
 /*!40000 ALTER TABLE `employee_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +89,7 @@ CREATE TABLE `salary` (
   `salary` varchar(20) DEFAULT NULL,
   `username` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,7 @@ CREATE TABLE `salary` (
 
 LOCK TABLES `salary` WRITE;
 /*!40000 ALTER TABLE `salary` DISABLE KEYS */;
-INSERT INTO `salary` VALUES (1,'Omkar','Engineer','400','1.0','400.0','asdf123'),(2,'Jayesh','Administrator','300','2.0','600.0','chetan23'),(3,'Chetan','Engineer','400','3.0','1200.0','jayesh12'),(4,'jayhesh','Engineer','400','1.0','400.0','omkar28'),(5,'asdfg','Administrator','300','2.0','600.0','omkar456'),(6,'Pushkar','Engineer','400','3.0','1200.0','pushkar234'),(7,'Omkar','Administrator','300','1.0','300.0','pushkar54'),(8,'Pushkar','Management','500','2.0','1000.0','radsa');
+INSERT INTO `salary` VALUES (1,'Omkar','Engineer','400','1.0','400.0','asdf123'),(2,'Jayesh','Administrator','300','2.8333333333333335','850.0','jayesh24'),(3,'Chetan','Engineer','400','2.0','600.0','chetan12'),(4,'jayhesh','Engineer','400','1.0','400.0','omkar28'),(5,'asdfg','Administrator','300','2.0','600.0','omkar456'),(6,'Pushkar','Engineer','400','3.0','1200.0','pushkar234'),(7,'Omkar','Administrator','300','1.0','300.0','pushkar54'),(8,'Pushkar','Management','500','2.0','1000.0','radsa');
 /*!40000 ALTER TABLE `salary` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,7 @@ CREATE TABLE `user_login` (
 
 LOCK TABLES `user_login` WRITE;
 /*!40000 ALTER TABLE `user_login` DISABLE KEYS */;
-INSERT INTO `user_login` VALUES ('asdf123','1231'),('chetan23','1324'),('jayesh12','2802'),('omkar28','1234'),('omkar456','2343'),('pushkar234','2342'),('pushkar54','2323'),('radsa','1230');
+INSERT INTO `user_login` VALUES ('ankit29','2323'),('asdf123','1231'),('chetan12','2802'),('jayesh24','1324'),('omkar28','1234'),('omkar456','2343'),('pushkar234','2342'),('pushkar54','2323'),('radsa','1230');
 /*!40000 ALTER TABLE `user_login` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -135,4 +135,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-10  8:00:29
+-- Dump completed on 2024-04-10 20:44:34

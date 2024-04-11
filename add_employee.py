@@ -5,7 +5,7 @@ from tkcalendar import *
 from PIL import Image
 import connection
 from tkinter import messagebox
-import mysql.connector
+# import mysql.connector
 
 
 class AddEmployee(customtkinter.CTk):

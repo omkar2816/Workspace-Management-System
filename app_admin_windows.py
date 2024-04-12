@@ -36,7 +36,7 @@ class DashboardWindow(customtkinter.CTk):
     def __init__(self, username, password):
         super().__init__()
         self.title("Dashboard")
-        set_appearance_mode("system")
+        # set_appearance_mode("system")
         self.geometry("956x645+350+100")
         self.username = username
         # Images
@@ -154,7 +154,8 @@ class DashboardWindow(customtkinter.CTk):
         ctk_canvas = canvas.get_tk_widget()
         ctk_canvas.place(relx=0, rely=0, anchor="nw")
 
-
+        taskbar_progress = [0.5,0.1,0.7,0.6]
+        name_of_projects = ["Name of the project"]
         self.task_number = 5
         self.complete_task = 10
         self.current = float(self.task_number / self.complete_task)
@@ -162,22 +163,31 @@ class DashboardWindow(customtkinter.CTk):
         self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
         self.progress_bar_width = 310
-        self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
-        self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
-        self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
-        self.progress_bar1.set(self.current)
+        for i in range(4):
+            self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                                    width=30, fg_color="#F0F0F0").pack(anchor="ne", padx=(0, 25), pady=(5, 0)))
+            self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                                width=self.progress_bar_width, height=20, corner_radius=8,
+                                                progress_color=COLORS[0], border_color="#491669", border_width=2)
+            self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
+            self.progress_bar1.set(taskbar_progress[i])
 
-        self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[1], border_color="#491669", border_width=2)
-        self.progress_bar2.pack(anchor="n", padx=10, pady=(5, 0))
-
-        self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
-        self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
+        # self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
+        # self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
+        # self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
+        # self.progress_bar1.set(self.current)
+        #
+        # self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        #     anchor="ne", padx=(0, 25), pady=(35, 0))
+        # self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+        #                                     corner_radius=8, progress_color=COLORS[1], border_color="#491669", border_width=2)
+        # self.progress_bar2.pack(anchor="n", padx=10, pady=(5, 0))
+        #
+        # self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        #     anchor="ne", padx=(0, 25), pady=(35, 0))
+        # self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+        #                                     corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
+        # self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
 
         # self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
         #     anchor="ne", padx=(0, 25), pady=(35, 0))

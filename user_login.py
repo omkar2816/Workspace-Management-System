@@ -1,8 +1,10 @@
+from tkinter import messagebox
+
 import customtkinter
 import mysql.connector
-from customtkinter import *
-from tkinter import messagebox
 from PIL import Image
+from customtkinter import *
+
 import connection
 from app_admin_windows import DashboardWindow
 
@@ -39,6 +41,16 @@ class Login(customtkinter.CTk):
 
         self.login = CTkButton(master=self.main_frame, text="Log In", fg_color="#601E88", hover_color="#700777", font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12, command=self.get_entries).pack(anchor="w", pady=(30, 0), padx=(70, 0))
         self.switch = CTkButton(master=self.main_frame, text="Switch to Admin", fg_color="transparent", hover_color="#ffffff", font=("Arial", 12), text_color="#7E7E7E", command=self.switch).pack(anchor="w", padx=(100, 0), pady=(50, 0))
+
+        self.new_user = CTkButton(master=self.main_frame, text="New user", fg_color="#601E88", hover_color="#700777",
+                                  font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12,
+                                  command=self.add_details_user).pack(anchor="w", pady=(20, 0), padx=(60, 0))
+
+    def add_details_user(self):
+        self.destroy()
+        import add_employee
+        add = add_employee.AddEmployee()
+        add.mainloop()
 
     def get_entries(self):
         global username

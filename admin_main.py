@@ -1,7 +1,6 @@
 from tkinter import messagebox
 
 import mysql.connector
-from customtkinter import CTkLabel, CTkEntry
 
 import connection
 import customtkinter
@@ -100,3 +99,6 @@ class Starter(customtkinter.CTk):
         self.destroy()
         login_main = Login()
         login_main.mainloop()
+if __name__ == '__main__':
+    stater = Starter()
+    stater.mainloop()

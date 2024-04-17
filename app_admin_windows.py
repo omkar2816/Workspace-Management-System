@@ -1,6 +1,5 @@
 import itertools
 import time
-
 import customtkinter
 from tkinter import *
 import mysql.connector
@@ -11,7 +10,6 @@ from CTkTable import CTkTable
 from PIL import Image
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 import connection
 from tkcalendar import Calendar
 from calendar import Calendar
@@ -140,7 +138,7 @@ class DashboardWindow(customtkinter.CTk):
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor="center", padx=27, pady=(20, 0))
 
-        global df
+        global dt
         # create a connection to the database
         try:
             db = connection.Connection().get_connection()
@@ -148,13 +146,14 @@ class DashboardWindow(customtkinter.CTk):
             # read the data from the database
             query = 'SELECT employee_name, working_hours  FROM salary'
             df = pd.read_sql(query, con=db)
-            print(df)
+            dt = pd.DataFrame(df.sort_values(by='working_hours'))
+            print(dt)
         except mysql.connector.Error as e:
             messagebox.showerror("Database Error", f"Error Occured: {e}")
             print(e)
         # plot the data as a bar graph
         plt.figure(figsize=(12, 9))
-        plt.bar(df['employee_name'], df['working_hours'])
+        plt.bar(dt['employee_name'], dt['working_hours'])
         plt.xlabel('employee name')
         plt.ylabel('time (in hrs)')
         plt.title('analytics')
@@ -325,102 +324,169 @@ class DashboardWindow(customtkinter.CTk):
 
     def add_employee(self):
         self.main_frame.destroy()
+        if self.window_count == 1:
+            self.main_frame.destroy()
+        elif self.window_count == 2:
+            pass
+        elif self.window_count == 3:
+            self.main_frame.destroy()
+        elif self.window_count == 4:
+            self.main_frame.destroy()
+        elif self.window_count == 5:
+            self.main_frame.destroy()
+
+        if self.window_count == self.window_count:
+            pass
         self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
 
-        self.s_pass = IntVar(value=0)
-        self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35,
-                                   width=330,
-                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.name_entry.pack(anchor="n", padx=(25, 25), pady=(80, 0))
-        self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color="#601e88",
-                                            button_color="#601e88", dropdown_fg_color="#601e88",
-                                            dropdown_text_color="#ffffff", dropdown_hover_color="#491669",
-                                            button_hover_color="#601e88",
-                                            values=["Select Job role", "Administrator", "Engineer", "Management"])
-        self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.date_of_joining_entry = CTkEntry(master=self.main_frame,
-                                              placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy",
-                                              height=35, width=330, fg_color="#EEEEEE", border_color="#601e88",
-                                              font=("Arial", 14))
-        self.date_of_joining_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Contact No.", height=35, width=330,
-                                      fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.emergency_contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Emergency Contact No.",
-                                                height=35,
-                                                width=330, fg_color="#EEEEEE", border_color="#601e88",
-                                                font=("Arial", 14))
-        self.emergency_contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.username_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=330,
-                                       fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.username_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.password_entry = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=330,
-                                       fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14), show="●")
-        self.password_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15,
-                                         text="Show Password ?",
-                                         text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
-                                         command=self.toggle_password).pack(anchor="n", padx=(200, 0), pady=(5, 0))
-        self.add_button = CTkButton(master=self.main_frame, text="Add Employee", height=35, fg_color="#601e88",
-                                    hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
-                                    command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+
+        self.label = CTkLabel(master=title_frame, text="Employee & their details", font=("Arial Black", 23),
+                              text_color="#601e88")
+        self.label.pack(anchor="nw", side="left", pady=(8, 0))
+
+        self.add_employee_button = CTkButton(master=title_frame, text="+ New Employee", font=("Arial Black", 15),
+                                             text_color="#fff", fg_color="#601e88", hover_color="#491669",
+                                             corner_radius=15, command=self.add_employee)
+        self.add_employee_button.pack(anchor="ne", side="right", ipady=10)
+
+        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+        self.search_container.pack(fill="x", pady=(30, 0), padx=27)
+
+        self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                     placeholder_text="Search Employee with its ID or Name",
+                                     border_color="#70438C", border_width=2)
+        self.search_entry.pack(side="left", padx=(13, 0), pady=15)
+
+        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                       hover_color="#491669", width=28, command=self.search)
+        self.search_button.pack(side="left", padx=(13, 0), pady=15)
+
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT * FROM requests"
+            cursor.execute(sql)
+            request = cursor.fetchall()
+            for result in request:
+                print(result)
+        except mysql.connector.Error as e:
+            print(e)
+
+        self.table_data = [
+            [("ID", "Name", "Profession", "Date of Joining", "Contact No.", "Emergency\nContact No.")]
+        ]
+        self.table_data.append(request)
+        self.table_data = list(itertools.chain(*self.table_data))
+
+        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                              header_color="#601e88",
+                              hover_color="#DCDCDC")
+        self.table.edit_row(0, font=("Arial Bold", 14))
+        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+        self.table.pack(expand=True)
+        # self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+        # self.main_frame.pack_propagate(0)
+        # self.main_frame.pack(side="left")
+        #
+        # self.s_pass = IntVar(value=0)
+        # self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35,
+        #                            width=330,
+        #                            fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        # self.name_entry.pack(anchor="n", padx=(25, 25), pady=(80, 0))
+        # self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color="#601e88",
+        #                                     button_color="#601e88", dropdown_fg_color="#601e88",
+        #                                     dropdown_text_color="#ffffff", dropdown_hover_color="#491669",
+        #                                     button_hover_color="#601e88",
+        #                                     values=["Select Job role", "Administrator", "Engineer", "Management"])
+        # self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.date_of_joining_entry = CTkEntry(master=self.main_frame,
+        #                                       placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy",
+        #                                       height=35, width=330, fg_color="#EEEEEE", border_color="#601e88",
+        #                                       font=("Arial", 14))
+        # self.date_of_joining_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Contact No.", height=35, width=330,
+        #                               fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        # self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.emergency_contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Emergency Contact No.",
+        #                                         height=35,
+        #                                         width=330, fg_color="#EEEEEE", border_color="#601e88",
+        #                                         font=("Arial", 14))
+        # self.emergency_contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.username_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=330,
+        #                                fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        # self.username_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.password_entry = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=330,
+        #                                fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14), show="●")
+        # self.password_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15,
+        #                                  text="Show Password ?",
+        #                                  text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
+        #                                  command=self.toggle_password).pack(anchor="n", padx=(200, 0), pady=(5, 0))
+        # self.add_button = CTkButton(master=self.main_frame, text="Add Employee", height=35, fg_color="#601e88",
+        #                             hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
+        #                             command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
     def get_entries(self):
-        global username
-        employee_name = self.name_entry.get()
-        profession = self.profession_entry.get()
-        date_of_joining = self.date_of_joining_entry.get()
-        contact = self.contact_entry.get()
-        emergency_contact = self.emergency_contact_entry.get()
-        username = self.username_entry.get()
-        password = self.password_entry.get()
-
-        if (
-                employee_name == '' or profession == '' or date_of_joining == '' or contact == '' or username == '' or password == ''):
-            messagebox.showinfo("Null Info", "All fields are required to create profile")
-        elif contact.isdigit() is not True or emergency_contact.isdigit() is not True:
-            messagebox.showinfo("Invalid", "Contact number should contain only digits")
-        elif len(contact) != 10 or len(emergency_contact) != 10:
-            messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
-        elif password.isdigit() is not True:
-            messagebox.showinfo("Invalid", "Password should contain digits only")
-        elif not self.check_duplicate_user(username):
-            if profession == "Select Job role":
-                messagebox.showinfo("change", "Please select your Job role")
-            elif profession == "Administrator":
-                hourly_salary = 300
-            elif profession == "Engineer":
-                hourly_salary = 400
-            elif profession == "Management":
-                hourly_salary = 500
-            try:
-                db = connection.Connection().get_connection()
-                cursor = db.cursor()
-
-                sql = "INSERT INTO employee_details (employee_name, profession, date_of_joining, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
-                val = (employee_name, profession, date_of_joining, contact, emergency_contact)
-                sql_2 = "INSERT INTO salary (employee_name, profession, hourly_salary) VALUES (%s, %s, %s)"
-                val_2 = (employee_name, profession, str(hourly_salary))
-
-                sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
-                val_1 = (username, password)
-
-                cursor.execute(sql, val)
-                cursor.execute(sql_1, val_1)
-                cursor.execute(sql_2, val_2)
-                print("name")
-
-                db.commit()
-                self.main_frame.destroy()
-                messagebox.showinfo("Successful", "Employee profile is created successfully")
-                self.main_frame.destroy()
-            except mysql.connector.Error as e:
-                messagebox.showerror("Database Error", f"Error occured: {e}")
-        else:
-            print("hello")
-        self.employees()
+         global username
+        # employee_name = self.name_entry.get()
+        # profession = self.profession_entry.get()
+        # date_of_joining = self.date_of_joining_entry.get()
+        # contact = self.contact_entry.get()
+        # emergency_contact = self.emergency_contact_entry.get()
+        # username = self.username_entry.get()
+        # password = self.password_entry.get()
+        #
+        # if (
+        #         employee_name == '' or profession == '' or date_of_joining == '' or contact == '' or username == '' or password == ''):
+        #     messagebox.showinfo("Null Info", "All fields are required to create profile")
+        # elif contact.isdigit() is not True or emergency_contact.isdigit() is not True:
+        #     messagebox.showinfo("Invalid", "Contact number should contain only digits")
+        # elif len(contact) != 10 or len(emergency_contact) != 10:
+        #     messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
+        # elif password.isdigit() is not True:
+        #     messagebox.showinfo("Invalid", "Password should contain digits only")
+        # elif not self.check_duplicate_user(username):
+        #     if profession == "Select Job role":
+        #         messagebox.showinfo("change", "Please select your Job role")
+        #     elif profession == "Administrator":
+        #         hourly_salary = 300
+        #     elif profession == "Engineer":
+        #         hourly_salary = 400
+        #     elif profession == "Management":
+        #         hourly_salary = 500
+        #     try:
+        #         db = connection.Connection().get_connection()
+        #         cursor = db.cursor()
+        #
+        #         sql = "INSERT INTO employee_details (employee_name, profession, date_of_joining, contact_no, emergency_contact_no) VALUES (%s, %s, %s, %s, %s)"
+        #         val = (employee_name, profession, date_of_joining, contact, emergency_contact)
+        #         sql_2 = "INSERT INTO salary (employee_name, profession, hourly_salary) VALUES (%s, %s, %s)"
+        #         val_2 = (employee_name, profession, str(hourly_salary))
+        #
+        #         sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
+        #         val_1 = (username, password)
+        #
+        #         cursor.execute(sql, val)
+        #         cursor.execute(sql_1, val_1)
+        #         cursor.execute(sql_2, val_2)
+        #         print("name")
+        #
+        #         db.commit()
+        #         self.main_frame.destroy()
+        #         messagebox.showinfo("Successful", "Employee profile is created successfully")
+        #         self.main_frame.destroy()
+        #     except mysql.connector.Error as e:
+        #         messagebox.showerror("Database Error", f"Error occured: {e}")
+        # else:
+        #     print("hello")
+        # self.employees()
 
     def search(self):
         search_data = self.search_entry.get()

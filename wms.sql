@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
--- Host: localhost    Database: w_ms
+-- Host: localhost    Database: wms
 -- ------------------------------------------------------
 -- Server version	8.0.35
 
@@ -74,6 +74,58 @@ INSERT INTO `project` VALUES (1,'Library Managemnet','28/02/2025','28/02/2026','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `request_login`
+--
+
+DROP TABLE IF EXISTS `request_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `request_login` (
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `request_login`
+--
+
+LOCK TABLES `request_login` WRITE;
+/*!40000 ALTER TABLE `request_login` DISABLE KEYS */;
+INSERT INTO `request_login` VALUES ('chetan45','1236'),('jayesh145','1452');
+/*!40000 ALTER TABLE `request_login` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requests`
+--
+
+DROP TABLE IF EXISTS `requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requests` (
+  `request_id` int NOT NULL AUTO_INCREMENT,
+  `employee_name` varchar(45) NOT NULL,
+  `profession` varchar(45) NOT NULL,
+  `contact_no` varchar(45) NOT NULL,
+  `emergency_contact_no` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  PRIMARY KEY (`request_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requests`
+--
+
+LOCK TABLES `requests` WRITE;
+/*!40000 ALTER TABLE `requests` DISABLE KEYS */;
+INSERT INTO `requests` VALUES (1,'chetan','Engenieer','4512785623','1245785623','chetan45'),(2,'jayesh','Engineer','1234567890','1234567890','jayesh145');
+/*!40000 ALTER TABLE `requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `salary`
 --
 
@@ -98,7 +150,7 @@ CREATE TABLE `salary` (
 
 LOCK TABLES `salary` WRITE;
 /*!40000 ALTER TABLE `salary` DISABLE KEYS */;
-INSERT INTO `salary` VALUES (1,'Omkar','Engineer','400','1.0','400.0','asdf123'),(2,'Jayesh','Administrator','300','2.8333333333333335','850.0','jayesh24'),(3,'Chetan','Engineer','400','2.0','600.0','chetan12'),(4,'jayhesh','Engineer','400','1.0','400.0','omkar28'),(5,'asdfg','Administrator','300','2.0','600.0','omkar456'),(6,'Pushkar','Engineer','400','3.0','1200.0','pushkar234'),(7,'Omkar','Administrator','300','1.0','300.0','pushkar54'),(8,'Pushkar','Management','500','2.0','1000.0','radsa');
+INSERT INTO `salary` VALUES (1,'Omkar','Engineer','400','6.0','400.0','asdf123'),(2,'Jayesh','Administrator','300','4.0','850.0','jayesh24'),(3,'Chetan','Engineer','400','2.0','600.0','chetan12'),(4,'jayhesh','Engineer','400','1.0','400.0','omkar28'),(5,'asdfg','Administrator','300','2.0','600.0','omkar456'),(6,'Pushkar','Engineer','400','3.0','1200.0','pushkar234'),(7,'Omkar','Administrator','300','1.0','300.0','pushkar54'),(8,'Pushkar','Management','500','2.0','1000.0','radsa');
 /*!40000 ALTER TABLE `salary` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +174,7 @@ CREATE TABLE `user_login` (
 
 LOCK TABLES `user_login` WRITE;
 /*!40000 ALTER TABLE `user_login` DISABLE KEYS */;
-INSERT INTO `user_login` VALUES ('ankit29','2323'),('asdf123','1231'),('chetan12','2802'),('jayesh24','1324'),('omkar28','1234'),('omkar456','2343'),('pushkar234','2342'),('pushkar54','2323'),('radsa','1230');
+INSERT INTO `user_login` VALUES ('ankit29','2323'),('asdf123','1231'),('chetan12','2802'),('harshvar','1234'),('jayesh24','1324'),('omkar28','1234'),('omkar456','2343'),('pushkar234','2342'),('pushkar54','2323'),('radsa','1230');
 /*!40000 ALTER TABLE `user_login` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -135,4 +187,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-10 20:44:34
+-- Dump completed on 2024-04-17 17:32:19

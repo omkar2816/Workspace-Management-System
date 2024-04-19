@@ -1,10 +1,8 @@
 from tkinter import messagebox
-
 import customtkinter
 import mysql.connector
 from PIL import Image
 from customtkinter import *
-
 import connection
 from app_admin_windows import DashboardWindow
 
@@ -20,8 +18,10 @@ class Login(customtkinter.CTk):
         set_appearance_mode("system")
         self.geometry("700x480+600+200")
         self.side_img = CTkImage(dark_image=SIDE_IMG_DATA, light_image=SIDE_IMG_DATA, size=(350, 480))
-        self.user_side_image = CTkImage(dark_image=USER_SIDE_IMAGE_DATA, light_image=USER_SIDE_IMAGE_DATA, size=(350, 480))
-        self.admin_side_img = CTkImage(dark_image=ADMIN_SIDE_IMAGE_DATA, light_image=ADMIN_SIDE_IMAGE_DATA, size=(350, 480))
+        self.user_side_image = CTkImage(dark_image=USER_SIDE_IMAGE_DATA,
+                                        light_image=USER_SIDE_IMAGE_DATA, size=(350, 480))
+        self.admin_side_img = CTkImage(dark_image=ADMIN_SIDE_IMAGE_DATA,
+                                       light_image=ADMIN_SIDE_IMAGE_DATA, size=(350, 480))
         self.s_pass = IntVar(value=0)
         # creates login frames
         CTkLabel(master=self, text="", image=self.user_side_image).pack(expand=True, side="left")
@@ -30,17 +30,27 @@ class Login(customtkinter.CTk):
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(expand=True, side="right")
 
-        CTkLabel(master=self.main_frame, text="Welcome Back!", text_color="#601E88", anchor="w", justify="left", font=("Arial", 24, "bold")).pack(anchor="w", pady=(40, 5), padx=(25, 0))
-        CTkLabel(master=self.main_frame, text="Sign in to your account", text_color="#7E7E7E", anchor="w", justify="left", font=("Arial", 14, "bold")).pack(anchor="w", pady=(10, 5), padx=(25, 0))
+        CTkLabel(master=self.main_frame, text="Welcome Back!", text_color="#601E88", anchor="w", justify="left",
+                 font=("Arial", 24, "bold")).pack(anchor="w", pady=(40, 5), padx=(25, 0))
+        CTkLabel(master=self.main_frame, text="Sign in to your account", text_color="#7E7E7E", anchor="w",
+                 justify="left", font=("Arial", 14, "bold")).pack(anchor="w", pady=(10, 5), padx=(25, 0))
 
-        self.user_entry = (CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14)))
+        self.user_entry = (CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=280,
+                                    fg_color="#EEEEEE", font=("Arial", 14)))
         self.user_entry.pack(anchor="w", padx=(25, 25), pady=(50, 0))
-        self.u_password = (CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14), show="●"))
+        self.u_password = (CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=280,
+                                    fg_color="#EEEEEE", font=("Arial", 14), show="●"))
         self.u_password.pack(anchor="w", padx=(25, 25), pady=(25, 0))
-        self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?", text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0, command=self.toggle_password).pack(anchor="w", padx=(180, 0), pady=(5, 0))
+        self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15,
+                                         text="Show Password ?", text_color="#7E7E7E", variable=self.s_pass, onvalue=1,
+                                         offvalue=0, command=self.toggle_password).pack(anchor="w", padx=(180, 0), pady=(5, 0))
 
-        self.login = CTkButton(master=self.main_frame, text="Log In", fg_color="#601E88", hover_color="#700777", font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12, command=self.get_entries).pack(anchor="w", pady=(30, 0), padx=(70, 0))
-        self.switch = CTkButton(master=self.main_frame, text="Switch to Admin", fg_color="transparent", hover_color="#ffffff", font=("Arial", 12), text_color="#7E7E7E", command=self.switch).pack(anchor="w", padx=(100, 0), pady=(50, 0))
+        self.login = CTkButton(master=self.main_frame, text="Log In", fg_color="#601E88", hover_color="#700777",
+                               font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12,
+                               command=self.get_entries).pack(anchor="w", pady=(30, 0), padx=(70, 0))
+        self.switch = CTkButton(master=self.main_frame, text="Switch to Admin", fg_color="transparent",
+                                hover_color="#ffffff", font=("Arial", 12), text_color="#7E7E7E",
+                                command=self.switch).pack(anchor="w", padx=(100, 0), pady=(50, 0))
 
         self.new_user = CTkButton(master=self.main_frame, text="New user", fg_color="#601E88", hover_color="#700777",
                                   font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12,

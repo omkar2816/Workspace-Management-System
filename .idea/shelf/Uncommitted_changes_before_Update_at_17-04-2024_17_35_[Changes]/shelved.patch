@@ -1,0 +1,23 @@
+Index: connection.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import mysql.connector\r\n\r\n\r\nclass Connection:\r\n    _instance = None\r\n\r\n    def __new__(cls, *args, **kwargs):\r\n        try:\r\n            if not cls._instance:\r\n                cls._instance = super().__new__(cls)\r\n                cls._instance.cnx = mysql.connector.connect(\r\n                    user='root',\r\n                    password='Omkar@2802',\r\n                    host='localhost',\r\n                    port='3306',\r\n                    database='w_ms'\r\n                )\r\n                print(\"Connection done\")\r\n            return cls._instance\r\n\r\n        except mysql.connector.Error as e:\r\n            print(\"Connection failed\", e)\r\n\r\n    def get_connection(self):\r\n        return self.cnx\r\n\r\nif __name__ == \"__main__\":\r\n    connection = Connection()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/connection.py b/connection.py
+--- a/connection.py	(revision b9228d84a303ea64060b924bcf3cee35c1fc9b4d)
++++ b/connection.py	(date 1713355261315)
+@@ -10,10 +10,10 @@
+                 cls._instance = super().__new__(cls)
+                 cls._instance.cnx = mysql.connector.connect(
+                     user='root',
+-                    password='Omkar@2802',
++                    password='529374Channe@',
+                     host='localhost',
+                     port='3306',
+-                    database='w_ms'
++                    database='wms'
+                 )
+                 print("Connection done")
+             return cls._instance

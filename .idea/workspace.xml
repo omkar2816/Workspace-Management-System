@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e78766d-d8c5-4b96-99f3-65bc1cc254a9" name="Changes" comment="workspace management system">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-04-2024_23_32__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-04-2024_23_32__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app_admin_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_admin_windows.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -34,7 +39,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/omkar2816/Workspace-Management-System.git&quot;,
-    &quot;accountId&quot;: &quot;b920635d-5297-450b-83fd-33eaca86895d&quot;
+    &quot;accountId&quot;: &quot;d338abf0-6f2f-4639-8ed1-6523e282415b&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -54,6 +59,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.add_employee.executor&quot;: &quot;Run&quot;,
+    &quot;Python.admin_main.executor&quot;: &quot;Run&quot;,
     &quot;Python.app_admin_windows.executor&quot;: &quot;Run&quot;,
     &quot;Python.app_user_windows.executor&quot;: &quot;Run&quot;,
     &quot;Python.app_windows.executor&quot;: &quot;Run&quot;,
@@ -312,7 +318,23 @@
       <option name="project" value="LOCAL" />
       <updated>1712731968223</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1712942572658</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1712942572658</updated>
+    </task>
+    <task id="LOCAL-00014" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1713204981857</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1713204981857</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -320,7 +342,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

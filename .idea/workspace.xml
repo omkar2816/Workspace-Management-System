@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e78766d-d8c5-4b96-99f3-65bc1cc254a9" name="Changes" comment="workspace management system">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-04-2024_23_32__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_15-04-2024_23_32__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_admin_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_admin_windows.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,29 +54,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.add_employee.executor&quot;: &quot;Run&quot;,
-    &quot;Python.admin_main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.app_admin_windows.executor&quot;: &quot;Run&quot;,
-    &quot;Python.app_user_windows.executor&quot;: &quot;Run&quot;,
-    &quot;Python.app_windows.executor&quot;: &quot;Run&quot;,
-    &quot;Python.connection.executor&quot;: &quot;Run&quot;,
-    &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,
-    &quot;Python.demo2.executor&quot;: &quot;Run&quot;,
-    &quot;Python.ex.executor&quot;: &quot;Run&quot;,
-    &quot;Python.login_main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.screentime.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.user_admin.executor&quot;: &quot;Run&quot;,
-    &quot;Python.user_login.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.add_employee.executor": "Run",
+    "Python.admin_main.executor": "Run",
+    "Python.app_admin_windows.executor": "Run",
+    "Python.app_user_windows.executor": "Run",
+    "Python.app_windows.executor": "Run",
+    "Python.connection.executor": "Run",
+    "Python.db_connection.executor": "Run",
+    "Python.demo2.executor": "Run",
+    "Python.ex.executor": "Run",
+    "Python.login_main.executor": "Run",
+    "Python.screentime.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.user_admin.executor": "Run",
+    "Python.user_login.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "jayesh",
+    "run.code.analysis.last.selected.profile": "aDefault"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Omkar Korgaonkar\PycharmProjects\Workspace Management System\images" />
@@ -334,7 +332,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713204981857</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1713543858539</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1713543858539</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

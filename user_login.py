@@ -95,8 +95,10 @@ class Login(customtkinter.CTk):
 
             sql = "SELECT * FROM user_login WHERE username=%s;"
             val = (e_username, )
+
             cursor.execute(sql, val)
             users = cursor.fetchall()
+
             if e_username == '' and e_password == '':
                 messagebox.showinfo("Null fields", "Null value cannot be accepted\nAll fields are required")
             for user in users:
@@ -126,7 +128,7 @@ class Login(customtkinter.CTk):
 
     def switch(self):
         self.destroy()
-        import admin_main
+        import admin_login
         login_main = admin_main.Starter()
         login_main.mainloop()
 

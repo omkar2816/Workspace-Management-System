@@ -11,7 +11,6 @@ import connection
 from tkcalendar import Calendar
 from calendar import Calendar
 
-
 LOGO_IMG_DATA = Image.open("images/logo.png")
 DASHBOARD_IMG_DATA = Image.open("images/dashboard_icon.png")
 EMPLOYEE_IMG_DATA = Image.open("images/employee_icon.png")
@@ -24,6 +23,7 @@ OPEN_IMG_DATA = Image.open("images/open.png")
 LOGOUT_IMG2_DATA = Image.open("images/logout_set.png")
 
 COLORS = ["#D60000", "#FF9700", "#005DFF", "#42F200", "#DAE801"]
+
 
 class DashboardWindow(customtkinter.CTk):
     def __init__(self):
@@ -50,22 +50,34 @@ class DashboardWindow(customtkinter.CTk):
 
         CTkLabel(master=self.side_frame, text="", image=self.logo_img).pack(pady=(38, 0), anchor="center")
 
-        self.dashboard_button = CTkButton(master=self.side_frame, image=self.dashboard_img, text="Dashboard", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.dashboard)
+        self.dashboard_button = CTkButton(master=self.side_frame, image=self.dashboard_img, text="Dashboard",
+                                          fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669",
+                                          anchor="w", command=self.dashboard)
         self.dashboard_button.pack(anchor="center", ipady=5, pady=(60, 0))
 
-        self.employee_button = CTkButton(master=self.side_frame, image=self.employee_img, text="Employees", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.employees)
+        self.employee_button = CTkButton(master=self.side_frame, image=self.employee_img, text="Employees",
+                                         fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669",
+                                         anchor="w", command=self.employees)
         self.employee_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
-        self.project_button = CTkButton(master=self.side_frame, image=self.project_img, text="Projects", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.projects)
+        self.project_button = CTkButton(master=self.side_frame, image=self.project_img, text="Projects",
+                                        fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669",
+                                        anchor="w", command=self.projects)
         self.project_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
-        self.salary_button = CTkButton(master=self.side_frame, image=self.salary_img, text="Salary", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.salary)
+        self.salary_button = CTkButton(master=self.side_frame, image=self.salary_img, text="Salary",
+                                       fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669",
+                                       anchor="w", command=self.salary)
         self.salary_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
-        self.settings_button = CTkButton(master=self.side_frame, image=self.settings_img, text="Settings", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.settings)
+        self.settings_button = CTkButton(master=self.side_frame, image=self.settings_img, text="Settings",
+                                         fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669",
+                                         anchor="w", command=self.settings)
         self.settings_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
-        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w")
+        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out",
+                                       fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669",
+                                       anchor="w")
         self.logout_button.pack(anchor="center", ipady=5, pady=(160, 0))
 
         self.window_count = 1
@@ -91,7 +103,8 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack(side="left")
 
         # self.user_button = CTkButton(master=self.main_frame, text="username", fg_color="transparent", font=("Arial Bold", 14), hover_color="#ffffff", anchor="ne")
-        self.check_in_frame = CTkFrame(master=self.main_frame, fg_color="#ffffff", width=200, height=30, corner_radius=0)
+        self.check_in_frame = CTkFrame(master=self.main_frame, fg_color="#ffffff", width=200, height=30,
+                                       corner_radius=0)
         self.check_in_frame.pack(anchor="nw", padx=10, pady=(10, 0))
         self.check_in = CTkRadioButton(master=self.check_in_frame, text="Check In", font=("Arial Bold", 14))
         self.check_in.pack(anchor="n", side="left", padx=27, pady=(20, 0))
@@ -104,40 +117,57 @@ class DashboardWindow(customtkinter.CTk):
         self.task_number = 5
         self.complete_task = 10
         self.current = float(self.task_number / self.complete_task)
-        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=200, corner_radius=13)
+        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=200,
+                                                      corner_radius=13)
         self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
         self.progress_bar_width = 310
-        self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
-        self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
+        self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                               width=30).pack(anchor="ne", padx=(0, 25), pady=(5, 0))
+        self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                            width=self.progress_bar_width, height=20, corner_radius=8,
+                                            progress_color=COLORS[0], border_color="#491669", border_width=2)
         self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
         self.progress_bar1.set(self.current)
 
-        self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                               width=30).pack(
             anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[1], border_color="#491669", border_width=2)
+        self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                            width=self.progress_bar_width, height=20,
+                                            corner_radius=8, progress_color=COLORS[1], border_color="#491669",
+                                            border_width=2)
         self.progress_bar2.pack(anchor="n", padx=10, pady=(5, 0))
 
-        self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                               width=30).pack(
             anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
+        self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                            width=self.progress_bar_width, height=20,
+                                            corner_radius=8, progress_color=COLORS[4], border_color="#491669",
+                                            border_width=2)
         self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
 
-        self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                               width=30).pack(
             anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[2], border_color="#491669", border_width=2)
+        self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                            width=self.progress_bar_width, height=20,
+                                            corner_radius=8, progress_color=COLORS[2], border_color="#491669",
+                                            border_width=2)
         self.progress_bar4.pack(anchor="n", padx=10, pady=(5, 0))
 
-        self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+        self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                               width=30).pack(
             anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
+        self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                            width=self.progress_bar_width, height=20,
+                                            corner_radius=8, progress_color=COLORS[3], border_color="#491669",
+                                            border_width=2)
         self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
 
-        self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230, corner_radius=13)
+        self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230,
+                                       corner_radius=13)
         self.calendar_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
 
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
@@ -172,11 +202,13 @@ class DashboardWindow(customtkinter.CTk):
         self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
         self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Colleague with its ID or Name",
+        self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                     placeholder_text="Search Colleague with its ID or Name",
                                      border_color="#70438C", border_width=2)
         self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88", hover_color="#491669", width=28, command=self.search)
+        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                       hover_color="#491669", width=28, command=self.search)
         self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
         try:
@@ -199,7 +231,8 @@ class DashboardWindow(customtkinter.CTk):
 
         self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
         self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"], header_color="#601e88",
+        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                              header_color="#601e88",
                               hover_color="#DCDCDC")
         self.table.edit_row(0, font=("Arial Bold", 14))
         self.table.edit_row(0, text_color="#fff", hover_color="#491669")
@@ -218,7 +251,7 @@ class DashboardWindow(customtkinter.CTk):
                 cursor = db.cursor()
 
                 sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details WHERE employee_name=%s"
-                val = (search_data, )
+                val = (search_data,)
 
                 cursor.execute(sql, val)
                 data_fetch = cursor.fetchall()
@@ -253,7 +286,8 @@ class DashboardWindow(customtkinter.CTk):
                                          border_color="#70438C", border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                           fg_color="#601e88",
                                            hover_color="#491669", width=28, command=self.search)
             self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
@@ -304,14 +338,15 @@ class DashboardWindow(customtkinter.CTk):
         self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
         self.tasks_button = CTkButton(master=title_frame, text="My Tasks", font=("Arial Black", 15),
-                                            text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                            corner_radius=15)
+                                      text_color="#fff", fg_color="#601e88", hover_color="#491669",
+                                      corner_radius=15)
         self.tasks_button.pack(anchor="ne", side="right", ipady=10)
 
         self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
         self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Project with Unique ID",
+        self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                     placeholder_text="Search Project with Unique ID",
                                      border_color="#70438C", border_width=2)
         self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
@@ -341,7 +376,8 @@ class DashboardWindow(customtkinter.CTk):
 
         self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
         self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"], header_color="#601e88",
+        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                              header_color="#601e88",
                               hover_color="#DCDCDC")
         self.table.edit_row(0, font=("Arial Bold", 14))
         self.table.edit_row(0, text_color="#fff", hover_color="#491669")
@@ -360,7 +396,7 @@ class DashboardWindow(customtkinter.CTk):
                 cursor = db.cursor()
 
                 sql = "SELECT unique_id, project_name, start_date, due_date, employee_name FROM project WHERE %s IN (unique_id, project_name, start_date, due_date, employee_name)"
-                val = (search_project, )
+                val = (search_project,)
                 cursor.execute(sql, val)
 
                 fetch_project = cursor.fetchall()
@@ -383,8 +419,8 @@ class DashboardWindow(customtkinter.CTk):
             self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
             self.tasks_button = CTkButton(master=title_frame, text="My Tasks", font=("Arial Black", 15),
-                                                text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                                corner_radius=15)
+                                          text_color="#fff", fg_color="#601e88", hover_color="#491669",
+                                          corner_radius=15)
             self.tasks_button.pack(anchor="ne", side="right", ipady=10)
 
             self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
@@ -395,7 +431,8 @@ class DashboardWindow(customtkinter.CTk):
                                          border_color="#70438C", border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                           fg_color="#601e88",
                                            hover_color="#491669", width=28)
             self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
@@ -449,7 +486,8 @@ class DashboardWindow(customtkinter.CTk):
         self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
         self.search_container.pack(anchor="n", fill="x", pady=(30, 0), padx=27)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Employee with  its ID or Name",
+        self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                     placeholder_text="Search Employee with  its ID or Name",
                                      border_color="#70438C", border_width=2)
         self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
@@ -476,12 +514,23 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.pack_propagate(0)
             self.main_frame.pack(side="left")
 
-            self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Edit Profile                                                                                             ", width=620, height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(70, 0))
-            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Set appearance mode                                                                         ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
-            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2, text="     Log out                                                                                                    ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
+            self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img,
+                                                 text="     Edit Profile                                                                                             ",
+                                                 width=620, height=60, fg_color="#601e88", font=("Rockwell", 22),
+                                                 hover_color="#491669", anchor="w", compound="right").pack(
+                anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(70, 0))
+            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
+                                          text="     Set appearance mode                                                                         ",
+                                          height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669",
+                                          anchor="w", compound="right").pack(anchor="center", fill="x", padx=30,
+                                                                             ipadx=10, ipady=10, pady=(25, 0))
+            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2,
+                                           text="     Log out                                                                                                    ",
+                                           height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669",
+                                           anchor="w", compound="right").pack(anchor="center", fill="x", padx=30,
+                                                                              ipadx=10, ipady=10, pady=(25, 0))
 
             self.window_count = 5
-
 
     # def update_profile(self):
     #     self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
@@ -489,6 +538,7 @@ class DashboardWindow(customtkinter.CTk):
     #     self.main_frame.pack(side="left")
     #
     #     self.
+
 
 if __name__ == '__main__':
     app = DashboardWindow()

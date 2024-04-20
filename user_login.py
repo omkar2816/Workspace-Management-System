@@ -4,7 +4,8 @@ import mysql.connector
 from PIL import Image
 from customtkinter import *
 import connection
-from app_admin_windows import DashboardWindow
+from app_user_windows import DashboardWindow
+import admin_login
 
 SIDE_IMG_DATA = Image.open("images/side-img.png")
 USER_SIDE_IMAGE_DATA = Image.open("images/side-image.jpg")
@@ -128,8 +129,7 @@ class Login(customtkinter.CTk):
 
     def switch(self):
         self.destroy()
-        import admin_login
-        login_main = admin_main.Starter()
+        login_main = admin_login.Starter()
         login_main.mainloop()
 
 if __name__ == '__main__':

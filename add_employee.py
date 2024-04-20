@@ -86,7 +86,7 @@ class AddEmployee(customtkinter.CTk):
                 cursor.execute(sql, val)
                 cursor.execute(sql_1, val_1)
                 db.commit()
-                app.destroy()
+                self.destroy()
                 messagebox.showinfo("Successful", "Your request is been send")
             except mysql.connector.Error as e:
                 messagebox.showerror("Database Error", f"Error occurred: {e}")

@@ -86,8 +86,8 @@ class DashboardWindow(customtkinter.CTk):
                                        anchor="w", command=self.logout_listner)
         self.logout_button.pack(anchor="center", ipady=5, pady=(160, 0))
 
-        self.window_count = 1
-        if self.window_count == 1:
+        self.window_count = 0
+        if self.window_count == 0:
             self.dashboard()
             global job
         try:
@@ -119,121 +119,121 @@ class DashboardWindow(customtkinter.CTk):
         elif self.window_count == 5:
             self.main_frame.destroy()
 
-        if self.window_count == self.window_count:
+        if self.window_count == 1:
             pass
+        else:
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
 
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
+            # self.user_button = CTkButton(master=self.main_frame, text="username", fg_color="transparent", font=("Arial Bold", 14), hover_color="#ffffff", anchor="ne")
+            self.check_frame = CTkFrame(master=self.main_frame, fg_color="#ffffff", width=200, height=30, corner_radius=0)
+            self.check_frame.pack(anchor="nw", padx=10, pady=(10, 0))
+            self.radio_var = IntVar(value=0)
+            self.check_in = CTkRadioButton(master=self.check_frame, text="Check In", font=("Arial Bold", 14), value=1,
+                                           variable=self.radio_var, command=self.stop_timer)
+            self.check_in.pack(anchor="n", side="left", padx=27, pady=(20, 0))
+            self.check_out = CTkRadioButton(master=self.check_frame, text="Check Out", font=("Arial Bold", 14), value=2,
+                                            variable=self.radio_var, command=self.stop_timer)
+            self.check_out.pack(anchor="n", side="right", padx=27, pady=(20, 0))
 
-        # self.user_button = CTkButton(master=self.main_frame, text="username", fg_color="transparent", font=("Arial Bold", 14), hover_color="#ffffff", anchor="ne")
-        self.check_frame = CTkFrame(master=self.main_frame, fg_color="#ffffff", width=200, height=30, corner_radius=0)
-        self.check_frame.pack(anchor="nw", padx=10, pady=(10, 0))
-        self.radio_var = IntVar(value=0)
-        self.check_in = CTkRadioButton(master=self.check_frame, text="Check In", font=("Arial Bold", 14), value=1,
-                                       variable=self.radio_var, command=self.stop_timer)
-        self.check_in.pack(anchor="n", side="left", padx=27, pady=(20, 0))
-        self.check_out = CTkRadioButton(master=self.check_frame, text="Check Out", font=("Arial Bold", 14), value=2,
-                                        variable=self.radio_var, command=self.stop_timer)
-        self.check_out.pack(anchor="n", side="right", padx=27, pady=(20, 0))
+            self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
+            self.graph_frame.pack(anchor="center", padx=27, pady=(20, 0))
 
-        self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
-        self.graph_frame.pack(anchor="center", padx=27, pady=(20, 0))
+            global df, dt
+            # create a connection to the database
+            try:
+                db = connection.Connection().get_connection()
 
-        global df, dt
-        # create a connection to the database
-        try:
-            db = connection.Connection().get_connection()
+                # read the data from the database
+                query = 'SELECT employee_name, working_hours  FROM salary'
+                df = pd.read_sql(query, con=db)
+                dt = pd.DataFrame(df.sort_values(by="working_hours"))
+                print(dt)
+            except mysql.connector.Error as e:
+                messagebox.showerror("Database Error", f"Error Occured: {e}")
+                print(e)
+            # plot the data as a bar graph
+            plt.figure(figsize=(12, 9))
+            plt.bar(dt['employee_name'], dt['working_hours'])
+            plt.xlabel('employee name')
+            plt.ylabel('time (in hrs)')
+            plt.title('analytics')
+            # plt.style.use("Solarize_light2")
 
-            # read the data from the database
-            query = 'SELECT employee_name, working_hours  FROM salary'
-            df = pd.read_sql(query, con=db)
-            dt = pd.DataFrame(df.sort_values(by="working_hours"))
-            print(dt)
-        except mysql.connector.Error as e:
-            messagebox.showerror("Database Error", f"Error Occured: {e}")
-            print(e)
-        # plot the data as a bar graph
-        plt.figure(figsize=(12, 9))
-        plt.bar(dt['employee_name'], dt['working_hours'])
-        plt.xlabel('employee name')
-        plt.ylabel('time (in hrs)')
-        plt.title('analytics')
-        # plt.style.use("Solarize_light2")
+            # plt.show()
+            self.add = plt.gcf()
+            canvas = FigureCanvasTkAgg(self.add, master=self.graph_frame)
+            canvas.get_tk_widget().configure(width=900, height=360)
+            ctk_canvas = canvas.get_tk_widget()
+            ctk_canvas.place(relx=0, rely=0, anchor="nw")
 
-        # plt.show()
-        self.add = plt.gcf()
-        canvas = FigureCanvasTkAgg(self.add, master=self.graph_frame)
-        canvas.get_tk_widget().configure(width=900, height=360)
-        ctk_canvas = canvas.get_tk_widget()
-        ctk_canvas.place(relx=0, rely=0, anchor="nw")
+            try:
+                username = [self.username]
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
+                sql = "SELECT unique_id, project_name, total_tasks, tasks_done FROM project WHERE username = %s"
+                cursor.execute(sql, username, )
+                result = cursor.fetchall()
+                print(result)
+            except mysql.connector.Error as e:
+                print(e)
 
-        try:
-            username = [self.username]
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
-            sql = "SELECT unique_id, project_name, total_tasks, tasks_done FROM project WHERE username = %s"
-            cursor.execute(sql, username, )
-            result = cursor.fetchall()
-            print(result)
-        except mysql.connector.Error as e:
-            print(e)
+            number_of_task = 1
+            self.task_number = int(result[0][3])
+            self.complete_task = int(result[0][2])
+            self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=200,
+                                                          corner_radius=13)
+            self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
-        number_of_task = 1
-        self.task_number = int(result[0][3])
-        self.complete_task = int(result[0][2])
-        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=200,
-                                                      corner_radius=13)
-        self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
+            self.progress_bar_width = 310
+            for i in range(number_of_task):
+                self.label2 = (CTkLabel(master=self.task_progress_frame, text=result[0][1],
+                                        width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
+                self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
+                                        width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
+                self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                                    width=self.progress_bar_width, height=20, corner_radius=8,
+                                                    progress_color=COLORS[0], border_color="#491669", border_width=2)
+                self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
+                self.progress_bar1.set((self.task_number / self.complete_task))
 
-        self.progress_bar_width = 310
-        for i in range(number_of_task):
-            self.label2 = (CTkLabel(master=self.task_progress_frame, text=result[0][1],
-                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
-            self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
-                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
-            self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
-                                                width=self.progress_bar_width, height=20, corner_radius=8,
-                                                progress_color=COLORS[0], border_color="#491669", border_width=2)
-            self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
-            self.progress_bar1.set((self.task_number / self.complete_task))
+            # self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
+            # self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
+            # self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
+            # self.progress_bar1.set(self.current)
+            #
+            # self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+            #     anchor="ne", padx=(0, 25), pady=(35, 0))
+            # self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+            #                                     corner_radius=8, progress_color=COLORS[1], border_color="#491669", border_width=2)
+            # self.progress_bar2.pack(anchor="n", padx=10, pady=(5, 0))
+            #
+            # self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+            #     anchor="ne", padx=(0, 25), pady=(35, 0))
+            # self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+            #                                     corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
+            # self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
 
-        # self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
-        # self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
-        # self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
-        # self.progress_bar1.set(self.current)
-        #
-        # self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-        #     anchor="ne", padx=(0, 25), pady=(35, 0))
-        # self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-        #                                     corner_radius=8, progress_color=COLORS[1], border_color="#491669", border_width=2)
-        # self.progress_bar2.pack(anchor="n", padx=10, pady=(5, 0))
-        #
-        # self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-        #     anchor="ne", padx=(0, 25), pady=(35, 0))
-        # self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-        #                                     corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
-        # self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
+            # self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+            #     anchor="ne", padx=(0, 25), pady=(35, 0))
+            # self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+            #                                     corner_radius=8, progress_color=COLORS[2], border_color="#491669", border_width=2)
+            # self.progress_bar4.pack(anchor="n", padx=10, pady=(5, 0))
+            #
+            # self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
+            #     anchor="ne", padx=(0, 25), pady=(35, 0))
+            # self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
+            #                                     corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
+            # self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
 
-        # self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-        #     anchor="ne", padx=(0, 25), pady=(35, 0))
-        # self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-        #                                     corner_radius=8, progress_color=COLORS[2], border_color="#491669", border_width=2)
-        # self.progress_bar4.pack(anchor="n", padx=10, pady=(5, 0))
-        #
-        # self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-        #     anchor="ne", padx=(0, 25), pady=(35, 0))
-        # self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-        #                                     corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
-        # self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
+            self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230,
+                                           corner_radius=13)
+            self.calendar_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
 
-        self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230,
-                                       corner_radius=13)
-        self.calendar_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
-
-        # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
-        # self.cal.pack(fill="both", expand=True)
-        self.window_count = 1
+            # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
+            # self.cal.pack(fill="both", expand=True)
+            self.window_count = 1
 
     def stop_timer(self):
         global stop_time, elapsed_time, salary
@@ -277,71 +277,83 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.destroy()
         elif self.window_count == 5:
             self.main_frame.destroy()
+        elif self.window_count == 6:
+            self.main_frame.destroy()
 
-        if self.window_count == self.window_count:
-            pass
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
-
-        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
-        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
-
-        self.label = CTkLabel(master=title_frame, text="Employee & their details", font=("Arial Black", 23),
-                              text_color="#601e88")
-        self.label.pack(anchor="nw", side="left", pady=(8, 0))
-
-        self.add_employee_button = CTkButton(master=title_frame, text="+ New Employee", font=("Arial Black", 15),
-                                             text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                             corner_radius=15, command=self.add_employee)
-        self.add_employee_button.pack(anchor="ne", side="right", ipady=10)
-
-        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
-        self.search_container.pack(fill="x", pady=(30, 0), padx=27)
-
-        self.search_entry = CTkEntry(master=self.search_container, width=650,
-                                     placeholder_text="Search Employee with its ID or Name",
-                                     border_color="#70438C", border_width=2)
-        self.search_entry.pack(side="left", padx=(13, 0), pady=15)
-
-        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
-                                       hover_color="#491669", width=28, command=self.search)
-        self.search_button.pack(side="left", padx=(13, 0), pady=15)
-
-        try:
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
-
-            sql = "SELECT * FROM employee_details"
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            for result in results:
-                print(result)
-        except mysql.connector.Error as e:
-            print(e)
-
-        self.table_data = [
-            [("ID", "Name", "Profession", "Date of Joining", "Contact No.", "Emergency\nContact No.")]
-        ]
-        self.table_data.append(results)
-        self.table_data = list(itertools.chain(*self.table_data))
-
-        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
-        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
-                              header_color="#601e88",
-                              hover_color="#DCDCDC")
-        self.table.edit_row(0, font=("Arial Bold", 14))
-        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
-        self.table.pack(expand=True)
-
-        self.window_count = 2
-
-    def add_employee(self):
-        self.main_frame.destroy()
         if self.window_count == 2:
             pass
-        if self.window_count == 5:
+        else:
+
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
+
+            title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+            title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+
+            self.label = CTkLabel(master=title_frame, text="Employee & their details", font=("Arial Black", 23),
+                                  text_color="#601e88")
+            self.label.pack(anchor="nw", side="left", pady=(8, 0))
+
+            self.add_employee_button = CTkButton(master=title_frame, text="+ New Employee", font=("Arial Black", 15),
+                                                 text_color="#fff", fg_color="#601e88", hover_color="#491669",
+                                                 corner_radius=15, command=self.add_employee)
+            self.add_employee_button.pack(anchor="ne", side="right", ipady=10)
+
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+            self.search_container.pack(fill="x", pady=(30, 0), padx=27)
+
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Employee with its ID or Name",
+                                         border_color="#70438C", border_width=2)
+            self.search_entry.pack(side="left", padx=(13, 0), pady=15)
+
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                           hover_color="#491669", width=28, command=self.search)
+            self.search_button.pack(side="left", padx=(13, 0), pady=15)
+
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
+
+                sql = "SELECT * FROM employee_details"
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                for result in results:
+                    print(result)
+            except mysql.connector.Error as e:
+                print(e)
+
+            self.table_data = [
+                [("ID", "Name", "Profession", "Date of Joining", "Contact No.", "Emergency\nContact No.")]
+            ]
+            self.table_data.append(results)
+            self.table_data = list(itertools.chain(*self.table_data))
+
+            self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+            self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                                  header_color="#601e88",
+                                  hover_color="#DCDCDC")
+            self.table.edit_row(0, font=("Arial Bold", 14))
+            self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+            self.table.pack(expand=True)
+
+            self.window_count = 2
+
+    def add_employee(self):
+        if self.window_count == 1:
+            self.main_frame.destroy()
+        elif self.window_count == 2:
+            self.main_frame.destroy()
+        elif self.window_count == 3:
+            self.main_frame.destroy()
+        elif self.window_count == 4:
+            self.main_frame.destroy()
+        elif self.window_count == 5:
+            self.main_frame.destroy()
+
+        if self.window_count == 6:
             pass
         else:
 
@@ -404,7 +416,7 @@ class DashboardWindow(customtkinter.CTk):
                                             hover_color="#491669", width=28, command=self.request_to_accept)
             self.request_button.pack(side="left", padx=(13, 0), pady=15)
 
-            self.window_count = 5
+            self.window_count = 6
 
             # self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
             # self.main_frame.pack_propagate(0)
@@ -633,68 +645,70 @@ class DashboardWindow(customtkinter.CTk):
         elif self.window_count == 5:
             self.main_frame.destroy()
 
-        if self.window_count == self.window_count:
+        if self.window_count == 3:
             pass
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
+        else:
 
-        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
-        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
 
-        self.label = CTkLabel(master=title_frame, text="Project Details", font=("Arial Black", 23),
-                              text_color="#601e88")
-        self.label.pack(anchor="nw", side="left", pady=(8, 0))
+            title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+            title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
-        self.add_project_button = CTkButton(master=title_frame, text="Create New Project", font=("Arial Black", 15),
-                                            text_color="#fff", fg_color="#601e88", hover_color="#491669",
-                                            corner_radius=15, command=self.create_new_project)
-        self.add_project_button.pack(anchor="ne", side="right", ipady=10)
+            self.label = CTkLabel(master=title_frame, text="Project Details", font=("Arial Black", 23),
+                                  text_color="#601e88")
+            self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
-        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
-        self.search_container.pack(fill="x", pady=(30, 0), padx=27)
+            self.add_project_button = CTkButton(master=title_frame, text="Create New Project", font=("Arial Black", 15),
+                                                text_color="#fff", fg_color="#601e88", hover_color="#491669",
+                                                corner_radius=15, command=self.create_new_project)
+            self.add_project_button.pack(anchor="ne", side="right", ipady=10)
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650,
-                                     placeholder_text="Search Project with Unique ID",
-                                     border_color="#70438C", border_width=2)
-        self.search_entry.pack(side="left", padx=(13, 0), pady=15)
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+            self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
-                                       hover_color="#491669", width=28, command=self.search_project)
-        self.search_button.pack(side="left", padx=(13, 0), pady=15)
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Project with Unique ID",
+                                         border_color="#70438C", border_width=2)
+            self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-        try:
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                           hover_color="#491669", width=28, command=self.search_project)
+            self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
-            sql = "SELECT * FROM project"
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            for result in results:
-                print(result)
-        except mysql.connector.Error as e:
-            messagebox.showerror("Database Error", f"Error Occured: {e}")
-            print(e)
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
 
-        self.table_data = [
-            [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead", "Number\nof Tasks",
-              "Completed\nTasks")]
-        ]
+                sql = "SELECT * FROM project"
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                for result in results:
+                    print(result)
+            except mysql.connector.Error as e:
+                messagebox.showerror("Database Error", f"Error Occured: {e}")
+                print(e)
 
-        self.table_data.append(results)
-        self.table_data = list(itertools.chain(*self.table_data))
+            self.table_data = [
+                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead", "Number\nof Tasks",
+                  "Completed\nTasks")]
+            ]
 
-        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
-        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
-                              header_color="#601e88",
-                              hover_color="#DCDCDC")
-        self.table.edit_row(0, font=("Arial Bold", 14))
-        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
-        self.table.edit_column(1, width=200)
-        self.table.pack(expand=True)
+            self.table_data.append(results)
+            self.table_data = list(itertools.chain(*self.table_data))
 
-        self.window_count = 3
+            self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+            self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                                  header_color="#601e88",
+                                  hover_color="#DCDCDC")
+            self.table.edit_row(0, font=("Arial Bold", 14))
+            self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+            self.table.edit_column(1, width=200)
+            self.table.pack(expand=True)
+
+            self.window_count = 3
 
     def create_new_project(self):
         self.main_frame.destroy()
@@ -847,59 +861,61 @@ class DashboardWindow(customtkinter.CTk):
         elif self.window_count == 5:
             self.main_frame.destroy()
 
-        if self.window_count == self.window_count:
+        if self.window_count == 4:
             pass
-        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
-        self.main_frame.pack_propagate(0)
-        self.main_frame.pack(side="left")
+        else:
 
-        # title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
-        # title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+            self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+            self.main_frame.pack_propagate(0)
+            self.main_frame.pack(side="left")
 
-        # self.label = CTkLabel(master=title_frame, text="Projects History", font=("Arial Black", 23),
-        #                       text_color="#601e88")
-        # self.label.pack(anchor="nw", side="left", pady=(8, 0))
+            # title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+            # title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
-        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
-        self.search_container.pack(anchor="n", fill="x", pady=(30, 0), padx=27)
+            # self.label = CTkLabel(master=title_frame, text="Projects History", font=("Arial Black", 23),
+            #                       text_color="#601e88")
+            # self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
-        self.search_entry = CTkEntry(master=self.search_container, width=650,
-                                     placeholder_text="Search Employee with  its ID or Name",
-                                     border_color="#70438C", border_width=2)
-        self.search_entry.pack(side="left", padx=(13, 0), pady=15)
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+            self.search_container.pack(anchor="n", fill="x", pady=(30, 0), padx=27)
 
-        self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
-                                       hover_color="#491669", width=28, command=self.salary_search)
-        self.search_button.pack(side="left", padx=(13, 0), pady=15)
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Employee with  its ID or Name",
+                                         border_color="#70438C", border_width=2)
+            self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-        try:
-            db = connection.Connection().get_connection()
-            cursor = db.cursor()
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                           hover_color="#491669", width=28, command=self.salary_search)
+            self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
-            sql = "SELECT employee_id, employee_name, profession, working_hours, salary FROM salary"
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            for result in results:
-                print(result)
-        except mysql.connector.Error as e:
-            print(e)
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
 
-        self.table_data = [
-            [("ID", "Name", "Profession", "Working\nHours", "Salary")]
-        ]
-        self.table_data.append(results)
-        self.table_data = list(itertools.chain(*self.table_data))
+                sql = "SELECT employee_id, employee_name, profession, working_hours, salary FROM salary"
+                cursor.execute(sql)
+                results = cursor.fetchall()
+                for result in results:
+                    print(result)
+            except mysql.connector.Error as e:
+                print(e)
 
-        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
-        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
-                              header_color="#601e88",
-                              hover_color="#DCDCDC")
-        self.table.edit_row(0, font=("Arial Bold", 14))
-        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
-        self.table.pack(expand=True)
+            self.table_data = [
+                [("ID", "Name", "Profession", "Working\nHours", "Salary")]
+            ]
+            self.table_data.append(results)
+            self.table_data = list(itertools.chain(*self.table_data))
 
-        self.window_count = 4
+            self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+            self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                                  header_color="#601e88",
+                                  hover_color="#DCDCDC")
+            self.table.edit_row(0, font=("Arial Bold", 14))
+            self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+            self.table.pack(expand=True)
+
+            self.window_count = 4
 
     def salary_search(self):
         search_data = self.search_entry.get()
@@ -995,7 +1011,7 @@ class DashboardWindow(customtkinter.CTk):
                 if e_username == db_username:
                     messagebox.showinfo("Already Exist", "Username already exist")
         except mysql.connector.Error as e:
-            messagebox.showerror("Database error", f"Error occured: {e}")
+            messagebox.showerror("Database error", f"Error occurred: {e}")
 
     def logout_listner(self):
         self.destroy()

@@ -182,7 +182,7 @@ class DashboardWindow(customtkinter.CTk):
         number_of_task = 1
         self.task_number = int(result[0][2])
         self.complete_task = int(result[0][3])
-        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=200, corner_radius=13)
+        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=210, corner_radius=13)
         self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
         self.progress_bar_width = 310
@@ -223,9 +223,18 @@ class DashboardWindow(customtkinter.CTk):
         # self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
         #                                     corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
         # self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
+        project_names = [('Library Management System', ''), ('Workspace Management System', ''), ('Instagram Clone', ''), ('WhatsApp Clone', '')]
+        self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=310, height=210, corner_radius=13)
+        self.description_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
 
-        self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230, corner_radius=13)
-        self.calendar_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
+        for project_name in project_names:
+            self.p_name = project_name[0]
+            self.p_description = project_name[1]
+            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC", font=("Arial Bold", 12), state="disabled")
+            self.project_name.pack(anchor="n", padx=(5, 0), pady=(5, 0))
+
+            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, font=("Arial Bold", 12), state="disabled")
+            self.description_label.pack(anchor="n", padx=(5, 0), pady=(5, 0))
 
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
         # self.cal.pack(fill="both", expand=True)

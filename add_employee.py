@@ -70,7 +70,10 @@ class AddEmployee(customtkinter.CTk):
             messagebox.showinfo("Invalid", "Contact number should contain 10 digits")
         elif password.isdigit() is not True:
             messagebox.showinfo("Invalid", "Password should contain digits only")
+        elif profession == 'Select Job role':
+            messagebox.showinfo('Null Info',"Please select your job role")
         elif not self.check_duplicate_user(username):
+
             try:
                 self.username = self.username_entry.get()
                 db = connection.Connection().get_connection()

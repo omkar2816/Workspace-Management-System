@@ -235,7 +235,6 @@ class DashboardWindow(customtkinter.CTk):
 
             self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, font=("Arial Bold", 12), state="disabled")
             self.description_label.pack(anchor="n", padx=(5, 0), pady=(5, 0))
-
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
         # self.cal.pack(fill="both", expand=True)
         self.window_count = 1

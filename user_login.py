@@ -33,18 +33,17 @@ class Login(customtkinter.CTk):
         CTkLabel(master=self.main_frame, text="Welcome Back!", text_color="#601E88", anchor="w", justify="left", font=("Arial", 24, "bold")).pack(anchor="w", pady=(40, 5), padx=(25, 0))
         CTkLabel(master=self.main_frame, text="Sign in to your account", text_color="#7E7E7E", anchor="w", justify="left", font=("Arial", 14, "bold")).pack(anchor="w", pady=(10, 5), padx=(25, 0))
 
-        self.user_entry = (CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14)))
+        self.user_entry = (CTkEntry(master=self.main_frame, placeholder_text="Username", border_color="#601e88", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14)))
         self.user_entry.pack(anchor="w", padx=(25, 25), pady=(50, 0))
-        self.u_password = (CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14), show="●"))
+        self.u_password = (CTkEntry(master=self.main_frame, placeholder_text="Password", border_color="#601e88", height=35, width=280, fg_color="#EEEEEE", font=("Arial", 14), show="●"))
         self.u_password.pack(anchor="w", padx=(25, 25), pady=(25, 0))
         self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?", text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0, command=self.toggle_password).pack(anchor="w", padx=(180, 0), pady=(5, 0))
 
         self.login = CTkButton(master=self.main_frame, text="Log In", fg_color="#601E88", hover_color="#700777", font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12, command=self.get_entries).pack(anchor="w", pady=(30, 0), padx=(70, 0))
-        self.switch = CTkButton(master=self.main_frame, text="Switch to Admin", fg_color="transparent", hover_color="#ffffff", font=("Arial", 12), text_color="#7E7E7E", command=self.switch).pack(anchor="w", padx=(100, 0), pady=(50, 0))
-
-        self.new_user = CTkButton(master=self.main_frame, text="New user", fg_color="#601E88", hover_color="#700777",
-                                  font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35, corner_radius=12,
-                                  command=self.add_details_user).pack(anchor="w", pady=(20, 0), padx=(60, 0))
+        self.new_user = CTkButton(master=self.main_frame, text="Register as New Employee?", fg_color="transparent", hover_color="#ffffff",
+                                  font=("Arial", 12, "underline"), text_color="#7E7E7E", width=200, height=35, corner_radius=12,
+                                  command=self.add_details_user).pack(anchor="w", pady=(20, 0), padx=(70, 0))
+        self.switch = CTkButton(master=self.main_frame, text="Switch to Admin?", fg_color="transparent", hover_color="#ffffff", font=("Arial", 12, "underline"), text_color="#7E7E7E", command=self.switch).pack(anchor="w", padx=(100, 0), pady=(20, 0))
 
     def add_details_user(self):
         self.destroy()
@@ -52,10 +51,12 @@ class Login(customtkinter.CTk):
         add = add_employee.AddEmployee()
         add.mainloop()
 
+    global username
+    global password
     def get_entries(self):
-        global username
+
         username = self.user_entry.get()
-        global password
+
         password = self.u_password.get()
 
         try:
@@ -116,8 +117,8 @@ class Login(customtkinter.CTk):
 
     def switch(self):
         self.destroy()
-        import admin_main
-        login_main = admin_main.Starter()
+        import admin_login
+        login_main = admin_login.Starter()
         login_main.mainloop()
 
 if __name__ == '__main__':

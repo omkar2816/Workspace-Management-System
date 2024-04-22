@@ -159,6 +159,7 @@ class DashboardWindow(customtkinter.CTk):
         plt.xlabel('employee name')
         plt.ylabel('time (in hrs)')
         plt.title('analytics')
+        # plt.subplots(facecolor="#F0F0F0")
         # plt.style.use("Solarize_light2")
 
 

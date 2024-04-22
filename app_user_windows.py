@@ -96,8 +96,8 @@ class DashboardWindow(customtkinter.CTk):
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "UPDATE salary SET working_hours = working_hours + %s WHERE username='omkar28'"
-            val = (time, )
+            sql = "UPDATE salary SET working_hours = working_hours + %s WHERE username=%s"
+            val = (time, self.username, )
 
             cursor.execute(sql, val)
             db.commit()

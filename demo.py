@@ -2,7 +2,7 @@ import tkinter as tk
 
 class TimerApp:
     def __init__(self, root):
-        self.root = root
+        # self.root = root
         self.counter = 0
         self.timer_running = False
 
@@ -22,7 +22,7 @@ class TimerApp:
         self.timer_running = False
         time = self.counter
         print(time)
-        root.destroy()
+        # root.destroy()
 
     def update_timer(self):
         if self.timer_running:
@@ -30,6 +30,9 @@ class TimerApp:
             self.timer_label.config(text=str(self.counter))
             self.root.after(1000, self.update_timer)
 
-root = tk.Tk()
-app = TimerApp(root)
-root.mainloop()
+# root = tk.Tk()
+# app = TimerApp(root)
+# root.mainloop()
+if __name__ == '__main__':
+    app = TimerApp()
+    app.mainloop()

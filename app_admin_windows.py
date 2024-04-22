@@ -242,11 +242,11 @@ class DashboardWindow(customtkinter.CTk):
             self.p_name = result[0][0]
             self.p_description = result[0][1]
 
-            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC", text_color="#491669", font=("Arial Bold", 12))
+            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC", text_color="#491669", font=("Arial Bold", 14))
             self.project_name.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
             self.project_name.insert('1.0', self.p_name)
 
-            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, text_color="#000000", font=("Arial", 12))
+            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, text_color="#000000", font=("Arial", 13))
             self.description_label.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
             self.description_label.insert('1.0', self.p_description)
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")

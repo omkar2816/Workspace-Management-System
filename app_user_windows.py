@@ -10,7 +10,7 @@ from PIL import Image
 import connection
 from tkcalendar import Calendar
 from calendar import Calendar
-
+from demo import TimerApp
 import user_login
 
 LOGO_IMG_DATA = Image.open("images/logo.png")
@@ -75,6 +75,42 @@ class DashboardWindow(customtkinter.CTk):
         self.window_count = 1
         if self.window_count == 1:
             self.dashboard()
+
+        self.counter = 0
+        self.timer_running = False
+
+        self.protocol("WM_DELETE_WINDOW", self.stop_timer)
+
+        self.start_timer()
+
+    def start_timer(self):
+        self.timer_running = True
+        self.update_timer()
+
+    def stop_timer(self):
+        global time
+        self.timer_running = False
+        time = round(float(self.counter))
+        print(time)
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "UPDATE salary SET working_hours = working_hours + %s WHERE username='omkar28'"
+            val = (time, )
+
+            cursor.execute(sql, val)
+            db.commit()
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+        self.destroy()
+
+    def update_timer(self):
+        if self.timer_running:
+            self.counter += 1
+            # self.config(text=str(self.counter))
+            self.after(1000, self.update_timer)
 
     def dashboard(self):
         if self.window_count == 1:

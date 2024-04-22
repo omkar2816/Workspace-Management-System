@@ -83,6 +83,7 @@ CREATE TABLE `project` (
   `username` varchar(45) NOT NULL,
   `total_tasks` varchar(5) NOT NULL,
   `tasks_done` varchar(5) NOT NULL,
+  `description` mediumtext,
   PRIMARY KEY (`unique_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -93,7 +94,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Library Managemnet','28/02/2025','28/02/2026','omkar28','5','2'),(2,'Workspace','31/03/2023','31/08/2023','jayes12','10','5'),(3,'Whatsapp Clone','20/05/2019','21/03/2020','chetan24','8','3');
+INSERT INTO `project` VALUES (1,'Library Managemnet','28/02/2025','28/02/2026','omkar28','5','2','This project is about the managing a library and creating  a system .'),(2,'Workspace','31/03/2023','31/08/2023','jayes12','10','5','This project is about workspace. '),(3,'Whatsapp Clone','20/05/2019','21/03/2020','chetan24','8','3','This project is about the cloning the whatsapplication.');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,4 +212,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-20 17:13:11
+-- Dump completed on 2024-04-22 18:12:57

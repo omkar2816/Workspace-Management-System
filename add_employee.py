@@ -73,6 +73,7 @@ class AddEmployee(customtkinter.CTk):
         elif profession == 'Select Job role':
             messagebox.showinfo('Null Info',"Please select your job role")
         elif not self.check_duplicate_user(username):
+
             try:
                 self.username = self.username_entry.get()
                 db = connection.Connection().get_connection()

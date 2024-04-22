@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4e78766d-d8c5-4b96-99f3-65bc1cc254a9" name="Changes" comment="workspace management system">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_user_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_user_windows.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +76,7 @@
       <recent name="C:\Users\Omkar Korgaonkar\PycharmProjects\Workspace Management System" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.app_user_windows">
+  <component name="RunManager" selected="Python.user_login">
     <configuration name="app_admin_windows" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Workspace Management System" />
       <option name="ENV_FILES" value="" />
@@ -168,8 +167,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.app_user_windows" />
         <item itemvalue="Python.user_login" />
+        <item itemvalue="Python.app_user_windows" />
         <item itemvalue="Python.app_admin_windows" />
         <item itemvalue="Python.test" />
       </list>
@@ -303,7 +302,39 @@
       <option name="project" value="LOCAL" />
       <updated>1713777476630</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1713783638771</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1713783638771</updated>
+    </task>
+    <task id="LOCAL-00016" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1713783707711</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1713783707711</updated>
+    </task>
+    <task id="LOCAL-00017" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1713783802026</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1713783802026</updated>
+    </task>
+    <task id="LOCAL-00018" summary="workspace management system">
+      <option name="closed" value="true" />
+      <created>1713783811996</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1713783811996</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -172,8 +172,9 @@ class DashboardWindow(customtkinter.CTk):
         try:
             db = connection.Connection().get_connection()
             cursor = db.cursor()
-            sql = "SELECT unique_id, project_name, total_tasks, tasks_done FROM project WHERE employee_name = 'Omkar'"
-            cursor.execute(sql)
+            sql = "SELECT unique_id, project_name, total_tasks, tasks_done FROM project WHERE username = %s"
+            val = (self.username, )
+            cursor.execute(sql, val)
             result = cursor.fetchall()
             print(result)
         except mysql.connector.Error as e:
@@ -223,18 +224,31 @@ class DashboardWindow(customtkinter.CTk):
         # self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
         #                                     corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
         # self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
-        project_names = [('Library Management System', ''), ('Workspace Management System', ''), ('Instagram Clone', ''), ('WhatsApp Clone', '')]
         self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=310, height=210, corner_radius=13)
         self.description_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
 
-        for project_name in project_names:
-            self.p_name = project_name[0]
-            self.p_description = project_name[1]
-            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC", font=("Arial Bold", 12), state="disabled")
-            self.project_name.pack(anchor="n", padx=(5, 0), pady=(5, 0))
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
 
-            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, font=("Arial Bold", 12), state="disabled")
-            self.description_label.pack(anchor="n", padx=(5, 0), pady=(5, 0))
+            sql = "SELECT project_name, description FROM project WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            result = cursor.fetchall()
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+        for project_name in result:
+            self.p_name = result[0][0]
+            self.p_description = result[0][1]
+
+            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC", text_color="#491669", font=("Arial Bold", 12))
+            self.project_name.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
+            self.project_name.insert('1.0', self.p_name)
+
+            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, text_color="#000000", font=("Arial", 12))
+            self.description_label.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
+            self.description_label.insert('1.0', self.p_description)
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
         # self.cal.pack(fill="both", expand=True)
         self.window_count = 1

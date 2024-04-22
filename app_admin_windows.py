@@ -25,12 +25,14 @@ SALARY_IMG_DATA = Image.open("images/salary_icon.png")
 SETTINGS_IMG_DATA = Image.open("images/settings_icon.png")
 LOGOUT_IMG_DATA = Image.open("images/log-out.png")
 SEARCH_IMG_DATA = Image.open("images/search-icon.png")
+USER_IMG_DATA = Image.open("images/user_icon.png")
 
 COLORS = ["#D60000", "#FF9700", "#005DFF", "#42F200", "#DAE801"]
 
 Engineer_salary = 400
 Management_salary = 500
 Administrative_salary = 300
+
 
 class DashboardWindow(customtkinter.CTk):
     def __init__(self, username, password):
@@ -48,6 +50,7 @@ class DashboardWindow(customtkinter.CTk):
         self.settings_img = CTkImage(dark_image=SETTINGS_IMG_DATA, light_image=SETTINGS_IMG_DATA)
         self.logout_img = CTkImage(dark_image=LOGOUT_IMG_DATA, light_image=LOGOUT_IMG_DATA)
         self.search_img = CTkImage(dark_image=SEARCH_IMG_DATA, light_image=SEARCH_IMG_DATA)
+        self.user_img = CTkImage(dark_image=USER_IMG_DATA, light_image=USER_IMG_DATA)
 
         # Frame creation
         self.side_frame = CTkFrame(master=self, fg_color="#601e88", width=176, height=650, corner_radius=0)
@@ -114,14 +117,25 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
 
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT employee_name FROM employee_details WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            result = cursor.fetchall()
+            username = result[0][0]
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured:{e}")
+
+        self.profile_button = CTkButton(master=self.main_frame, image=self.user_img, text=f"{username}",
+                                        text_color="#000000", fg_color="transparent", width=200, height=35,
+                                        font=("Arial Bold", 16), hover_color="#ffffff", compound="left")
+        self.profile_button.pack(anchor="n", ipady=5, padx=(600, 0), pady=(15, 0))
+
         # self.user_button = CTkButton(master=self.main_frame, text="username", fg_color="transparent", font=("Arial Bold", 14), hover_color="#ffffff", anchor="ne")
-        self.check_frame = CTkFrame(master=self.main_frame, fg_color="#ffffff", width=200, height=30, corner_radius=0)
-        self.check_frame.pack(anchor="nw", padx=10, pady=(10, 0))
-        self.radio_var = IntVar(value=0)
-        self.check_in = CTkRadioButton(master=self.check_frame, text="Check In", font=("Arial Bold", 14), value=1, variable=self.radio_var, command=self.stop_timer)
-        self.check_in.pack(anchor="n", side="left", padx=27, pady=(20, 0))
-        self.check_out = CTkRadioButton(master=self.check_frame, text="Check Out", font=("Arial Bold", 14), value=2, variable=self.radio_var, command=self.stop_timer)
-        self.check_out.pack(anchor="n", side="right", padx=27, pady=(20, 0))
 
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor="center", padx=27, pady=(20, 0))
@@ -324,9 +338,14 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack(side="left")
 
         self.s_pass = IntVar(value=0)
+
+        self.label = CTkLabel(master=self.main_frame, text="Creating New Profile....", fg_color="transparent",
+                              text_color="#601e88", font=("Arial Bold", 25))
+        self.label.pack(anchor="nw", padx=(25, 25), pady=(40, 0))
+
         self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35, width=330,
                                    fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.name_entry.pack(anchor="n", padx=(25, 25), pady=(80, 0))
+        self.name_entry.pack(anchor="n", padx=(25, 25), pady=(40, 0))
         self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color="#601e88",
                                             button_color="#601e88", dropdown_fg_color="#601e88",
                                             dropdown_text_color="#ffffff", dropdown_hover_color="#491669",
@@ -353,7 +372,7 @@ class DashboardWindow(customtkinter.CTk):
         self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?",
                                          text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
                                          command=self.toggle_password).pack(anchor="n", padx=(200, 0), pady=(5, 0))
-        self.add_button = CTkButton(master=self.main_frame, text="Add Employee", height=35, fg_color="#601e88",
+        self.add_button = CTkButton(master=self.main_frame, text="Create Profile", height=35, fg_color="#601e88",
                                     hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
                                     command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
@@ -561,9 +580,12 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack(side="left")
 
         self.s_pass = IntVar(value=0)
+        self.label = CTkLabel(master=self.main_frame, text="Creating New Project....", fg_color="transparent", text_color="#601e88", font=("Arial Bold", 25))
+        self.label.pack(anchor="nw", padx=(25, 25), pady=(40, 0))
+
         self.project_name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Project", height=35, width=330,
                                    fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.project_name_entry.pack(anchor="n", padx=(25, 25), pady=(120, 0))
+        self.project_name_entry.pack(anchor="n", padx=(25, 25), pady=(60, 0))
         self.start_date_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Start Date of project i.e. dd/mm/yyyy", height=35, width=330,
                                    fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
         self.start_date_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
@@ -572,6 +594,9 @@ class DashboardWindow(customtkinter.CTk):
                                    fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
         self.due_date_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
+        self.number_of_participants = CTkEntry(master=self.main_frame, placeholder_text="Enter Number of Participants", height=35, width=330,
+                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        self.number_of_participants.pack(anchor="n", padx=(25, 25), pady=(25, 0))
         self.assign_task_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee to assign this project", height=35, width=330,
                                            fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
         self.assign_task_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
@@ -583,6 +608,12 @@ class DashboardWindow(customtkinter.CTk):
         self.create_project_button = CTkButton(master=self.main_frame, text="Create Project", height=35, fg_color="#601e88",
                                     hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
                                     command=self.get_entries_project).pack(anchor="n", padx=(25, 25), pady=(25, 0))
+
+        self.assign_project_button = CTkButton(master=self.main_frame, text="Assign existing Project", height=35,
+                                               fg_color="transparent",
+                                               hover_color="#ffffff", text_color="#7E7E7E", font=("Arial", 13, "underline"),
+                                               command=self.assign_project).pack(anchor="n", padx=(25, 25),
+                                                                                      pady=(20, 0))
 
     def get_entries_project(self):
         project_name = self.project_name_entry.get()
@@ -676,6 +707,65 @@ class DashboardWindow(customtkinter.CTk):
         self.table.edit_row(0, text_color="#fff", hover_color="#491669")
         self.table.edit_column(1, width=200)
         self.table.pack(expand=True)
+
+        self.window_count = 3
+
+    def assign_project(self):
+        self.main_frame.destroy()
+
+        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+        self.main_frame.pack_propagate(0)
+        self.main_frame.pack(side="left", fill="y")
+
+        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
+
+        self.label = CTkLabel(master=title_frame, text="Project Details", font=("Arial Black", 23),
+                              text_color="#601e88")
+        self.label.pack(anchor="nw", side="left", pady=(8, 0))
+
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT * FROM project"
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            for result in results:
+                print(result)
+        except mysql.connector.Error as e:
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+            print(e)
+
+        self.table_data = [
+            [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead", "Number\nof Tasks",
+              "Completed\nTasks")]
+        ]
+
+        self.table_data.append(results)
+        self.table_data = list(itertools.chain(*self.table_data))
+
+        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+        self.table_frame.pack(expand=True, fill="both", padx=27, pady=(21, 0))
+        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                              header_color="#601e88",
+                              hover_color="#DCDCDC")
+        self.table.edit_row(0, font=("Arial Bold", 14))
+        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+        self.table.edit_column(1, width=200)
+        self.table.pack(expand=True)
+
+        entry_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+        entry_frame.pack(anchor="n", fill="x", padx=27, pady=(10, 0))
+
+        self.employee_id_entry = CTkEntry(master=entry_frame, placeholder_text="Enter Employee_ID", width=290, height=35, border_color="#601e88", font=("Arial Bold", 14))
+        self.employee_id_entry.pack(anchor="nw", side="left", padx=(55, 25), pady=(10, 0))
+
+        self.project_id_entry = CTkEntry(master=entry_frame, placeholder_text="Enter Project_ID", width=290, height=35, border_color="#601e88", font=("Arial Bold", 14))
+        self.project_id_entry.pack(anchor="nw", side="right", padx=(25, 55), pady=(10, 0))
+
+        self.assign_button = CTkButton(master=self.main_frame, text="Assign Project", height=35, fg_color="#601e88", hover_color="#491669", font=("Arial Bold", 14))
+        self.assign_button.pack(anchor="center", padx=(25, 25), pady=10)
 
         self.window_count = 3
 

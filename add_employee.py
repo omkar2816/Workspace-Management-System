@@ -1,10 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
-
 import customtkinter
 import mysql.connector
 from customtkinter import *
-
 import connection
 
 
@@ -12,7 +10,7 @@ class AddEmployee(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.title("Add new Employee")
-        set_appearance_mode("system")
+        set_appearance_mode("Light")
         self.geometry("500x550+600+200")
         self.s_pass = IntVar(value=0)
         self.name_entry = CTkEntry(master=self, placeholder_text="Enter name of Employee", height=35, width=330,
@@ -58,13 +56,13 @@ class AddEmployee(customtkinter.CTk):
         global username
         employee_name = self.name_entry.get()
         profession = self.profession_entry.get()
-        date_of_joining = self.date_of_joining_entry.get()
+        # date_of_joining = self.date_of_joining_entry.get()
         contact = self.contact_entry.get()
         emergency_contact = self.emergency_contact_entry.get()
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        if employee_name == '' or profession == '' or date_of_joining == '' or contact == '' or username == '' or password == '':
+        if employee_name == '' or profession == ''  or contact == '' or username == '' or password == '':
             messagebox.showinfo("Null Info", "All fields are required to create profile")
         elif contact.isdigit() is not True or emergency_contact.isdigit() is not True:
             messagebox.showinfo("Invalid", "Contact number should contain only digits")
@@ -88,7 +86,7 @@ class AddEmployee(customtkinter.CTk):
                 cursor.execute(sql, val)
                 cursor.execute(sql_1, val_1)
                 db.commit()
-                app.destroy()
+                self.destroy()
                 messagebox.showinfo("Successful", "Your request is been send")
             except mysql.connector.Error as e:
                 messagebox.showerror("Database Error", f"Error occurred: {e}")

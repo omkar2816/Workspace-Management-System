@@ -372,7 +372,7 @@ class DashboardWindow(customtkinter.CTk):
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "SELECT unique_id, project_name, start_date, due_date, employee_name FROM project"
+            sql = "SELECT unique_id, project_name, start_date, due_date, username FROM project"
             cursor.execute(sql)
             results = cursor.fetchall()
             for result in results:

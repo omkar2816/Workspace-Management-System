@@ -26,6 +26,8 @@ SETTINGS_IMG_DATA = Image.open("images/settings_icon.png")
 LOGOUT_IMG_DATA = Image.open("images/log-out.png")
 SEARCH_IMG_DATA = Image.open("images/search-icon.png")
 USER_IMG_DATA = Image.open("images/user_icon.png")
+OPEN_IMG_DATA = Image.open("images/open.png")
+LOGOUT_IMG2_DATA = Image.open("images/logout_set.png")
 
 COLORS = ["#D60000", "#FF9700", "#005DFF", "#42F200", "#DAE801"]
 
@@ -51,6 +53,8 @@ class DashboardWindow(customtkinter.CTk):
         self.logout_img = CTkImage(dark_image=LOGOUT_IMG_DATA, light_image=LOGOUT_IMG_DATA)
         self.search_img = CTkImage(dark_image=SEARCH_IMG_DATA, light_image=SEARCH_IMG_DATA)
         self.user_img = CTkImage(dark_image=USER_IMG_DATA, light_image=USER_IMG_DATA)
+        self.open_img = CTkImage(dark_image=OPEN_IMG_DATA, light_image=OPEN_IMG_DATA)
+        self.logout_img2 = CTkImage(dark_image=LOGOUT_IMG2_DATA, light_image=LOGOUT_IMG2_DATA)
 
         # Frame creation
         self.side_frame = CTkFrame(master=self, fg_color="#601e88", width=176, height=650, corner_radius=0)
@@ -924,14 +928,129 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.destroy()
         elif self.window_count == 5:
             pass
-        elif self.window_count == self.window_count:
-            pass
+        # else:
+        self.main_frame.destroy()
 
-        if self.window_count == self.window_count:
-            pass
+        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+        self.main_frame.pack_propagate(0)
+        self.main_frame.pack(side="left")
+
+        self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img,
+                                             text="     Edit Profile                                                                                             ",
+                                             width=620, height=60, fg_color="#601e88", font=("Rockwell", 22),
+                                             hover_color="#491669", anchor="w", compound="right",
+                                             command=self.update_profile).pack(anchor="center", fill="x", padx=30,
+                                                                               ipadx=10, ipady=10, pady=(70, 0))
+        self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
+                                      text="     Set appearance mode                                                                         ",
+                                      height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669",
+                                      anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10,
+                                                                         ipady=10, pady=(25, 0))
+        self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2,
+                                       text="     Log out                                                                                                    ",
+                                       height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669",
+                                       anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10,
+                                                                          ipady=10, pady=(25, 0))
 
         self.window_count = 5
-        pass
+
+    def save_changes(self):
+        e_id = self.employee_id.get()
+        e_name = self.employee_name.get()
+        e_doj = self.date_of_joining.get()
+        e_contact = self.contact_no.get()
+        e_emer_conatct = self.emergency_contact.get()
+        e_username = self.username_entry.get()
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s, username = %s WHERE username=%s"
+            val = (e_id, e_name, e_doj, e_contact, e_emer_conatct, e_username, self.username)
+            cursor.execute(sql, val)
+            db.commit()
+            messagebox.showinfo("Successful", "Data has been updated successfully")
+            self.main_frame.destroy()
+            self.settings()
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured:{e}")
+
+    def update_profile(self):
+        self.main_frame.destroy()
+
+        self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+        self.main_frame.pack_propagate(0)
+        self.main_frame.pack(side="left")
+
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT employee_id, employee_name, date_of_joining, contact_no, emergency_contact_no, username FROM employee_details WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            results = cursor.fetchall()
+            print(results)
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+
+        global id, name, doj, contact, e_contact, username
+        for result in results:
+            id = result[0]
+            name = result[1]
+            doj = result[2]
+            contact = result[3]
+            e_contact = result[4]
+            username = result[5]
+
+        self.id_label = CTkLabel(master=self.main_frame, text="Employee ID:", width=350, font=("Arial Bold", 14), text_color="#601e88")
+        self.id_label.pack(anchor="nw", padx=(100, 25), pady=(60, 0))
+        self.employee_id = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        self.employee_id.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        self.employee_id.insert(0, id)
+
+        self.name_label = CTkLabel(master=self.main_frame, text="Name:", width=350, font=("Arial Bold", 14), text_color="#601e88")
+        self.name_label.pack(anchor="nw", padx=(77, 25), pady=(10, 0))
+        self.employee_name = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        self.employee_name.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        self.employee_name.insert(0, name)
+
+        self.doj_label = CTkLabel(master=self.main_frame, text="Date of Joining:", width=350, font=("Arial Bold", 14),
+                                   text_color="#601e88")
+        self.doj_label.pack(anchor="nw", padx=(107, 25), pady=(10, 0))
+        self.date_of_joining = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        self.date_of_joining.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        self.date_of_joining.insert(0, doj)
+
+        self.contact_label = CTkLabel(master=self.main_frame, text="Contact No.:", width=350, font=("Arial Bold", 14),
+                                   text_color="#601e88")
+        self.contact_label.pack(anchor="nw", padx=(97, 25), pady=(10, 0))
+        self.contact_no = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        self.contact_no.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        self.contact_no.insert(0, contact)
+
+        self.e_contact_label = CTkLabel(master=self.main_frame, text="Emergency Contact No.:", width=350, font=("Arial Bold", 14),
+                                   text_color="#601e88")
+        self.e_contact_label.pack(anchor="nw", padx=(140, 25), pady=(10, 0))
+        self.emergency_contact = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        self.emergency_contact.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        self.emergency_contact.insert(0, e_contact)
+
+        self.username_label = CTkLabel(master=self.main_frame, text="Username:", width=350, font=("Arial Bold", 14),
+                                   text_color="#601e88")
+        self.username_label.pack(anchor="nw", padx=(93, 25), pady=(10, 0))
+        self.username_entry = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        self.username_entry.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        self.username_entry.insert(0, username)
+        # self.password = CTkEntry(master=self.main_frame)
+        # self.password.pack()
+        # self.show_password = CTkCheckBox(master=self.main_frame)
+        # self.show_password.pack()
+
+        self.save_changes = CTkButton(master=self.main_frame, height=40, width=150, fg_color="#601e88", hover_color="#491669", text="Save Changes", font=("Arial Bold", 14), command=self.save_changes)
+        self.save_changes.pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
     def toggle_password(self):
         if self.s_pass.get() == 1:

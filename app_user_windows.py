@@ -11,7 +11,6 @@ import connection
 from tkcalendar import Calendar
 from calendar import Calendar
 from demo import TimerApp
-import user_login
 
 LOGO_IMG_DATA = Image.open("images/logo.png")
 DASHBOARD_IMG_DATA = Image.open("images/dashboard_icon.png")
@@ -70,7 +69,7 @@ class DashboardWindow(customtkinter.CTk):
         self.settings_button = CTkButton(master=self.side_frame, image=self.settings_img, text="Settings", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.settings)
         self.settings_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
-        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w")
+        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.logout_listner)
         self.logout_button.pack(anchor="center", ipady=5, pady=(160, 0))
 
         self.window_count = 1
@@ -151,44 +150,93 @@ class DashboardWindow(customtkinter.CTk):
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor="center", padx=27, pady=(15, 0))
 
-        self.task_number = 5
-        self.complete_task = 10
-        self.current = float(self.task_number / self.complete_task)
-        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=200, corner_radius=13)
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+            sql = "SELECT unique_id, project_name, total_tasks, tasks_done FROM project WHERE username = %s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            result = cursor.fetchall()
+            print(result)
+        except mysql.connector.Error as e:
+            print(e)
+
+        self.task_number = int(result[0][2])
+        self.complete_task = int(result[0][3])
+        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=210, corner_radius=13)
         self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
+        self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=310, height=210,
+                                                    corner_radius=13)
+        self.description_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
+
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT working_task , total_task,project_id FROM project_details WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            data_fetch = cursor.fetchall()
+            print(data_fetch)
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+
         self.progress_bar_width = 310
-        self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
-        self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
-        self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
-        self.progress_bar1.set(self.current)
+        index = 0
+        task_index = 0
+        prjt = 0
+        for i in range(len(data_fetch)):
+            self.task_number = data_fetch[index][task_index]
+            self.complete_task = data_fetch[index][task_index+1]
+            self.project = data_fetch[index][prjt+2]
 
-        self.label2 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar2 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[1], border_color="#491669", border_width=2)
-        self.progress_bar2.pack(anchor="n", padx=10, pady=(5, 0))
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
 
-        self.label3 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar3 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[4], border_color="#491669", border_width=2)
-        self.progress_bar3.pack(anchor="n", padx=10, pady=(5, 0))
+                sql = "SELECT project_name FROM project WHERE unique_id=%s"
+                val = (self.project,)
+                cursor.execute(sql, val)
+                project_name = cursor.fetchall()
+                print(project_name)
+                sql2 = "SELECT project_name, description FROM project WHERE unique_id=%s"
+                # val2 = (self.username,)
+                cursor.execute(sql2, val)
+                result = cursor.fetchall()
+                print(result)
+            except mysql.connector.Error as e:
+                print(e)
+            index += 1
+            progress = self.task_number/self.complete_task
+            print(i,progress)
 
-        self.label4 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar4 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[2], border_color="#491669", border_width=2)
-        self.progress_bar4.pack(anchor="n", padx=10, pady=(5, 0))
+            self.name_frame = CTkFrame(master=self.task_progress_frame, width=50, fg_color="transparent")
+            self.name_frame.pack(anchor="n", fill="x", pady=(10, 0))
+            self.label2 = (CTkLabel(master=self.name_frame, text=f"{project_name[0][0]}",
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", side="left", padx=(25, 25), pady=(5, 0)))
+            self.label1 = (CTkLabel(master=self.name_frame, text=f"{self.task_number}/{self.complete_task}",
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", side="right", padx=(25, 25), pady=(5, 0)))
+            self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
+                                                width=self.progress_bar_width, height=20, corner_radius=8,
+                                                progress_color=COLORS[0], border_color="#491669", border_width=2)
+            self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
 
-        self.label5 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(
-            anchor="ne", padx=(0, 25), pady=(35, 0))
-        self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
-                                            corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
-        self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
+            self.progress_bar1.set(progress)
 
-        self.calendar_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=330, height=230, corner_radius=13)
-        self.calendar_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
+            self.p_name = result[0][0]
+            self.p_description = result[0][1]
+
+            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC",
+                                           text_color="#491669", font=("Arial Bold", 14))
+            self.project_name.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
+            self.project_name.insert('1.0', self.p_name)
+
+            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100,
+                                                text_color="#000000", font=("Arial", 13))
+            self.description_label.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
+            self.description_label.insert('1.0', self.p_description)
 
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
         # self.cal.pack(fill="both", expand=True)
@@ -586,7 +634,7 @@ class DashboardWindow(customtkinter.CTk):
 
             self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Edit Profile                                                                                             ", width=620, height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right", command=self.update_profile).pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(70, 0))
             self.theme_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Set appearance mode                                                                         ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
-            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2, text="     Log out                                                                                                    ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
+            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2, text="     Log out                                                                                                    ", height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669", anchor="w", compound="right", command=self.logout_listner).pack(anchor="center", fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
 
             self.window_count = 5
 
@@ -597,68 +645,103 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
 
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT employee_id, employee_name, date_of_joining, contact_no, emergency_contact_no, username FROM employee_details WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            results = cursor.fetchall()
+            print(results)
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+
+        global id, name, doj, contact, e_contact, username
+        for result in results:
+            id = result[0]
+            name = result[1]
+            doj = result[2]
+            contact = result[3]
+            e_contact = result[4]
+            username = result[5]
+
         self.id_label = CTkLabel(master=self.main_frame, text="Employee ID:", width=350, font=("Arial Bold", 14), text_color="#601e88")
         self.id_label.pack(anchor="nw", padx=(100, 25), pady=(60, 0))
         self.employee_id = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
         self.employee_id.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.employee_id.insert(0, 'E5014')
+        self.employee_id.insert(0, id)
 
         self.name_label = CTkLabel(master=self.main_frame, text="Name:", width=350, font=("Arial Bold", 14), text_color="#601e88")
         self.name_label.pack(anchor="nw", padx=(77, 25), pady=(10, 0))
         self.employee_name = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
         self.employee_name.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.employee_name.insert(0, 'Omkar Sahadev Korgaonkar')
+        self.employee_name.insert(0, name)
 
         self.doj_label = CTkLabel(master=self.main_frame, text="Date of Joining:", width=350, font=("Arial Bold", 14),
                                    text_color="#601e88")
         self.doj_label.pack(anchor="nw", padx=(107, 25), pady=(10, 0))
         self.date_of_joining = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
         self.date_of_joining.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.date_of_joining.insert(0, '1/05/2020')
+        self.date_of_joining.insert(0, doj)
 
         self.contact_label = CTkLabel(master=self.main_frame, text="Contact No.:", width=350, font=("Arial Bold", 14),
                                    text_color="#601e88")
         self.contact_label.pack(anchor="nw", padx=(97, 25), pady=(10, 0))
         self.contact_no = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
         self.contact_no.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.contact_no.insert(0, 9136898004)
+        self.contact_no.insert(0, contact)
 
         self.e_contact_label = CTkLabel(master=self.main_frame, text="Emergency Contact No.:", width=350, font=("Arial Bold", 14),
                                    text_color="#601e88")
         self.e_contact_label.pack(anchor="nw", padx=(140, 25), pady=(10, 0))
         self.emergency_contact = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
         self.emergency_contact.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.emergency_contact.insert(0, 8169570160)
+        self.emergency_contact.insert(0, e_contact)
 
         self.username_label = CTkLabel(master=self.main_frame, text="Username:", width=350, font=("Arial Bold", 14),
                                    text_color="#601e88")
         self.username_label.pack(anchor="nw", padx=(93, 25), pady=(10, 0))
         self.username = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
         self.username.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.username.insert(0, 'omkar28')
+        self.username.insert(0, username)
         # self.password = CTkEntry(master=self.main_frame)
         # self.password.pack()
         # self.show_password = CTkCheckBox(master=self.main_frame)
         # self.show_password.pack()
 
-        self.save_changes = CTkButton(master=self.main_frame, height=40, width=150, fg_color="#601e88", hover_color="#491669", text="Save Changes", font=("Arial Bold", 14), command=self.save_cahnegs)
+        self.save_changes = CTkButton(master=self.main_frame, height=40, width=150, fg_color="#601e88", hover_color="#491669", text="Save Changes", font=("Arial Bold", 14), command=self.save_changes)
         self.save_changes.pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
-    def save_cahnegs(self):
+    def save_changes(self):
+        e_id = self.employee_id.get()
+        e_name = self.employee_name.get()
+        e_doj = self.date_of_joining.get()
+        e_contact = self.contact_no.get()
+        e_emer_contact = self.emergency_contact.get()
+        e_username = self.username_entry.get()
         try:
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "UPDATE table_name SET column1 = value1, column2 = value2 WHERE employee_id = 'E5014'"
-            val = ()
+            sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s, username = %s WHERE username=%s"
+            val = (e_id, e_name, e_doj, e_contact, e_emer_contact, e_username, self.username)
             cursor.execute(sql, val)
-            result = cursor.fetchall()
-            print(result)
+            db.commit()
+            messagebox.showinfo("Successful", "Data has been updated successfully")
+            self.main_frame.destroy()
+            self.settings()
         except mysql.connector.Error as e:
             print(e)
             messagebox.showerror("Database Error", f"Error Occured:{e}")
 
+    def logout_listner(self):
+        self.destroy()
+        import user_login
+        login = user_login.Login()
+        login.mainloop()
 
-if __name__ == '__main__':
-    app = DashboardWindow()
-    app.mainloop()
+# if __name__ == '__main__':
+#     app = DashboardWindow()
+#     app.mainloop()

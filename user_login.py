@@ -6,8 +6,8 @@ from PIL import Image
 from customtkinter import *
 
 import connection
-from app_admin_windows import DashboardWindow
-# from app_user_windows import DashboardWindow
+# from app_admin_windows import DashboardWindow
+from app_user_windows import DashboardWindow
 
 SIDE_IMG_DATA = Image.open("images/side-img.png")
 USER_SIDE_IMAGE_DATA = Image.open("images/side-image.jpg")

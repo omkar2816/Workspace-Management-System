@@ -121,6 +121,6 @@ class Login(customtkinter.CTk):
         login_main = admin_login.Starter()
         login_main.mainloop()
 
-if __name__ == '__main__':
-    app = Login()
-    app.mainloop()
+# if __name__ == '__main__':
+#     app = Login()
+#     app.mainloop()

@@ -29,11 +29,12 @@ COLORS = ["#D60000", "#FF9700", "#005DFF", "#42F200", "#DAE801"]
 
 
 class DashboardWindow(customtkinter.CTk):
-    def __init__(self):
+    def __init__(self, username, password):
         super().__init__()
         self.title("Dashboard")
         set_appearance_mode("system")
         self.geometry("956x645+350+100")
+        self.username = username
         # Images
         self.logo_img = CTkImage(dark_image=LOGO_IMG_DATA, light_image=LOGO_IMG_DATA, size=(77.68, 85.42))
         self.dashboard_img = CTkImage(dark_image=DASHBOARD_IMG_DATA, light_image=DASHBOARD_IMG_DATA)
@@ -130,21 +131,21 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
 
-        # try:
-        #     db = connection.Connection().get_connection()
-        #     cursor = db.cursor()
-        #
-        #     sql = "SELECT employee_name FROM employee_details WHERE username=%s"
-        #     val = (user_login.Login.username, )
-        #     cursor.execute(sql, val)
-        #     result = cursor.fetchall()
-        #     print(result)
-        # except mysql.connector.Error as e:
-        #     print(e)
-        #     messagebox.showerror("Database Error", f"Error Occured:{e}")
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT employee_name FROM employee_details WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            result = cursor.fetchall()
+            username = result[0][0]
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured:{e}")
 
         # self.user_button = CTkButton(master=self.main_frame, text="username", fg_color="transparent", font=("Arial Bold", 14), hover_color="#ffffff", anchor="ne")
-        self.profile_button = CTkButton(master=self.main_frame, image=self.user_img, text="Username", text_color="#000000", fg_color="transparent", width=200, height=35, font=("Arial Bold", 16), hover_color="#ffffff", compound="left")
+        self.profile_button = CTkButton(master=self.main_frame, image=self.user_img, text=f"{username}", text_color="#000000", fg_color="transparent", width=200, height=35, font=("Arial Bold", 16), hover_color="#ffffff", compound="left")
         self.profile_button.pack(anchor="n", ipady=5, padx=(600, 0), pady=(15, 0))
 
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)

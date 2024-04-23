@@ -185,14 +185,29 @@ class DashboardWindow(customtkinter.CTk):
         except mysql.connector.Error as e:
             print(e)
 
-        number_of_task = 1
         self.task_number = int(result[0][2])
         self.complete_task = int(result[0][3])
         self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=210, corner_radius=13)
         self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT project FROM employee_details WHERE username=%s"
+            val = (self.username, )
+            cursor.execute(sql, val)
+            results = cursor.fetchall()
+            data_fetched = results[0][0]
+            import ast
+            data_fetch = ast.literal_eval(data_fetched)
+            print(data_fetch[0])
+        except mysql.connector.Error as e:
+            print(e)
+            messagebox.showerror("Database Error", f"Error Occured: {e}")
+
         self.progress_bar_width = 310
-        for i in range(1):
+        for i in range(len(data_fetch)):
             self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
                                     width=30, fg_color="#F0F0F0").pack(anchor="ne", padx=(0, 25), pady=(5, 0)))
             self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",

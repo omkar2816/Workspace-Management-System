@@ -54,6 +54,7 @@ CREATE TABLE `employee_details` (
   `contact_no` varchar(10) NOT NULL,
   `emergency_contact_no` varchar(10) NOT NULL,
   `username` varchar(10) DEFAULT NULL,
+  `project` tinytext,
   PRIMARY KEY (`employee_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -64,7 +65,7 @@ CREATE TABLE `employee_details` (
 
 LOCK TABLES `employee_details` WRITE;
 /*!40000 ALTER TABLE `employee_details` DISABLE KEYS */;
-INSERT INTO `employee_details` VALUES (1,'Omkar','Engineer','28/02/2005','9136898004','8169570160','asdf123'),(2,'Jayesh','Administrator','29/05/2004','1234567891','9874561231','jayesh24'),(3,'Chetan','Engineer','30/06/2005','5467891231','5467895461','chetan12'),(4,'jayhesh','Engineer','12/01/2012','1234567894','4561237984','omkar28'),(5,'asdfg','Administrator','28/02/2004','1234567891','1234567891','omkar456'),(6,'Pushkar','Engineer','17/05/2004','6547891234','4569871231','pushkar234'),(7,'Omkar','Administrator','28/02/2005','4567894564','3213214564','pushkar54'),(10,'Pushkar','Management','28/02/2005','9136898004','8169570160','radsa'),(13,'chetan','Engenieer','2024-4-20','4512785623','1245785623','chetan45'),(28,'harsh','Management','2024-04-20','1234567891','8794561230','harsh123'),(29,'roshan','Administrator','2024-04-20','3124568975','6548791234','roshan123');
+INSERT INTO `employee_details` VALUES (1,'Omkar','Engineer','28/02/2005','9136898004','8169570160','asdf123',NULL),(2,'Jayesh','Administrator','29/05/2004','1234567891','9874561231','jayesh24',NULL),(3,'Chetan','Engineer','30/06/2005','5467891231','5467895461','chetan12',NULL),(4,'jayhesh','Engineer','12/01/2012','1234567894','4561237984','omkar28','[1,2]'),(5,'asdfg','Administrator','28/02/2004','1234567891','1234567891','omkar456',NULL),(6,'Pushkar','Engineer','17/05/2004','6547891234','4569871231','pushkar234',NULL),(7,'Omkar','Administrator','28/02/2005','4567894564','3213214564','pushkar54',NULL),(10,'Pushkar','Management','28/02/2005','9136898004','8169570160','radsa',NULL),(13,'chetan','Engenieer','2024-4-20','4512785623','1245785623','chetan45',NULL),(28,'harsh','Management','2024-04-20','1234567891','8794561230','harsh123',NULL),(29,'roshan','Administrator','2024-04-20','3124568975','6548791234','roshan123',NULL);
 /*!40000 ALTER TABLE `employee_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,6 +97,32 @@ LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
 INSERT INTO `project` VALUES (1,'Library Managemnet','28/02/2025','28/02/2026','omkar28','5','2','This project is about the managing a library and creating  a system .'),(2,'Workspace','31/03/2023','31/08/2023','jayes12','10','5','This project is about workspace. '),(3,'Whatsapp Clone','20/05/2019','21/03/2020','chetan24','8','3','This project is about the cloning the whatsapplication.');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `project_details`
+--
+
+DROP TABLE IF EXISTS `project_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `project_details` (
+  `project_id` int DEFAULT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `total_task` int DEFAULT NULL,
+  `working_task` int DEFAULT NULL,
+  `color` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `project_details`
+--
+
+LOCK TABLES `project_details` WRITE;
+/*!40000 ALTER TABLE `project_details` DISABLE KEYS */;
+INSERT INTO `project_details` VALUES (1,'omkar28',10,2,'red'),(2,'omkar28',20,13,'blue'),(1,'chetan45',15,6,'yellow');
+/*!40000 ALTER TABLE `project_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -212,4 +239,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-22 18:12:57
+-- Dump completed on 2024-04-23 18:50:09

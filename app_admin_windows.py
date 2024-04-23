@@ -40,7 +40,7 @@ class DashboardWindow(customtkinter.CTk):
     def __init__(self, username, password):
         super().__init__()
         self.title("Dashboard")
-        # set_appearance_mode("system")
+        set_appearance_mode("Light")
         self.geometry("956x645+350+100")
         self.username = username
         # Images
@@ -144,7 +144,7 @@ class DashboardWindow(customtkinter.CTk):
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor="center", padx=27, pady=(20, 0))
 
-        global df
+        global df, data_fetch
         # create a connection to the database
         try:
             db = connection.Connection().get_connection()
@@ -194,27 +194,49 @@ class DashboardWindow(customtkinter.CTk):
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "SELECT project FROM employee_details WHERE username=%s"
+            sql = "SELECT working_task , total_task,project_id FROM project_details WHERE username=%s"
             val = (self.username, )
             cursor.execute(sql, val)
-            results = cursor.fetchall()
-            data_fetched = results[0][0]
-            import ast
-            data_fetch = ast.literal_eval(data_fetched)
-            print(data_fetch[0])
+            data_fetch = cursor.fetchall()
+            print(data_fetch)
         except mysql.connector.Error as e:
             print(e)
             messagebox.showerror("Database Error", f"Error Occured: {e}")
 
         self.progress_bar_width = 310
+        index = 0
+        task_index = 0
+        prjt = 0
         for i in range(len(data_fetch)):
+            self.task_number = data_fetch[index][task_index]
+            self.complete_task = data_fetch[index][task_index+1]
+            self.project = data_fetch[index][prjt+2]
+
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
+
+                sql = "SELECT project_name FROM project WHERE unique_id=%s"
+                val = (self.project,)
+                cursor.execute(sql, val)
+                project_name = cursor.fetchall()
+                print(project_name)
+
+            except mysql.connector.Error as e:
+                print(e)
+            index += 1
+            progress = self.task_number/self.complete_task
+            print(i,progress)
+
+            self.label2 = (CTkLabel(master=self.task_progress_frame, text=f"{project_name[0][0]}",
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
             self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
-                                    width=30, fg_color="#F0F0F0").pack(anchor="ne", padx=(0, 25), pady=(5, 0)))
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
             self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
                                                 width=self.progress_bar_width, height=20, corner_radius=8,
                                                 progress_color=COLORS[0], border_color="#491669", border_width=2)
             self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
-            self.progress_bar1.set(self.task_number/10)
+            self.progress_bar1.set(progress)
 
         # self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
         # self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)

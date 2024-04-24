@@ -1010,13 +1010,13 @@ class DashboardWindow(customtkinter.CTk):
         e_doj = self.date_of_joining.get()
         e_contact = self.contact_no.get()
         e_emer_conatct = self.emergency_contact.get()
-        e_username = self.username_entry.get()
+        # e_username = self.username_entry.get()
         try:
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s, username = %s WHERE username=%s"
-            val = (e_id, e_name, e_doj, e_contact, e_emer_conatct, e_username, self.username)
+            sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s WHERE username=%s"
+            val = (e_id, e_name, e_doj, e_contact, e_emer_conatct, self.username)
             cursor.execute(sql, val)
             db.commit()
             messagebox.showinfo("Successful", "Data has been updated successfully")
@@ -1088,12 +1088,12 @@ class DashboardWindow(customtkinter.CTk):
         self.emergency_contact.pack(anchor="n", padx=(25, 25), pady=(5, 0))
         self.emergency_contact.insert(0, e_contact)
 
-        self.username_label = CTkLabel(master=self.main_frame, text="Username:", width=350, font=("Arial Bold", 14),
-                                   text_color="#601e88")
-        self.username_label.pack(anchor="nw", padx=(93, 25), pady=(10, 0))
-        self.username_entry = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
-        self.username_entry.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.username_entry.insert(0, username)
+        # self.username_label = CTkLabel(master=self.main_frame, text="Username:", width=350, font=("Arial Bold", 14),
+        #                            text_color="#601e88")
+        # self.username_label.pack(anchor="nw", padx=(93, 25), pady=(10, 0))
+        # self.username_entry = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        # self.username_entry.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        # self.username_entry.insert(0, username)
         # self.password = CTkEntry(master=self.main_frame)
         # self.password.pack()
         # self.show_password = CTkCheckBox(master=self.main_frame)

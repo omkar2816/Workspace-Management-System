@@ -69,6 +69,7 @@ class DashboardWindow(customtkinter.CTk):
         self.employee_button = CTkButton(master=self.side_frame, image=self.employee_img, text="Employees", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.employees)
         self.employee_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
+
         self.project_button = CTkButton(master=self.side_frame, image=self.project_img, text="Projects", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.projects)
         self.project_button.pack(anchor="center", ipady=5, pady=(16, 0))
 

@@ -236,10 +236,13 @@ class DashboardWindow(customtkinter.CTk):
             progress = self.task_number/self.complete_task
             print(i,progress)
 
-            self.label2 = (CTkLabel(master=self.task_progress_frame, text=f"{project_name[0][0]}",
-                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(25, 25), pady=(5, 0)))
-            self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
-                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(25, 25), pady=(5, 0)))
+            self.name_frame = CTkFrame(master=self.task_progress_frame, width=50, fg_color="transparent")
+            self.name_frame.pack(anchor="n", fill="x", pady=(10, 0))
+
+            self.label2 = (CTkLabel(master=self.name_frame, text=f"{project_name[0][0]}",
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", side="left", padx=(25, 25), pady=(5, 0)))
+            self.label1 = (CTkLabel(master=self.name_frame, text=f"{self.task_number}/{self.complete_task}",
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", side="right", padx=(25, 25), pady=(5, 0)))
             self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
                                                 width=self.progress_bar_width, height=20, corner_radius=8,
                                                 progress_color=COLORS[0], border_color="#491669", border_width=2)

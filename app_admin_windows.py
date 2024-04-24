@@ -525,6 +525,7 @@ class DashboardWindow(customtkinter.CTk):
             cursor.execute(sql, values)
             result = cursor.fetchall()
             print(result)
+
             print(today)
             today = f"{today}"
             result = result[0]

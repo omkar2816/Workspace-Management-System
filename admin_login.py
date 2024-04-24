@@ -9,6 +9,10 @@ import app_admin_windows
 
 ADMIN_SIDE_IMAGE_DATA = Image.open("images/admin_side_img.png")
 
+COLORS = ["#FFFFFF", "#774280", "#7E7E7E", "#EEEEEE", "#9553A0"]
+FONTS = ["Arial Bold", "Arial", "Rockwell"]
+ANCHORS = ["nw", "n", "ne", "w", "center", "e"]
+
 
 class Starter(customtkinter.CTk):
     def __init__(self):
@@ -22,32 +26,32 @@ class Starter(customtkinter.CTk):
 
         CTkLabel(master=self, text="", image=self.admin_side_img).pack(expand=True, side="left")
 
-        self.main_frame = CTkFrame(master=self, width=400, height=480, fg_color="#FFFFFF")
+        self.main_frame = CTkFrame(master=self, width=400, height=480, fg_color=COLORS[0])
         self.main_frame.pack_propagate(False)
         self.main_frame.pack(expand=True, side="right")
 
-        CTkLabel(master=self.main_frame, text="Welcome Back!", text_color="#774280", anchor="w", justify="left",
-                 font=("Arial", 24, "bold")).pack(anchor="w", pady=(40, 5), padx=(25, 0))
-        CTkLabel(master=self.main_frame, text="Sign in to your account", text_color="#7E7E7E", anchor="w",
-                 justify="left", font=("Arial", 14, "bold")).pack(anchor="w", pady=(10, 5), padx=(25, 0))
+        CTkLabel(master=self.main_frame, text="Welcome Back!", text_color=COLORS[1], anchor=ANCHORS[3], justify="left",
+                 font=(FONTS[1], 24, "bold")).pack(anchor=ANCHORS[3], pady=(40, 5), padx=(25, 0))
+        CTkLabel(master=self.main_frame, text="Sign in to your account", text_color=COLORS[2], anchor=ANCHORS[3],
+                 justify="left", font=(FONTS[1], 14, "bold")).pack(anchor=ANCHORS[3], pady=(10, 5), padx=(25, 0))
 
         self.admin_entry = CTkEntry(master=self.main_frame, placeholder_text="Admin", height=35, width=280,
-                                    fg_color="#EEEEEE", font=("Arial", 14))
-        self.admin_entry.pack(anchor="w", padx=(25, 25), pady=(50, 0))
+                                    fg_color=COLORS[3], font=(FONTS[1], 14))
+        self.admin_entry.pack(anchor=ANCHORS[3], padx=(25, 25), pady=(50, 0))
         self.admin_password = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=280,
-                                       fg_color="#EEEEEE", font=("Arial", 14), show="●")
-        self.admin_password.pack(anchor="w", padx=(25, 25), pady=(25, 0))
+                                       fg_color=COLORS[3], font=(FONTS[1], 14), show="●")
+        self.admin_password.pack(anchor=ANCHORS[3], padx=(25, 25), pady=(25, 0))
         self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15,
-                                         text="Show Password ?", text_color="#7E7E7E", variable=self.s_pass,
+                                         text="Show Password ?", text_color=COLORS[2], variable=self.s_pass,
                                          onvalue=1, offvalue=0, command=self.toggle_password)
-        self.show_password.pack(anchor="w", padx=(180, 0), pady=(5, 0))
-        self.login = CTkButton(master=self.main_frame, text="Log In", fg_color="#774280", hover_color="#9553a0",
-                               font=("Arial Bold", 14), text_color="#ffffff", width=200, height=35,
+        self.show_password.pack(anchor=ANCHORS[3], padx=(180, 0), pady=(5, 0))
+        self.login = CTkButton(master=self.main_frame, text="Log In", fg_color=COLORS[1], hover_color=COLORS[4],
+                               font=(FONTS[0], 14), text_color=COLORS[0], width=200, height=35,
                                corner_radius=12, command=self.get_entries)
-        self.login.pack(anchor="w", pady=(30, 0), padx=(70, 0))
+        self.login.pack(anchor=ANCHORS[3], pady=(30, 0), padx=(70, 0))
         self.switch = CTkButton(master=self.main_frame, text="Switch to User", fg_color="transparent",
-                                hover_color="#ffffff", font=("Arial", 12), text_color="#7E7E7E", command=self.switch)
-        self.switch.pack(anchor="w", padx=(100, 0), pady=(50, 0))
+                                hover_color=COLORS[0], font=(FONTS[1], 12), text_color=COLORS[2], command=self.switch)
+        self.switch.pack(anchor=ANCHORS[3], padx=(100, 0), pady=(50, 0))
 
     def get_entries(self):
         global username

@@ -154,7 +154,7 @@ class DashboardWindow(customtkinter.CTk):
         self.profile_button = CTkButton(master=self.main_frame, image=self.user_img, text=f"{username}", text_color="#000000", fg_color="transparent", width=200, height=35, font=(FONTS[1], 16), hover_color=COLORS[0], compound="left")
         self.profile_button.pack(anchor=ANCHORS[1], ipady=5, padx=(600, 0), pady=(15, 0))
 
-        self.graph_frame = CTkFrame(master=self.main_frame, fg_color=COLORS[3], width=720, height=280, corner_radius=13)
+        self.graph_frame = CTkFrame(master=self.main_frame, fg_color=COLORS[4], width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor=ANCHORS[4], padx=27, pady=(15, 0))
 
         global df
@@ -200,10 +200,10 @@ class DashboardWindow(customtkinter.CTk):
 
         self.task_number = int(result[0][2])
         self.complete_task = int(result[0][3])
-        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[3], width=345, height=210, corner_radius=13)
+        self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[4], width=345, height=210, corner_radius=13)
         self.task_progress_frame.pack(anchor=ANCHORS[1], side="left", padx=(27, 0), pady=(20, 0))
 
-        self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[3], width=310, height=210,
+        self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[4], width=310, height=210,
                                                     corner_radius=13)
         self.description_frame.pack(anchor=ANCHORS[1], side="right", padx=(0, 27), pady=(20, 0))
 
@@ -252,12 +252,12 @@ class DashboardWindow(customtkinter.CTk):
             self.name_frame = CTkFrame(master=self.task_progress_frame, width=50, fg_color="transparent")
             self.name_frame.pack(anchor=ANCHORS[1], fill="x", pady=(10, 0))
             self.label2 = (CTkLabel(master=self.name_frame, text=f"{project_name[0][0]}",
-                                    width=30, fg_color=COLORS[3]).pack(anchor=ANCHORS[3], side="left", padx=(25, 25), pady=(5, 0)))
+                                    width=30, fg_color="transparent").pack(anchor=ANCHORS[3], side="left", padx=(25, 25), pady=(5, 0)))
             self.label1 = (CTkLabel(master=self.name_frame, text=f"{self.task_number}/{self.complete_task}",
-                                    width=30, fg_color=COLORS[3]).pack(anchor=ANCHORS[3], side="right", padx=(25, 25), pady=(5, 0)))
+                                    width=30, fg_color="transparent").pack(anchor=ANCHORS[3], side="right", padx=(25, 25), pady=(5, 0)))
             self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color=COLORS[3],
                                                 width=self.progress_bar_width, height=20, corner_radius=8,
-                                                progress_color=COLORS[0], border_color=COLORS[2], border_width=2)
+                                                progress_color=PROGRESS_COLORS[0], border_color=COLORS[2], border_width=2)
             self.progress_bar1.pack(anchor=ANCHORS[1], padx=10, pady=(5, 0))
 
             self.progress_bar1.set(progress)

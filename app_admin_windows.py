@@ -1236,8 +1236,8 @@ class DashboardWindow(customtkinter.CTk):
 
     def logout_listner(self):
         self.destroy()
-        import user_login
-        login = user_login.Login()
+        import admin_login
+        login = admin_login.Starter()
         login.mainloop()
 
 

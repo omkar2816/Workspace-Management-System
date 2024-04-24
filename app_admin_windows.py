@@ -1,3 +1,4 @@
+import datetime
 import itertools
 import time
 
@@ -429,12 +430,13 @@ class DashboardWindow(customtkinter.CTk):
         self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
         self.request_entry = CTkEntry(master=self.search_container, width=650,
-                                     placeholder_text="Search Employee with its ID or Name",
-                                     border_color="#70438C", border_width=2)
+                                      placeholder_text="Search Employee with its ID or Name",
+                                      border_color="#70438C", border_width=2)
         self.request_entry.pack(side="left", padx=(13, 0), pady=15)
 
-        self.request_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
-                                       hover_color="#491669", width=28, command=self.request_accept)
+        self.request_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                        fg_color="#601e88",
+                                        hover_color="#491669", width=28, command=self.request_to_accept)
         self.request_button.pack(side="left", padx=(13, 0), pady=15)
 
         try:
@@ -509,10 +511,53 @@ class DashboardWindow(customtkinter.CTk):
         #                             hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
         #                             command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
 
+    def request_to_accept(self):
+        request_id = self.request_entry.get()
+        now = datetime.datetime.now()
+        today = now.date()
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
 
-    def request_accept(self):
-        request_no = self.request_entry.get()
+            sql = "select  employee_name, profession, contact_no, emergency_contact_no,username from requests where request_id = %s"
+            values = (request_id,)
 
+            cursor.execute(sql, values)
+            result = cursor.fetchall()
+            print(result)
+            print(today)
+            today = f"{today}"
+            result = result[0]
+            print(result)
+            results = result + (today,)
+            sql2 = ("insert into employee_details ( employee_name, profession, "
+                    "contact_no, emergency_contact_no, username,date_of_joining) values(%s,%s,%s,%s,%s,%s)")
+            values2 = results
+            cursor.execute(sql2, values2, )
+
+            sql3 = "delete from requests where request_id =%s"
+            values3 = (request_id,)
+            cursor.execute(sql3, values3, )
+
+            sql4 = "select * from request_login where username = %s"
+            values4 = (result[4],)
+            cursor.execute(sql4, values4)
+            cred = cursor.fetchall()
+            print(cred)
+
+            sql5 = "Insert into user_login(username, password) values(%s,%s)"
+            values5 = (cred[0][0], cred[0][1])
+            cursor.execute(sql5, values5, )
+
+            sql6 = "delete from request_login where username = %s"
+            values6 = (cred[0][0],)
+            cursor.execute(sql6, values6)
+            db.commit()
+            print(result)
+            self.main_frame.destroy()
+            self.employees()
+        except mysql.connector.Error as e:
+            print(e)
     def get_entries(self):
         global username
         employee_name = self.name_entry.get()

@@ -3,10 +3,14 @@ import itertools
 import customtkinter
 from tkinter import *
 import mysql.connector
+import numpy as np
 from customtkinter import *
 from tkinter import messagebox, ttk
 from CTkTable import CTkTable
 from PIL import Image
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import connection
 from tkcalendar import Calendar
 from calendar import Calendar
@@ -149,6 +153,36 @@ class DashboardWindow(customtkinter.CTk):
 
         self.graph_frame = CTkFrame(master=self.main_frame, fg_color="#F0F0F0", width=720, height=280, corner_radius=13)
         self.graph_frame.pack(anchor="center", padx=27, pady=(15, 0))
+
+        global df
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+            query = 'SELECT total_tasks,tasks_done FROM project'
+            cursor.execute(query)
+            result = cursor.fetchall()
+            print(result)
+            # df = pd.read_sql(query,con=db)
+            start_stops = [(int(start), int(stop)) for start, stop in result]
+            dt = [np.linspace(start, stop, num=2) for start, stop in start_stops]
+            print(dt)
+        except mysql.connector.Error as e:
+            messagebox.showerror("Database Error", f"Error Occured:{e}")
+            print(e)
+
+        plt.figure(figsize=(9, 3.5), layout='constrained')
+
+        plt.plot(dt, label=['Total_Tasks', 'Tasks_Done'])
+        plt.xlabel('Tasks_Done')
+        plt.ylabel('Total_Tasks')
+        # plt.plot(dt['total_tasks'],dt['tasks_done'])
+        plt.title('analytics')
+        plt.legend()
+
+        self.add = plt.gcf()
+        canvas = FigureCanvasTkAgg(self.add, master=self.graph_frame)
+        ctk_canvas = canvas.get_tk_widget()
+        ctk_canvas.place(relx=0, rely=0, anchor='nw')
 
         try:
             db = connection.Connection().get_connection()

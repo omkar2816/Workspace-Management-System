@@ -69,6 +69,7 @@ class DashboardWindow(customtkinter.CTk):
         self.employee_button = CTkButton(master=self.side_frame, image=self.employee_img, text="Employees", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.employees)
         self.employee_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
+
         self.project_button = CTkButton(master=self.side_frame, image=self.project_img, text="Projects", fg_color="transparent", font=("Arial Bold", 14), hover_color="#491669", anchor="w", command=self.projects)
         self.project_button.pack(anchor="center", ipady=5, pady=(16, 0))
 
@@ -417,44 +418,100 @@ class DashboardWindow(customtkinter.CTk):
         self.main_frame.pack_propagate(0)
         self.main_frame.pack(side="left")
 
-        self.s_pass = IntVar(value=0)
+        title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
+        title_frame.pack(anchor="n", fill="x", padx=27, pady=(29, 0))
 
-        self.label = CTkLabel(master=self.main_frame, text="Creating New Profile....", fg_color="transparent",
-                              text_color="#601e88", font=("Arial Bold", 25))
-        self.label.pack(anchor="nw", padx=(25, 25), pady=(40, 0))
+        self.label = CTkLabel(master=title_frame, text="Applicant & their details", font=("Arial Black", 23),
+                              text_color="#601e88")
+        self.label.pack(anchor="nw", side="left", pady=(8, 0))
 
-        self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35, width=330,
-                                   fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.name_entry.pack(anchor="n", padx=(25, 25), pady=(40, 0))
-        self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color="#601e88",
-                                            button_color="#601e88", dropdown_fg_color="#601e88",
-                                            dropdown_text_color="#ffffff", dropdown_hover_color="#491669",
-                                            button_hover_color="#601e88",
-                                            values=["Select Job role", "Administrator", "Engineer", "Management"])
-        self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.date_of_joining_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy",
-                                              height=35, width=330, fg_color="#EEEEEE", border_color="#601e88",
-                                              font=("Arial", 14))
-        self.date_of_joining_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Contact No.", height=35, width=330,
-                                      fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.emergency_contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Emergency Contact No.", height=35,
-                                                width=330, fg_color="#EEEEEE", border_color="#601e88",
-                                                font=("Arial", 14))
-        self.emergency_contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.username_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=330,
-                                       fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
-        self.username_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.password_entry = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=330,
-                                       fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14), show="●")
-        self.password_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
-        self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?",
-                                         text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
-                                         command=self.toggle_password).pack(anchor="n", padx=(200, 0), pady=(5, 0))
-        self.add_button = CTkButton(master=self.main_frame, text="Create Profile", height=35, fg_color="#601e88",
-                                    hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
-                                    command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color="#F0F0F0")
+        self.search_container.pack(fill="x", pady=(30, 0), padx=27)
+
+        self.request_entry = CTkEntry(master=self.search_container, width=650,
+                                     placeholder_text="Search Employee with its ID or Name",
+                                     border_color="#70438C", border_width=2)
+        self.request_entry.pack(side="left", padx=(13, 0), pady=15)
+
+        self.request_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color="#601e88",
+                                       hover_color="#491669", width=28, command=self.request_accept)
+        self.request_button.pack(side="left", padx=(13, 0), pady=15)
+
+        try:
+            db = connection.Connection().get_connection()
+            cursor = db.cursor()
+
+            sql = "SELECT * FROM requests"
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            for result in results:
+                print(result)
+        except mysql.connector.Error as e:
+            print(e)
+
+        self.table_data = [
+            [("Request ID", "Applicants Name", "Profession", "Contact No.", "Emergency\nContact No.")]
+        ]
+        self.table_data.append(results)
+        self.table_data = list(itertools.chain(*self.table_data))
+
+        self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
+        self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
+        self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", "#EEEEEE"],
+                              header_color="#601e88",
+                              hover_color="#DCDCDC")
+        self.table.edit_row(0, font=("Arial Bold", 14))
+        self.table.edit_row(0, text_color="#fff", hover_color="#491669")
+        self.table.pack(expand=True)
+
+        self.window_count = 2
+
+        # self.main_frame = CTkFrame(master=self, fg_color="#ffffff", width=780, height=650, corner_radius=0)
+        # self.main_frame.pack_propagate(0)
+        # self.main_frame.pack(side="left")
+        #
+        # self.s_pass = IntVar(value=0)
+        #
+        # self.label = CTkLabel(master=self.main_frame, text="Creating New Profile....", fg_color="transparent",
+        #                       text_color="#601e88", font=("Arial Bold", 25))
+        # self.label.pack(anchor="nw", padx=(25, 25), pady=(40, 0))
+        #
+        # self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35, width=330,
+        #                            fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        # self.name_entry.pack(anchor="n", padx=(25, 25), pady=(40, 0))
+        # self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color="#601e88",
+        #                                     button_color="#601e88", dropdown_fg_color="#601e88",
+        #                                     dropdown_text_color="#ffffff", dropdown_hover_color="#491669",
+        #                                     button_hover_color="#601e88",
+        #                                     values=["Select Job role", "Administrator", "Engineer", "Management"])
+        # self.profession_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.date_of_joining_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy",
+        #                                       height=35, width=330, fg_color="#EEEEEE", border_color="#601e88",
+        #                                       font=("Arial", 14))
+        # self.date_of_joining_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Contact No.", height=35, width=330,
+        #                               fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        # self.contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.emergency_contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Emergency Contact No.", height=35,
+        #                                         width=330, fg_color="#EEEEEE", border_color="#601e88",
+        #                                         font=("Arial", 14))
+        # self.emergency_contact_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.username_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=330,
+        #                                fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14))
+        # self.username_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.password_entry = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=330,
+        #                                fg_color="#EEEEEE", border_color="#601e88", font=("Arial", 14), show="●")
+        # self.password_entry.pack(anchor="n", padx=(25, 25), pady=(25, 0))
+        # self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?",
+        #                                  text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
+        #                                  command=self.toggle_password).pack(anchor="n", padx=(200, 0), pady=(5, 0))
+        # self.add_button = CTkButton(master=self.main_frame, text="Create Profile", height=35, fg_color="#601e88",
+        #                             hover_color="#491669", text_color="#ffffff", font=("Arial", 14),
+        #                             command=self.get_entries).pack(anchor="n", padx=(25, 25), pady=(25, 0))
+
+
+    def request_accept(self):
+        request_no = self.request_entry.get()
 
     def get_entries(self):
         global username

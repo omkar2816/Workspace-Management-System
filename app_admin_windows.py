@@ -190,6 +190,10 @@ class DashboardWindow(customtkinter.CTk):
         self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=345, height=210, corner_radius=13)
         self.task_progress_frame.pack(anchor="n", side="left", padx=(27, 0), pady=(20, 0))
 
+        self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=310, height=210,
+                                                    corner_radius=13)
+        self.description_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
+
         try:
             db = connection.Connection().get_connection()
             cursor = db.cursor()
@@ -221,7 +225,11 @@ class DashboardWindow(customtkinter.CTk):
                 cursor.execute(sql, val)
                 project_name = cursor.fetchall()
                 print(project_name)
-
+                sql2 = "SELECT project_name, description FROM project WHERE unique_id=%s"
+                # val2 = (self.username,)
+                cursor.execute(sql2, val)
+                result = cursor.fetchall()
+                print(result)
             except mysql.connector.Error as e:
                 print(e)
             index += 1
@@ -229,15 +237,28 @@ class DashboardWindow(customtkinter.CTk):
             print(i,progress)
 
             self.label2 = (CTkLabel(master=self.task_progress_frame, text=f"{project_name[0][0]}",
-                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(25, 25), pady=(5, 0)))
             self.label1 = (CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}",
-                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(0, 25), pady=(5, 0)))
+                                    width=30, fg_color="#F0F0F0").pack(anchor="w", padx=(25, 25), pady=(5, 0)))
             self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0",
                                                 width=self.progress_bar_width, height=20, corner_radius=8,
                                                 progress_color=COLORS[0], border_color="#491669", border_width=2)
             self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
+
             self.progress_bar1.set(progress)
 
+            self.p_name = result[0][0]
+            self.p_description = result[0][1]
+
+            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC",
+                                           text_color="#491669", font=("Arial Bold", 14))
+            self.project_name.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
+            self.project_name.insert('1.0', self.p_name)
+
+            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100,
+                                                text_color="#000000", font=("Arial", 13))
+            self.description_label.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
+            self.description_label.insert('1.0', self.p_description)
         # self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor="ne", padx=(0, 25), pady=(5,0))
         # self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color="#491669", border_width=2)
         # self.progress_bar1.pack(anchor="n", padx=10, pady=(5, 0))
@@ -266,8 +287,7 @@ class DashboardWindow(customtkinter.CTk):
         # self.progress_bar5 = CTkProgressBar(master=self.task_progress_frame, fg_color="#F0F0F0", width=self.progress_bar_width, height=20,
         #                                     corner_radius=8, progress_color=COLORS[3], border_color="#491669", border_width=2)
         # self.progress_bar5.pack(anchor="n", padx=10, pady=(5, 0))
-        self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color="#F0F0F0", width=310, height=210, corner_radius=13)
-        self.description_frame.pack(anchor="n", side="right", padx=(0, 27), pady=(20, 0))
+
 
         try:
             db = connection.Connection().get_connection()
@@ -277,20 +297,13 @@ class DashboardWindow(customtkinter.CTk):
             val = (self.username, )
             cursor.execute(sql, val)
             result = cursor.fetchall()
+            print(result)
         except mysql.connector.Error as e:
             print(e)
             messagebox.showerror("Database Error", f"Error Occured: {e}")
-        for project_name in result:
-            self.p_name = result[0][0]
-            self.p_description = result[0][1]
 
-            self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color="#DCDCDC", text_color="#491669", font=("Arial Bold", 14))
-            self.project_name.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
-            self.project_name.insert('1.0', self.p_name)
+        # for project_name in result:
 
-            self.description_label = CTkTextbox(master=self.description_frame, fg_color="#DCDCDC", height=100, text_color="#000000", font=("Arial", 13))
-            self.description_label.pack(anchor="n", fill="x", padx=(5, 0), pady=(5, 0))
-            self.description_label.insert('1.0', self.p_description)
         # self.cal = Calendar(self.calendar_frame, selectmode="day", date_pattern="y-mm-dd")
         # self.cal.pack(fill="both", expand=True)
         self.window_count = 1
@@ -1042,7 +1055,7 @@ class DashboardWindow(customtkinter.CTk):
         self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2,
                                        text="     Log out                                                                                                    ",
                                        height=60, fg_color="#601e88", font=("Rockwell", 22), hover_color="#491669",
-                                       anchor="w", compound="right").pack(anchor="center", fill="x", padx=30, ipadx=10,
+                                       anchor="w", compound="right", command=self.logout_listner).pack(anchor="center", fill="x", padx=30, ipadx=10,
                                                                           ipady=10, pady=(25, 0))
 
         self.window_count = 5
@@ -1053,13 +1066,13 @@ class DashboardWindow(customtkinter.CTk):
         e_doj = self.date_of_joining.get()
         e_contact = self.contact_no.get()
         e_emer_conatct = self.emergency_contact.get()
-        e_username = self.username_entry.get()
+        # e_username = self.username_entry.get()
         try:
             db = connection.Connection().get_connection()
             cursor = db.cursor()
 
-            sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s, username = %s WHERE username=%s"
-            val = (e_id, e_name, e_doj, e_contact, e_emer_conatct, e_username, self.username)
+            sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s WHERE username=%s"
+            val = (e_id, e_name, e_doj, e_contact, e_emer_conatct, self.username)
             cursor.execute(sql, val)
             db.commit()
             messagebox.showinfo("Successful", "Data has been updated successfully")
@@ -1131,12 +1144,12 @@ class DashboardWindow(customtkinter.CTk):
         self.emergency_contact.pack(anchor="n", padx=(25, 25), pady=(5, 0))
         self.emergency_contact.insert(0, e_contact)
 
-        self.username_label = CTkLabel(master=self.main_frame, text="Username:", width=350, font=("Arial Bold", 14),
-                                   text_color="#601e88")
-        self.username_label.pack(anchor="nw", padx=(93, 25), pady=(10, 0))
-        self.username_entry = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
-        self.username_entry.pack(anchor="n", padx=(25, 25), pady=(5, 0))
-        self.username_entry.insert(0, username)
+        # self.username_label = CTkLabel(master=self.main_frame, text="Username:", width=350, font=("Arial Bold", 14),
+        #                            text_color="#601e88")
+        # self.username_label.pack(anchor="nw", padx=(93, 25), pady=(10, 0))
+        # self.username_entry = CTkEntry(master=self.main_frame, width=330, height=35, border_color="#601e88", fg_color="#EEEEEE", font=("Arial Bold", 14))
+        # self.username_entry.pack(anchor="n", padx=(25, 25), pady=(5, 0))
+        # self.username_entry.insert(0, username)
         # self.password = CTkEntry(master=self.main_frame)
         # self.password.pack()
         # self.show_password = CTkCheckBox(master=self.main_frame)
@@ -1170,8 +1183,8 @@ class DashboardWindow(customtkinter.CTk):
     def logout_listner(self):
         self.destroy()
         import user_login
-        app = user_login.Login()
-        app.mainloop()
+        login = user_login.Login()
+        login.mainloop()
 
 
 # if __name__ == '__main__':

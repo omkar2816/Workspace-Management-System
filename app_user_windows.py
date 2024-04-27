@@ -294,7 +294,7 @@ class DashboardWindow(customtkinter.CTk):
             self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
             self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Colleague with its ID or Name",
-                                         border_color=COLORS[3], border_width=2)
+                                         border_color=COLORS[1], border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
             self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1], hover_color=COLORS[2], width=28, command=self.search)
@@ -376,7 +376,7 @@ class DashboardWindow(customtkinter.CTk):
 
                 self.search_entry = CTkEntry(master=self.search_container, width=650,
                                              placeholder_text="Search Employee with its ID or Name",
-                                             border_color=COLORS[3], border_width=2)
+                                             border_color=COLORS[1], border_width=2)
                 self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
                 self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],
@@ -428,7 +428,7 @@ class DashboardWindow(customtkinter.CTk):
             self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
             self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Project with Unique ID",
-                                         border_color=COLORS[3], border_width=2)
+                                         border_color=COLORS[1], border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
             self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],
@@ -513,7 +513,7 @@ class DashboardWindow(customtkinter.CTk):
 
                 self.search_entry = CTkEntry(master=self.search_container, width=650,
                                              placeholder_text="Search Project with Unique ID",
-                                             border_color=COLORS[3], border_width=2)
+                                             border_color=COLORS[1], border_width=2)
                 self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
                 self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],

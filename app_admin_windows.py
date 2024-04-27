@@ -1,7 +1,6 @@
 import datetime
 import itertools
 import time
-
 import customtkinter
 from tkinter import *
 import mysql.connector
@@ -12,7 +11,6 @@ from CTkTable import CTkTable
 from PIL import Image
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 import connection
 from tkcalendar import Calendar
 from calendar import Calendar
@@ -795,6 +793,7 @@ class DashboardWindow(customtkinter.CTk):
             self.window_count = 6
 
     def get_entries_project(self):
+
         project_name = self.project_name_entry.get()
         start_date = datetime.datetime.now().date()
         due_date = self.due_date_entry.get()
@@ -805,9 +804,9 @@ class DashboardWindow(customtkinter.CTk):
         number_of_tasks = [int(x) for x in number_of_tasks.split(',')]
 
         if len(assign_task) < len(number_of_tasks):
-            messagebox.showinfo("", "Number of Empployees and Number of tasks should be same")
+            messagebox.showinfo("", "Number of Employees and Number of tasks should be same")
         elif len(assign_task) > len(number_of_tasks):
-            messagebox.showinfo("", "Number of Empployees and Number of tasks should be same")
+            messagebox.showinfo("", "Number of Employees and Number of tasks should be same")
         else:
             print(f"assign tasks:{assign_task}, datatype={type(assign_task)}")
             print(f"number_of tasks:{number_of_tasks}, datatype={type(number_of_tasks)}")
@@ -816,7 +815,8 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "INSERT INTO project (project_name, start_date, due_date, participants, tasks, description) VALUES (%s, %s, %s, %s, %s, %s)"
+                sql = ("INSERT INTO project (project_name, start_date, due_date, participants, tasks, description) "
+                       "VALUES (%s, %s, %s, %s, %s, %s)")
                 val = (project_name, start_date, due_date, str(assign_task), str(number_of_tasks), project_description)
 
                 # sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
@@ -833,22 +833,27 @@ class DashboardWindow(customtkinter.CTk):
                 self.projects()
             except mysql.connector.Error as e:
                 messagebox.showerror("Database Error", f"Error occured: {e}")
-            global project_details, id
+
+
             try:
-                db = connection.Connection().get_connection()
-                cursor = db.cursor()
-                sql = "SELECT * FROM project"
-                cursor.execute(sql)
-                result = cursor.fetchall()
-                project_details = result[-1]
-                id = project_details[0]
-                print(id)
-                print(project_details)
+                pass
             except mysql.connector.Error as e:
                 messagebox.showerror("Database Error", f"Error Occured:{e}")
+
+
             index = 0
             for i in range(len(assign_task)):
                 try:
+                    db = connection.Connection().get_connection()
+                    cursor = db.cursor()
+                    sql = "SELECT * FROM project"
+                    cursor.execute(sql)
+                    result = cursor.fetchall()
+                    project_details = result[-1]
+                    id = project_details[0]
+                    print(id)
+                    print(project_details)
+
                     db = connection.Connection().get_connection()
                     cursor = db.cursor()
 
@@ -859,17 +864,37 @@ class DashboardWindow(customtkinter.CTk):
                     result = cursor.fetchall()
                     result = result[0][0]
                     print(result)
-                    index += 1
+
                     sql1 = "SELECT project FROM employee_details WHERE username=%s"
                     val1 = (result, )
                     cursor.execute(sql1, val1)
                     result1 = cursor.fetchall()
-                    print(result1[0][0])
+                    result1 = result1[0][0]
+
                     import ast
                     result1 = ast.literal_eval(result1)
-                    print(type(result1))
+                    # print(type(result1))
+                    print(result1)
+
+                    sql2 = "UPDATE employee_details SET project = %s WHERE username = %s"
+                    val2 = (str(self.final_task_list(result1, assign_task)), result)
+                    cursor.execute(sql2, val2)
+                    db.commit()
+
+                    starting_working_task = 0
+                    sql3 = "INSERT INTO project_details (project_id, username, total_task, working_task) VALUES(%s,%s,%s,%s)"
+                    val3 = (id, result, number_of_tasks[index], starting_working_task)
+
+                    cursor.execute(sql3, val3)
+                    db.commit()
+
+                    index += 1
                 except mysql.connector.Error as e:
                     messagebox.showerror("Database Error", f"Error Occured: {e}")
+    def final_task_list(self,a,b):
+        c = a+b
+        return c
+
 
     def search_project(self):
         if self.window_count != 7:

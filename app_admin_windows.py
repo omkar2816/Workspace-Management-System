@@ -846,8 +846,10 @@ class DashboardWindow(customtkinter.CTk):
                 try:
                     db = connection.Connection().get_connection()
                     cursor = db.cursor()
+
                     sql = "SELECT * FROM project"
                     cursor.execute(sql)
+
                     result = cursor.fetchall()
                     project_details = result[-1]
                     id = project_details[0]
@@ -857,16 +859,17 @@ class DashboardWindow(customtkinter.CTk):
                     db = connection.Connection().get_connection()
                     cursor = db.cursor()
 
-                    sql = "SELECT username FROM employee_details WHERE employee_id=%s"
-                    val = (assign_task[index], )
+                    sql4 = "SELECT username FROM employee_details WHERE employee_id=%s"
+                    val4 = (assign_task[index], )
 
-                    cursor.execute(sql, val)
-                    result = cursor.fetchall()
-                    result = result[0][0]
-                    print(result)
+                    cursor.execute(sql4, val4)
+                    user = cursor.fetchall()
+                    print(user)
+                    user = user[0][0]
+                    print(user)
 
                     sql1 = "SELECT project FROM employee_details WHERE username=%s"
-                    val1 = (result, )
+                    val1 = (user, )
                     cursor.execute(sql1, val1)
                     result1 = cursor.fetchall()
                     result1 = result1[0][0]
@@ -875,15 +878,15 @@ class DashboardWindow(customtkinter.CTk):
                     result1 = ast.literal_eval(result1)
                     # print(type(result1))
                     print(result1)
-
+                    result1.append(id)
                     sql2 = "UPDATE employee_details SET project = %s WHERE username = %s"
-                    val2 = (str(self.final_task_list(result1, assign_task)), result)
+                    val2 = (str(result1), user)
                     cursor.execute(sql2, val2)
                     db.commit()
 
                     starting_working_task = 0
                     sql3 = "INSERT INTO project_details (project_id, username, total_task, working_task) VALUES(%s,%s,%s,%s)"
-                    val3 = (id, result, number_of_tasks[index], starting_working_task)
+                    val3 = (id, user, number_of_tasks[index], starting_working_task)
 
                     cursor.execute(sql3, val3)
                     db.commit()

@@ -290,7 +290,7 @@ class DashboardWindow(customtkinter.CTk):
                                   text_color=COLORS[1])
             self.label.pack(anchor=ANCHORS[0], side="left", pady=(8, 0))
 
-            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
             self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
             self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Colleague with its ID or Name",
@@ -304,10 +304,27 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details"
-                cursor.execute(sql)
-                results = cursor.fetchall()
-                for result in results:
+                sql1 = "SELECT username FROM project_details WHERE project_id IN (SELECT project_id FROM project_details GROUP BY project_id HAVING COUNT(*) > 1)"
+                cursor.execute(sql1)
+                result1 = cursor.fetchall()
+                print("Omkar Korgaonkar")
+                print(result1)
+                users_on_project = []
+                for user in result1:
+                    emp = user[0]
+                    users_on_project.append(emp)
+                table_data = []
+                for employee in users_on_project:
+                    print(employee)
+                    sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details WHERE username=%s"
+                    val = (employee, )
+                    cursor.execute(sql, val)
+                    results = cursor.fetchall()
+                    table_data.append(results)
+
+                print(table_data)
+                # print(results)
+                for result in table_data:
                     print(result)
             except mysql.connector.Error as e:
                 print(e)
@@ -371,7 +388,7 @@ class DashboardWindow(customtkinter.CTk):
                 #                                      corner_radius=15, command=self.add_employee)
                 # self.add_employee_button.pack(anchor=ANCHORS[2], side="right", ipady=10)
 
-                self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
+                self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
                 self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
                 self.search_entry = CTkEntry(master=self.search_container, width=650,
@@ -424,7 +441,7 @@ class DashboardWindow(customtkinter.CTk):
                                                 corner_radius=15, command=self.task_manager)
             self.tasks_button.pack(anchor=ANCHORS[2], side="right", ipady=10)
 
-            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
+            self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
             self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
             self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Project with Unique ID",
@@ -508,7 +525,7 @@ class DashboardWindow(customtkinter.CTk):
                                                     corner_radius=15)
                 self.tasks_button.pack(anchor=ANCHORS[2], side="right", ipady=10)
 
-                self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
+                self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
                 self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
                 self.search_entry = CTkEntry(master=self.search_container, width=650,

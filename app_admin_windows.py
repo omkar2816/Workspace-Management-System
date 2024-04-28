@@ -892,6 +892,7 @@ class DashboardWindow(customtkinter.CTk):
                     db.commit()
 
                     index += 1
+
                 except mysql.connector.Error as e:
                     messagebox.showerror("Database Error", f"Error Occured: {e}")
     def final_task_list(self,a,b):

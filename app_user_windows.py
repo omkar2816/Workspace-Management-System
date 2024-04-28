@@ -488,7 +488,7 @@ class DashboardWindow(customtkinter.CTk):
                 print(e)
 
             self.table_data = [
-                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead")]
+                [("Unique\nID", "Project Name", "Start Date", "Due Date")]
             ]
 
             self.table_data.append(table_data)

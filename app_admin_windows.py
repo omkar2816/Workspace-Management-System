@@ -100,7 +100,6 @@ class DashboardWindow(customtkinter.CTk):
             print(job)
             job = job[0][2]
 
-
         except mysql.connector.Error as e:
             print(e)
             messagebox.showerror("Database Error", f"Error Occured :{e}")
@@ -144,7 +143,7 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
 
                 # read the data from the database
-                query = 'SELECT employee_name, working_hours  FROM salary'
+                query = 'SELECT employee_name, working_hours FROM salary ORDER BY working_hours ASC'
                 df = pd.read_sql(query, con=db)
                 dt = pd.DataFrame(df.sort_values(by="working_hours"))
                 print(dt)
@@ -218,7 +217,7 @@ class DashboardWindow(customtkinter.CTk):
                     # val = (self.project,)
                     cursor.execute(sql)
                     project_name = cursor.fetchall()
-                    project_name = project_name[0][index]
+                    project_name = project_name[index][0]
                     print(project_name)
                     sql2 = "SELECT project_name, description FROM project"
                     # val2 = (self.username,)
@@ -227,14 +226,14 @@ class DashboardWindow(customtkinter.CTk):
                     print(result)
                 except mysql.connector.Error as e:
                     print(e)
-                index += 1
+
                 progress = self.task_number/self.complete_task
                 print(i,progress)
 
                 self.name_frame = CTkFrame(master=self.task_progress_frame, width=50, fg_color="transparent")
                 self.name_frame.pack(anchor=ANCHORS[1], fill="x", pady=(10, 0))
 
-                self.label2 = (CTkLabel(master=self.name_frame, text=f"{project_name[0][0]}",
+                self.label2 = (CTkLabel(master=self.name_frame, text=f"{project_name}",
                                         width=30, fg_color=COLORS[4]).pack(anchor=ANCHORS[3], side="left", padx=(25, 25), pady=(5, 0)))
                 self.label1 = (CTkLabel(master=self.name_frame, text=f"{self.task_number}/{self.complete_task}",
                                         width=30, fg_color=COLORS[4]).pack(anchor=ANCHORS[3], side="right", padx=(25, 25), pady=(5, 0)))
@@ -245,8 +244,8 @@ class DashboardWindow(customtkinter.CTk):
 
                 self.progress_bar1.set(progress)
 
-                self.p_name = result[0][0]
-                self.p_description = result[0][1]
+                self.p_name = result[index][0]
+                self.p_description = result[index][1]
 
                 self.project_name = CTkTextbox(master=self.description_frame, height=35, fg_color=COLORS[3],
                                                text_color=COLORS[2], font=(FONTS[1], 14))
@@ -257,6 +256,8 @@ class DashboardWindow(customtkinter.CTk):
                                                     text_color="#000000", font=(FONTS[0], 13))
                 self.description_label.pack(anchor=ANCHORS[1], fill="x", padx=(5, 0), pady=(5, 0))
                 self.description_label.insert('1.0', self.p_description)
+
+                index += 1
             # self.label1 = CTkLabel(master=self.task_progress_frame, text=f"{self.task_number}/{self.complete_task}", width=30).pack(anchor=ANCHORS[2], padx=(0, 25), pady=(5,0))
             # self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color=COLORS[4], width=self.progress_bar_width, height=20, corner_radius=8, progress_color=COLORS[0], border_color=COLORS[2], border_width=2)
             # self.progress_bar1.pack(anchor=ANCHORS[1], padx=10, pady=(5, 0))
@@ -456,49 +457,6 @@ class DashboardWindow(customtkinter.CTk):
             self.table.pack(expand=True)
 
             self.window_count = 3
-
-        # self.main_frame = CTkFrame(master=self, fg_color=COLORS[0], width=780, height=650, corner_radius=0)
-        # self.main_frame.pack_propagate(0)
-        # self.main_frame.pack(side="left")
-        #
-        # self.s_pass = IntVar(value=0)
-        #
-        # self.label = CTkLabel(master=self.main_frame, text="Creating New Profile....", fg_color="transparent",
-        #                       text_color=COLORS[1], font=(FONTS[1], 25))
-        # self.label.pack(anchor=ANCHORS[0], padx=(25, 25), pady=(40, 0))
-        #
-        # self.name_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter name of Employee", height=35, width=330,
-        #                            fg_color=COLORS[6], border_color=COLORS[1], font=(FONTS[0], 14))
-        # self.name_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(40, 0))
-        # self.profession_entry = CTkComboBox(master=self.main_frame, height=35, width=330, border_color=COLORS[1],
-        #                                     button_color=COLORS[1], dropdown_fg_color=COLORS[1],
-        #                                     dropdown_text_color=COLORS[0], dropdown_hover_color=COLORS[2],
-        #                                     button_hover_color=COLORS[1],
-        #                                     values=["Select Job role", "Administrator", "Engineer", "Management"])
-        # self.profession_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
-        # self.date_of_joining_entry = CTkEntry(master=self.main_frame, placeholder_text="Enter Date of Joining i.e. dd/mm/yyyy",
-        #                                       height=35, width=330, fg_color=COLORS[6], border_color=COLORS[1],
-        #                                       font=(FONTS[0], 14))
-        # self.date_of_joining_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
-        # self.contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Contact No.", height=35, width=330,
-        #                               fg_color=COLORS[6], border_color=COLORS[1], font=(FONTS[0], 14))
-        # self.contact_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
-        # self.emergency_contact_entry = CTkEntry(master=self.main_frame, placeholder_text="Emergency Contact No.", height=35,
-        #                                         width=330, fg_color=COLORS[6], border_color=COLORS[1],
-        #                                         font=(FONTS[0], 14))
-        # self.emergency_contact_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
-        # self.username_entry = CTkEntry(master=self.main_frame, placeholder_text="Username", height=35, width=330,
-        #                                fg_color=COLORS[6], border_color=COLORS[1], font=(FONTS[0], 14))
-        # self.username_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
-        # self.password_entry = CTkEntry(master=self.main_frame, placeholder_text="Password", height=35, width=330,
-        #                                fg_color=COLORS[6], border_color=COLORS[1], font=(FONTS[0], 14), show="●")
-        # self.password_entry.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
-        # self.show_password = CTkCheckBox(master=self.main_frame, checkbox_height=15, checkbox_width=15, text="Show Password ?",
-        #                                  text_color="#7E7E7E", variable=self.s_pass, onvalue=1, offvalue=0,
-        #                                  command=self.toggle_password).pack(anchor=ANCHORS[1], padx=(200, 0), pady=(5, 0))
-        # self.add_button = CTkButton(master=self.main_frame, text="Create Profile", height=35, fg_color=COLORS[1],
-        #                             hover_color=COLORS[2], text_color=COLORS[0], font=(FONTS[0], 14),
-        #                             command=self.get_entries).pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
 
     def request_to_accept(self):
         request_id = self.request_entry.get()

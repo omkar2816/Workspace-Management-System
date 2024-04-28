@@ -87,6 +87,7 @@ class DashboardWindow(customtkinter.CTk):
         self.timer_running = False
 
         self.protocol("WM_DELETE_WINDOW", self.stop_timer)
+        self.protocol1 = True
 
         self.start_timer()
 
@@ -105,13 +106,24 @@ class DashboardWindow(customtkinter.CTk):
 
             sql = "UPDATE salary SET working_hours = working_hours + %s WHERE username=%s"
             val = (time, self.username, )
-
             cursor.execute(sql, val)
+
+            sql2 = "SELECT hourly_salary FROM salary WHERE username=%s"
+            val2 = (self.username, )
+            cursor.execute(sql2, val2)
+            result = cursor.fetchall()
+            result = result[0][0]
+            print(result)
+
+            sql1 = "UPDATE salary SET salary = salary * %s WHERE username=%s"
+            val1 = (int(result), self.username, )
+            cursor.execute(sql1, val1)
             db.commit()
         except mysql.connector.Error as e:
             print(e)
             messagebox.showerror("Database Error", f"Error Occured: {e}")
-        self.destroy()
+        if self.protocol1:
+            self.destroy()
 
     def update_timer(self):
         if self.timer_running:
@@ -309,30 +321,28 @@ class DashboardWindow(customtkinter.CTk):
                 result1 = cursor.fetchall()
                 print("Omkar Korgaonkar")
                 print(result1)
-                users_on_project = []
-                for user in result1:
-                    emp = user[0]
-                    users_on_project.append(emp)
+                index = 0
                 table_data = []
-                for employee in users_on_project:
-                    print(employee)
+                for i in range(len(result1)):
+                    print(result1)
+                    emp = result1[index][0]
+                    print(emp)
                     sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details WHERE username=%s"
-                    val = (employee, )
+                    val = (emp, )
                     cursor.execute(sql, val)
                     results = cursor.fetchall()
-                    table_data.append(results)
+                    table_data.append(results[0])
 
+                    index += 1
                 print(table_data)
-                # print(results)
-                for result in table_data:
-                    print(result)
             except mysql.connector.Error as e:
                 print(e)
 
             self.table_data = [
                 [("ID", "Name", "Profession", "Contact No.")]
             ]
-            self.table_data.append(results)
+
+            self.table_data.append(table_data)
             self.table_data = list(itertools.chain(*self.table_data))
 
             self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
@@ -456,11 +466,22 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "SELECT unique_id, project_name, start_date, due_date, username FROM project"
-                cursor.execute(sql)
-                results = cursor.fetchall()
-                for result in results:
-                    print(result)
+                sql1 = "SELECT project_id FROM project_details WHERE username IN (SELECT username FROM project_details GROUP BY username HAVING COUNT(*) > 1)"
+                cursor.execute(sql1)
+                result1 = cursor.fetchall()
+                print(result1)
+                index = 0
+                table_data = []
+                for i in range(len(result1)):
+                    project = result1[index][0]
+                    print(project)
+                    sql = "SELECT unique_id, project_name, start_date, due_date, username FROM project WHERE unique_id=%s"
+                    val = (project, )
+                    cursor.execute(sql, val)
+                    results = cursor.fetchall()
+                    table_data.append(results[0])
+
+                    index += 1
             except mysql.connector.Error as e:
                 messagebox.showerror("Database Error", f"Error Occured: {e}")
                 print(e)
@@ -469,7 +490,7 @@ class DashboardWindow(customtkinter.CTk):
                 [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead")]
             ]
 
-            self.table_data.append(results)
+            self.table_data.append(table_data)
             self.table_data = list(itertools.chain(*self.table_data))
 
             self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
@@ -772,6 +793,8 @@ class DashboardWindow(customtkinter.CTk):
             messagebox.showerror("Database Error", f"Error Occured:{e}")
 
     def logout_listner(self):
+        self.protocol1 = False
+        self.stop_timer()
         self.destroy()
         import user_login
         login = user_login.Login()

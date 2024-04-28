@@ -192,9 +192,9 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "SELECT working_task , total_task,project_id FROM project_details WHERE username=%s"
-                val = (self.username, )
-                cursor.execute(sql, val)
+                sql = "SELECT working_task , total_task,project_id FROM project_details"
+                # val = (self.username, )
+                cursor.execute(sql)
                 data_fetch = cursor.fetchall()
                 print(data_fetch)
             except mysql.connector.Error as e:
@@ -214,14 +214,15 @@ class DashboardWindow(customtkinter.CTk):
                     db = connection.Connection().get_connection()
                     cursor = db.cursor()
 
-                    sql = "SELECT project_name FROM project WHERE unique_id=%s"
-                    val = (self.project,)
-                    cursor.execute(sql, val)
+                    sql = "SELECT project_name FROM project"
+                    # val = (self.project,)
+                    cursor.execute(sql)
                     project_name = cursor.fetchall()
+                    project_name = project_name[0][index]
                     print(project_name)
-                    sql2 = "SELECT project_name, description FROM project WHERE unique_id=%s"
+                    sql2 = "SELECT project_name, description FROM project"
                     # val2 = (self.username,)
-                    cursor.execute(sql2, val)
+                    cursor.execute(sql2)
                     result = cursor.fetchall()
                     print(result)
                 except mysql.connector.Error as e:

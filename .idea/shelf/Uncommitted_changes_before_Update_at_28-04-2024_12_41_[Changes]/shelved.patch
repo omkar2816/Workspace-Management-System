@@ -1,0 +1,64 @@
+Index: connection.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import mysql.connector\r\n\r\n\r\nclass Connection:\r\n    _instance = None\r\n\r\n    def __new__(cls, *args, **kwargs):\r\n        try:\r\n            if not cls._instance:\r\n                cls._instance = super().__new__(cls)\r\n                cls._instance.cnx = mysql.connector.connect(\r\n                    user='root',\r\n                    password='Omkar@2802',\r\n                    host='localhost',\r\n                    port='3306',\r\n                    database='wms'\r\n                )\r\n                print(\"Connection done\")\r\n            return cls._instance\r\n\r\n        except mysql.connector.Error as e:\r\n            print(\"Connection failed\", e)\r\n\r\n    def get_connection(self):\r\n        return self.cnx\r\n\r\nif __name__ == \"__main__\":\r\n    connection = Connection()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/connection.py b/connection.py
+--- a/connection.py	(revision b72932db8fa0cecbc8d004f0d1231fa98aff9d51)
++++ b/connection.py	(date 1714230524685)
+@@ -10,7 +10,7 @@
+                 cls._instance = super().__new__(cls)
+                 cls._instance.cnx = mysql.connector.connect(
+                     user='root',
+-                    password='Omkar@2802',
++                    password='529374Channe@',
+                     host='localhost',
+                     port='3306',
+                     database='wms'
+Index: starter.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from tkinter import *\r\nfrom PIL import Image\r\nimport customtkinter\r\n\r\nCOLORS = [\"#FFFFFF\", \"#491669\"]\r\nFONTS = [\"Arial Bold\", \"Arial\", \"Century Gothic\"]\r\nANCHORS = [\"nw\", \"n\", \"ne\", \"w\", \"center\", \"e\"]\r\n\r\n\r\nclass Stater(customtkinter.CTk):\r\n    def __init__(self):\r\n        super().__init__()\r\n        self.title(\"Workspace Management System\")\r\n        self.geometry(\"895x680+350+80\")\r\n        self.config(bg=COLORS[1])\r\n        self.resizable(False, False)\r\n        self.image = customtkinter.CTkImage(light_image=Image.open('Images/WORK.png'),\r\n                                            dark_image=Image.open('Images/WORK.png'),\r\n                                            size=(895, 640))\r\n        self.label = customtkinter.CTkLabel(self, image=self.image, text=\"\")\r\n        self.label.pack()\r\n\r\n        self.button = customtkinter.CTkButton(self, text=\"Get Started as Admin\", width=140, height=28, corner_radius=16,\r\n                                              bg_color=COLORS[1], fg_color=COLORS[1], text_color=COLORS[0],\r\n                                              font=(FONTS[2], 18, \"underline\"), hover=False,\r\n                                              command=self.login_as_admin)\r\n        self.button.pack(anchor=ANCHORS[4], side=\"left\", padx=(175, 0))\r\n\r\n        self.button1 = customtkinter.CTkButton(self, text=\"Get Started as User\", width=140, height=28, corner_radius=16,\r\n                                              bg_color=COLORS[1], fg_color=COLORS[1], text_color=COLORS[0],\r\n                                              font=(FONTS[2], 18, \"underline\"), hover=False,\r\n                                              command=self.login_as_user)\r\n        self.button1.pack(anchor=ANCHORS[2], side=\"right\", padx=(0, 175))\r\n\r\n    def login_as_user(self):\r\n        self.destroy()\r\n        import user_login\r\n        user_login = user_login.Login()\r\n        user_login.mainloop()\r\n\r\n    def login_as_admin(self):\r\n        self.destroy()\r\n        import admin_login\r\n        admin_login = admin_login.Starter()\r\n        admin_login.mainloop()\r\n\r\n\r\nif __name__ == '__main__':\r\n    stater = Stater()\r\n    stater.mainloop()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/starter.py b/starter.py
+--- a/starter.py	(revision b72932db8fa0cecbc8d004f0d1231fa98aff9d51)
++++ b/starter.py	(date 1714230524701)
+@@ -27,9 +27,9 @@
+         self.button.pack(anchor=ANCHORS[4], side="left", padx=(175, 0))
+ 
+         self.button1 = customtkinter.CTkButton(self, text="Get Started as User", width=140, height=28, corner_radius=16,
+-                                              bg_color=COLORS[1], fg_color=COLORS[1], text_color=COLORS[0],
+-                                              font=(FONTS[2], 18, "underline"), hover=False,
+-                                              command=self.login_as_user)
++                                               bg_color=COLORS[1], fg_color=COLORS[1], text_color=COLORS[0],
++                                               font=(FONTS[2], 18, "underline"), hover=False,
++                                               command=self.login_as_user)
+         self.button1.pack(anchor=ANCHORS[2], side="right", padx=(0, 175))
+ 
+     def login_as_user(self):
+@@ -47,4 +47,4 @@
+ 
+ if __name__ == '__main__':
+     stater = Stater()
+-    stater.mainloop()
+\ No newline at end of file
++    stater.mainloop()
+Index: tet.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tet.py b/tet.py
+new file mode 100644
+--- /dev/null	(date 1714230524816)
++++ b/tet.py	(date 1714230524816)
+@@ -0,0 +1,4 @@
++from faker import Faker
++fake = Faker()
++for i in range(10):
++    print(fake.ipv4())
+\ No newline at end of file

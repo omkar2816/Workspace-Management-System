@@ -478,11 +478,14 @@ class DashboardWindow(customtkinter.CTk):
             result = result[0]
             print(result)
             results = result + (today,)
+            bracket = "[]"
+            results = results + (bracket, )
+            print(results)
             sql2 = ("insert into employee_details ( employee_name, profession, "
-                    "contact_no, emergency_contact_no, username,date_of_joining) values(%s,%s,%s,%s,%s,%s)")
+                    "contact_no, emergency_contact_no, username,date_of_joining, project) values(%s,%s,%s,%s,%s,%s,%s)")
             values2 = results
             cursor.execute(sql2, values2, )
-
+            print(result)
             sql3 = "delete from requests where request_id =%s"
             values3 = (request_id,)
             cursor.execute(sql3, values3, )

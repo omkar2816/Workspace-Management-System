@@ -38,7 +38,7 @@ class DashboardWindow(customtkinter.CTk):
     def __init__(self, username, password):
         super().__init__()
         self.title("Dashboard")
-        set_appearance_mode("system")
+        set_appearance_mode("Light")
         self.geometry("956x645+350+100")
         self.username = username
         # Images
@@ -586,7 +586,7 @@ class DashboardWindow(customtkinter.CTk):
         else:
             self.main_frame.destroy()
             self.main_frame = CTkFrame(master=self, fg_color=COLORS[0], width=780, height=650, corner_radius=0)
-            self.main_frame.pack_propagate(0)
+            self.main_frame.pack_propagate(False)
             self.main_frame.pack(side="left")
 
             title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
@@ -595,19 +595,37 @@ class DashboardWindow(customtkinter.CTk):
             self.label = CTkLabel(master=title_frame, text="Your Tasks", font=("Arial Black", 23),
                                   text_color=COLORS[1])
             self.label.pack(anchor=ANCHORS[0], side="left", pady=(8, 0))
+            try:
+                db = connection.Connection().get_connection()
+                cursor = db.cursor()
 
-            for frame in range(2):
+                sql = "SELECT project FROM employee_details WHERE username = %s"
+                val = (self.username, )
+                cursor.execute(sql, val)
+                results = cursor.fetchone()
+                print(results)
+                results = results[0]
+
+                import ast
+                results = ast.literal_eval(results)
+                # print(type(result1))
+                print(results)
+            except mysql.connector.Error as e:
+                print(e)
+            for frame in range(len(results)):
                 self.project_name_container = CTkFrame(master=self.main_frame, height=50, fg_color="transparent")
                 self.project_name_container.pack(fill="x", pady=(15, 0), padx=27)
 
-                self.project_name = CTkLabel(master=self.project_name_container, text=f"{frame+1}. PROJECT_NAME", font=(FONTS[1], 14))
+                self.project_name = CTkLabel(master=self.project_name_container, text=f"{frame+1}. PROJECT_NAME",
+                                             font=(FONTS[1], 14))
                 self.project_name.pack(anchor=ANCHORS[0], padx=(5, 0))
 
                 self.tasks_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[6])
                 self.tasks_frame.pack(expand=True, fill="both", padx=27, pady=(0, 21))
 
                 for task in range(10):
-                    self.task_checkbox = CTkCheckBox(master=self.tasks_frame, checkbox_height=15, checkbox_width=15, text=f"Task {task+1}", text_color="#7E7E7E", onvalue=1, offvalue=0)
+                    self.task_checkbox = CTkCheckBox(master=self.tasks_frame, checkbox_height=15, checkbox_width=15,
+                                                     text=f"Task {task+1}", text_color="#7E7E7E", onvalue=1, offvalue=0)
                     self.task_checkbox.pack(anchor=ANCHORS[0], padx=(15, 0), pady=(15, 0))
 
 

@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4e78766d-d8c5-4b96-99f3-65bc1cc254a9" name="Changes" comment="workspace management system">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27-04-2024_20_31__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27-04-2024_20_31__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27-04-2024_20_38__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_27-04-2024_20_38__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tet.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app_admin_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_admin_windows.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app_user_windows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_user_windows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/connection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/starter.py" beforeDir="false" afterPath="$PROJECT_DIR$/starter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +36,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/omkar2816/Workspace-Management-System.git&quot;,
-    &quot;accountId&quot;: &quot;b920635d-5297-450b-83fd-33eaca86895d&quot;
+    &quot;accountId&quot;: &quot;d338abf0-6f2f-4639-8ed1-6523e282415b&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -52,32 +53,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.add_employee.executor": "Run",
-    "Python.admin_login.executor": "Run",
-    "Python.app_admin_windows.executor": "Run",
-    "Python.app_user_windows.executor": "Run",
-    "Python.app_windows.executor": "Run",
-    "Python.connection.executor": "Run",
-    "Python.db_connection.executor": "Run",
-    "Python.demo.executor": "Run",
-    "Python.demo2.executor": "Run",
-    "Python.ex.executor": "Run",
-    "Python.login_main.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.screentime.executor": "Run",
-    "Python.starter.executor": "Run",
-    "Python.test.executor": "Run",
-    "Python.user_admin.executor": "Run",
-    "Python.user_login.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "run.code.analysis.last.selected.profile": "aDefault"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.add_employee.executor&quot;: &quot;Run&quot;,
+    &quot;Python.admin_login.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_admin_windows.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_user_windows.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app_windows.executor&quot;: &quot;Run&quot;,
+    &quot;Python.connection.executor&quot;: &quot;Run&quot;,
+    &quot;Python.db_connection.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.demo2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ex.executor&quot;: &quot;Run&quot;,
+    &quot;Python.login_main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.screentime.executor&quot;: &quot;Run&quot;,
+    &quot;Python.starter.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.user_admin.executor&quot;: &quot;Run&quot;,
+    &quot;Python.user_login.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Omkar Korgaonkar\PycharmProjects\Workspace Management System\images" />
@@ -99,6 +100,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/admin_login.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="app_user_windows" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Workspace Management System" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app_user_windows.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -154,8 +177,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.starter" />
-        <item itemvalue="Python.admin_login" />
         <item itemvalue="Python.user_login" />
+        <item itemvalue="Python.admin_login" />
+        <item itemvalue="Python.app_user_windows" />
       </list>
     </recent_temporary>
   </component>
@@ -471,39 +495,7 @@
       <option name="project" value="LOCAL" />
       <updated>1713981902854</updated>
     </task>
-    <task id="LOCAL-00038" summary="workspace management system">
-      <option name="closed" value="true" />
-      <created>1714227210492</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1714227210492</updated>
-    </task>
-    <task id="LOCAL-00039" summary="workspace management system">
-      <option name="closed" value="true" />
-      <created>1714230493053</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1714230493053</updated>
-    </task>
-    <task id="LOCAL-00040" summary="workspace management system">
-      <option name="closed" value="true" />
-      <created>1714294542159</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1714294542159</updated>
-    </task>
-    <task id="LOCAL-00041" summary="workspace management system">
-      <option name="closed" value="true" />
-      <created>1714299271556</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1714299271556</updated>
-    </task>
-    <option name="localTasksCounter" value="42" />
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -520,36 +512,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="workspace management system" />
     <option name="LAST_COMMIT_MESSAGE" value="workspace management system" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app_user_windows.py</url>
-          <line>101</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app_admin_windows.py</url>
-          <line>247</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app_admin_windows.py</url>
-          <line>252</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app_admin_windows.py</url>
-          <line>225</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app_admin_windows.py</url>
-          <line>246</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

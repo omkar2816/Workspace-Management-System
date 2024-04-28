@@ -188,6 +188,7 @@ class DashboardWindow(customtkinter.CTk):
             plt.title('analytics')
             plt.legend()
 
+
             self.add = plt.gcf()
             canvas = FigureCanvasTkAgg(self.add, master=self.graph_frame)
             ctk_canvas = canvas.get_tk_widget()

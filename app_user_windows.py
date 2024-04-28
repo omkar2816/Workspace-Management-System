@@ -589,6 +589,7 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.pack_propagate(False)
             self.main_frame.pack(side="left")
 
+
             title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
             title_frame.pack(anchor=ANCHORS[1], fill="x", padx=27, pady=(10, 0))
 

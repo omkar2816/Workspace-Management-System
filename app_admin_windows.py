@@ -1204,12 +1204,12 @@ class DashboardWindow(customtkinter.CTk):
                                                  hover_color=COLORS[2], anchor=ANCHORS[3], compound="right",
                                                  command=self.update_profile).pack(anchor=ANCHORS[4], fill="x", padx=30,
                                                                                    ipadx=10, ipady=10, pady=(70, 0))
-            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
-                                          text="     Set appearance mode                                                                         ",
-                                          height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],
-                                          anchor=ANCHORS[3], compound="right").pack(anchor=ANCHORS[4], fill="x",
-                                                                                    padx=30, ipadx=10,
-                                                                                    ipady=10, pady=(25, 0))
+            # self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
+            #                               text="     Set appearance mode                                                                         ",
+            #                               height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],
+            #                               anchor=ANCHORS[3], compound="right").pack(anchor=ANCHORS[4], fill="x",
+            #                                                                         padx=30, ipadx=10,
+            #                                                                         ipady=10, pady=(25, 0))
             self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2,
                                            text="     Log out                                                                                                    ",
                                            height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],

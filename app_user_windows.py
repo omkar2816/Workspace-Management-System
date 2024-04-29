@@ -663,7 +663,7 @@ class DashboardWindow(customtkinter.CTk):
                     name = name[0][0]
                     print(name)
 
-                    sql2 = ("SELECT total_task , working_task, number_of_tasks FROM project_details WHERE project_id = %s  AND username "
+                    sql2 = ("SELECT total_task , working_task FROM project_details WHERE project_id = %s  AND username "
                             "= %s")
                     val2 = (result1[frame], self.username,)
 
@@ -672,11 +672,13 @@ class DashboardWindow(customtkinter.CTk):
                     print(tasks)
 
                     task = int(tasks[0][0])-int(tasks[0][1])
-                    number = task[0][2]
-                    number = ast.literal_eval(number)
-                    print(number)
 
-                    import ast
+
+                    # import ast
+                    list = []
+                    for i in range(task):
+                        list.append(i+1)
+
 
                     self.project_name_container = CTkFrame(master=self.sc_frame, height=50, fg_color="transparent")
                     self.project_name_container.pack(fill="x", pady=(15, 0), padx=27)
@@ -786,12 +788,12 @@ class DashboardWindow(customtkinter.CTk):
                                                  hover_color=COLORS[2], anchor=ANCHORS[3], compound="right",
                                                  command=self.update_profile).pack(anchor=ANCHORS[4], fill="x", padx=30,
                                                                                    ipadx=10, ipady=10, pady=(70, 0))
-            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
-                                          text="     Set appearance mode                                                                         ",
-                                          height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],
-                                          anchor=ANCHORS[3], compound="right").pack(anchor=ANCHORS[4], fill="x",
-                                                                                    padx=30, ipadx=10, ipady=10,
-                                                                                    pady=(25, 0))
+            # self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
+            #                               text="     Set appearance mode                                                                         ",
+            #                               height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],
+            #                               anchor=ANCHORS[3], compound="right").pack(anchor=ANCHORS[4], fill="x",
+            #                                                                         padx=30, ipadx=10, ipady=10,
+            #                                                                         pady=(25, 0))
             self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2,
                                            text="     Log out                                                                                                    ",
                                            height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],

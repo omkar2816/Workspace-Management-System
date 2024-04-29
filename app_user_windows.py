@@ -473,6 +473,7 @@ class DashboardWindow(customtkinter.CTk):
                 print(result1)
                 index = 0
                 table_data = []
+
                 for i in range(len(result1)):
                     project = result1[index][0]
                     print(project)

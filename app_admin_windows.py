@@ -760,103 +760,109 @@ class DashboardWindow(customtkinter.CTk):
         start_date = datetime.datetime.now().date()
         due_date = self.due_date_entry.get()
         assign_task = self.assign_task_entry.get()
-        assign_task = [int(x) for x in assign_task.split(',')]
+
         project_description = self.description_entry.get('0.0', "end")
         number_of_tasks = self.no_of_tasks_entry.get()
-        number_of_tasks = [int(x) for x in number_of_tasks.split(',')]
 
-        if len(assign_task) < len(number_of_tasks):
-            messagebox.showinfo("", "Number of Employees and Number of tasks should be same")
-        elif len(assign_task) > len(number_of_tasks):
-            messagebox.showinfo("", "Number of Employees and Number of tasks should be same")
+        if project_name == '' or due_date == '' or assign_task == '' or project_description == '' or number_of_tasks == '':
+            messagebox.showinfo("Null Fields", "All fields are required")
         else:
-            print(f"assign tasks:{assign_task}, datatype={type(assign_task)}")
-            print(f"number_of tasks:{number_of_tasks}, datatype={type(number_of_tasks)}")
+            assign_task = [int(x) for x in assign_task.split(',')]
+            number_of_tasks = [int(x) for x in number_of_tasks.split(',')]
 
-            try:
-                db = connection.Connection().get_connection()
-                cursor = db.cursor()
+            if len(assign_task) < len(number_of_tasks):
+                messagebox.showinfo("", "Number of Employees and Number of tasks should be same")
+            elif len(assign_task) > len(number_of_tasks):
+                messagebox.showinfo("", "Number of Employees and Number of tasks should be same")
+            else:
+                print(f"assign tasks:{assign_task}, datatype={type(assign_task)}")
+                print(f"number_of tasks:{number_of_tasks}, datatype={type(number_of_tasks)}")
 
-                sql = ("INSERT INTO project (project_name, start_date, due_date, participants, tasks, description) "
-                       "VALUES (%s, %s, %s, %s, %s, %s)")
-                val = (project_name, start_date, due_date, str(assign_task), str(number_of_tasks), project_description)
-
-                # sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
-                # val_1 = (username, password)
-
-                cursor.execute(sql, val)
-                # cursor.execute(sql_1, val_1)
-                print("name")
-
-                db.commit()
-                # self.main_frame.destroy()
-                messagebox.showinfo("Successful", "Project is created successfully")
-                self.main_frame.destroy()
-                self.projects()
-            except mysql.connector.Error as e:
-                messagebox.showerror("Database Error", f"Error occured: {e}")
-
-
-            try:
-                pass
-            except mysql.connector.Error as e:
-                messagebox.showerror("Database Error", f"Error Occured:{e}")
-
-
-            index = 0
-            for i in range(len(assign_task)):
                 try:
                     db = connection.Connection().get_connection()
                     cursor = db.cursor()
 
-                    sql = "SELECT * FROM project"
-                    cursor.execute(sql)
+                    sql = ("INSERT INTO project (project_name, start_date, due_date, participants, tasks, description) "
+                           "VALUES (%s, %s, %s, %s, %s, %s)")
+                    val = (project_name, start_date, due_date, str(assign_task), str(number_of_tasks), project_description)
 
-                    result = cursor.fetchall()
-                    project_details = result[-1]
-                    id = project_details[0]
-                    print(id)
-                    print(project_details)
+                    # sql_1 = "INSERT INTO user_login (username, password) VALUES (%s, %s)"
+                    # val_1 = (username, password)
 
-                    db = connection.Connection().get_connection()
-                    cursor = db.cursor()
+                    cursor.execute(sql, val)
+                    # cursor.execute(sql_1, val_1)
+                    print("name")
 
-                    sql4 = "SELECT username FROM employee_details WHERE employee_id=%s"
-                    val4 = (assign_task[index], )
-
-                    cursor.execute(sql4, val4)
-                    user = cursor.fetchall()
-                    print(user)
-                    user = user[0][0]
-                    print(user)
-
-                    sql1 = "SELECT project FROM employee_details WHERE username=%s"
-                    val1 = (user, )
-                    cursor.execute(sql1, val1)
-                    result1 = cursor.fetchall()
-                    result1 = result1[0][0]
-
-                    import ast
-                    result1 = ast.literal_eval(result1)
-                    # print(type(result1))
-                    print(result1)
-                    result1.append(id)
-                    sql2 = "UPDATE employee_details SET project = %s WHERE username = %s"
-                    val2 = (str(result1), user)
-                    cursor.execute(sql2, val2)
                     db.commit()
-
-                    starting_working_task = 0
-                    sql3 = "INSERT INTO project_details (project_id, username, total_task, working_task) VALUES(%s,%s,%s,%s)"
-                    val3 = (id, user, number_of_tasks[index], starting_working_task)
-
-                    cursor.execute(sql3, val3)
-                    db.commit()
-
-                    index += 1
-
+                    # self.main_frame.destroy()
+                    messagebox.showinfo("Successful", "Project is created successfully")
+                    self.main_frame.destroy()
+                    self.projects()
                 except mysql.connector.Error as e:
-                    messagebox.showerror("Database Error", f"Error Occured: {e}")
+                    messagebox.showerror("Database Error", f"Error occured: {e}")
+
+
+                try:
+                    pass
+                except mysql.connector.Error as e:
+                    messagebox.showerror("Database Error", f"Error Occured:{e}")
+
+
+                index = 0
+                for i in range(len(assign_task)):
+                    try:
+                        db = connection.Connection().get_connection()
+                        cursor = db.cursor()
+
+                        sql = "SELECT * FROM project"
+                        cursor.execute(sql)
+
+                        result = cursor.fetchall()
+                        project_details = result[-1]
+                        id = project_details[0]
+                        print(id)
+                        print(project_details)
+
+                        db = connection.Connection().get_connection()
+                        cursor = db.cursor()
+
+                        sql4 = "SELECT username FROM employee_details WHERE employee_id=%s"
+                        val4 = (assign_task[index], )
+
+                        cursor.execute(sql4, val4)
+                        user = cursor.fetchall()
+                        print(user)
+                        user = user[0][0]
+                        print(user)
+
+                        sql1 = "SELECT project FROM employee_details WHERE username=%s"
+                        val1 = (user, )
+                        cursor.execute(sql1, val1)
+                        result1 = cursor.fetchall()
+                        result1 = result1[0][0]
+
+                        import ast
+                        result1 = ast.literal_eval(result1)
+                        # print(type(result1))
+                        print(result1)
+                        result1.append(id)
+                        sql2 = "UPDATE employee_details SET project = %s WHERE username = %s"
+                        val2 = (str(result1), user)
+                        cursor.execute(sql2, val2)
+                        db.commit()
+
+                        starting_working_task = 0
+                        sql3 = "INSERT INTO project_details (project_id, username, total_task, working_task) VALUES(%s,%s,%s,%s)"
+                        val3 = (id, user, number_of_tasks[index], starting_working_task)
+
+                        cursor.execute(sql3, val3)
+                        db.commit()
+
+                        index += 1
+
+                    except mysql.connector.Error as e:
+                        messagebox.showerror("Database Error", f"Error Occured: {e}")
+
     def final_task_list(self,a,b):
         c = a+b
         return c
@@ -915,7 +921,7 @@ class DashboardWindow(customtkinter.CTk):
             self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
             self.table_data = [
-                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead", "Number\nof Tasks", "No. of\nCompleted Tasks")]
+                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Number\nof Tasks", "No. of\nCompleted Tasks")]
             ]
 
             self.table_data.append(fetch_project)
@@ -956,7 +962,7 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "SELECT * FROM project"
+                sql = "SELECT unique_id, project_name, start_date, due_date, total_tasks, tasks_done FROM project"
                 cursor.execute(sql)
                 results = cursor.fetchall()
                 for result in results:
@@ -966,7 +972,7 @@ class DashboardWindow(customtkinter.CTk):
                 print(e)
 
             self.table_data = [
-                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Project\nHead", "Number\nof Tasks",
+                [("Unique\nID", "Project Name", "Start Date", "Due Date", "Number\nof Tasks",
                   "Completed\nTasks")]
             ]
 
@@ -994,6 +1000,13 @@ class DashboardWindow(customtkinter.CTk):
 
             self.assign_button = CTkButton(master=self.main_frame, text="Assign Project", height=35, fg_color=COLORS[1], hover_color=COLORS[2], font=(FONTS[1], 14))
             self.assign_button.pack(anchor=ANCHORS[4], padx=(25, 25), pady=10)
+
+            e_id = self.employee_id_entry.get()
+            p_id = self.project_id_entry.get()
+            if e_id == '' or p_id == '':
+                messagebox.showinfo("Null Fields", "All fields are required")
+            else:
+
 
             self.window_count = 8
 

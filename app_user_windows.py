@@ -98,7 +98,7 @@ class DashboardWindow(customtkinter.CTk):
     def stop_timer(self):
         global time
         self.timer_running = False
-        time = round(float(self.counter))
+        time = round(float(self.counter), 1)
         print(time)
         try:
             db = connection.Connection().get_connection()
@@ -116,7 +116,7 @@ class DashboardWindow(customtkinter.CTk):
             print(result)
 
             sql1 = "UPDATE salary SET salary = salary * %s WHERE username=%s"
-            val1 = (int(result), self.username, )
+            val1 = (float(result), self.username, )
             cursor.execute(sql1, val1)
             db.commit()
         except mysql.connector.Error as e:
@@ -803,7 +803,10 @@ class DashboardWindow(customtkinter.CTk):
 
             sql = "UPDATE employee_details SET employee_id = %s, employee_name = %s, date_of_joining = %s, contact_no = %s, emergency_contact_no = %s WHERE username=%s"
             val = (e_id, e_name, e_doj, e_contact, e_emer_contact, self.username)
+            sql1 = "UPDATE salary SET employee_id = %s, employee_name = %s WHERE username=%s"
+            val1 = (e_id, e_name, self.username)
             cursor.execute(sql, val)
+            cursor.execute(sql1, val1)
             db.commit()
             messagebox.showinfo("Successful", "Data has been updated successfully")
             self.main_frame.destroy()

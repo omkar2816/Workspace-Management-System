@@ -1005,7 +1005,6 @@ class DashboardWindow(customtkinter.CTk):
             p_id = self.project_id_entry.get()
             if e_id == '' or p_id == '':
                 messagebox.showinfo("Null Fields", "All fields are required")
-            else:
 
 
             self.window_count = 8

@@ -589,13 +589,15 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.pack_propagate(False)
             self.main_frame.pack(side="left")
 
-
             title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
             title_frame.pack(anchor=ANCHORS[1], fill="x", padx=27, pady=(10, 0))
 
             self.label = CTkLabel(master=title_frame, text="Your Tasks", font=("Arial Black", 23),
                                   text_color=COLORS[1])
             self.label.pack(anchor=ANCHORS[0], side="left", pady=(8, 0))
+
+            self.sc_frame = CTkScrollableFrame(master=self.main_frame, width=780, height=650, fg_color=COLORS[4], corner_radius=10)
+            self.sc_frame.pack(anchor=ANCHORS[1], padx=10, pady=5)
             try:
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
@@ -603,25 +605,33 @@ class DashboardWindow(customtkinter.CTk):
                 sql = "SELECT project FROM employee_details WHERE username = %s"
                 val = (self.username, )
                 cursor.execute(sql, val)
-                results = cursor.fetchone()
+                result = cursor.fetchall()
+                print(result)
+                results = result[0][0]
                 print(results)
-                results = results[0]
+
+                sql1 = "SELECT project_name FROM project where username=%s"
+                val1 = (self.username, )
+                cursor.execute(sql1, val1)
+                result = cursor.fetchall()
+                print(result)
 
                 import ast
-                results = ast.literal_eval(results)
+                result1 = ast.literal_eval(results)
+                print("Omkar Korgaonkar")
                 # print(type(result1))
-                print(results)
+                print(result1)
             except mysql.connector.Error as e:
                 print(e)
-            for frame in range(len(results)):
-                self.project_name_container = CTkFrame(master=self.main_frame, height=50, fg_color="transparent")
+            for frame in range(len(result1)-1):
+                self.project_name_container = CTkFrame(master=self.sc_frame, height=50, fg_color="transparent")
                 self.project_name_container.pack(fill="x", pady=(15, 0), padx=27)
 
-                self.project_name = CTkLabel(master=self.project_name_container, text=f"{frame+1}. PROJECT_NAME",
+                self.project_name = CTkLabel(master=self.project_name_container, text=f"{frame+1}. {result[0][0]}",
                                              font=(FONTS[1], 14))
                 self.project_name.pack(anchor=ANCHORS[0], padx=(5, 0))
 
-                self.tasks_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[6])
+                self.tasks_frame = CTkScrollableFrame(master=self.sc_frame, fg_color=COLORS[6])
                 self.tasks_frame.pack(expand=True, fill="both", padx=27, pady=(0, 21))
 
                 for task in range(10):
@@ -629,16 +639,20 @@ class DashboardWindow(customtkinter.CTk):
                                                      text=f"Task {task+1}", text_color="#7E7E7E", onvalue=1, offvalue=0)
                     self.task_checkbox.pack(anchor=ANCHORS[0], padx=(15, 0), pady=(15, 0))
 
+                self.save_changes = CTkButton(master=self.tasks_frame, height=40, width=150, fg_color=COLORS[1],
+                                              hover_color=COLORS[2], text="Save Changes", font=(FONTS[1], 14))
+                self.save_changes.pack(anchor=ANCHORS[1], padx=(25, 25), pady=10)
+
 
             # self.project_name_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
             # self.project_name_container.pack(fill="x", pady=(10, 0), padx=27)
             #
             # self.tasks_frame2 = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[6])
             # self.tasks_frame2.pack(expand=True, fill="both", padx=27, pady=21)
-
+            #
             # self.project_label_frame = CTkFrame(master=self.tasks_frame1, fg_color="transparent")
             # self.project_label_frame.pack(anchor=ANCHORS[1], fill="x", padx=27, pady=(29, 0))
-
+            #
             # self.task1 = CTkCheckBox(master=self.tasks_frame1)
 
             self.window_count = 6

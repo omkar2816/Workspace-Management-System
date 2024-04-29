@@ -1,5 +1,4 @@
 import itertools
-
 import customtkinter
 from tkinter import *
 import mysql.connector
@@ -10,7 +9,6 @@ from CTkTable import CTkTable
 from PIL import Image
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 import connection
 from tkcalendar import Calendar
 from calendar import Calendar
@@ -32,7 +30,7 @@ COLORS = ["#FFFFFF", "#601E88", "#491669", "#DCDCDC", "#F0F0F0", "#70438C", "#EE
 PROGRESS_COLORS = ["#D60000", "#FF9700", "#005DFF", "#42F200", "#DAE801"]
 ANCHORS = ["nw", "n", "ne", "w", "center", "e"]
 FONTS = ["Arial", "Arial Bold", "Rockwell"]
-
+task = None
 
 class DashboardWindow(customtkinter.CTk):
     def __init__(self, username, password):
@@ -54,6 +52,7 @@ class DashboardWindow(customtkinter.CTk):
         self.logout_img2 = CTkImage(dark_image=LOGOUT_IMG2_DATA, light_image=LOGOUT_IMG2_DATA)
         self.user_img = CTkImage(dark_image=USER_IMG_DATA, light_image=USER_IMG_DATA)
 
+        self.s_pass = IntVar(value=0)
         # Frame creation
         self.side_frame = CTkFrame(master=self, fg_color=COLORS[1], width=176, height=650, corner_radius=0)
         self.side_frame.pack_propagate(0)
@@ -61,22 +60,32 @@ class DashboardWindow(customtkinter.CTk):
 
         CTkLabel(master=self.side_frame, text="", image=self.logo_img).pack(pady=(38, 0), anchor=ANCHORS[4])
 
-        self.dashboard_button = CTkButton(master=self.side_frame, image=self.dashboard_img, text="Dashboard", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2], anchor=ANCHORS[3], command=self.dashboard)
+        self.dashboard_button = CTkButton(master=self.side_frame, image=self.dashboard_img, text="Dashboard",
+                                          fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2],
+                                          anchor=ANCHORS[3], command=self.dashboard)
         self.dashboard_button.pack(anchor=ANCHORS[4], ipady=5, pady=(60, 0))
 
-        self.employee_button = CTkButton(master=self.side_frame, image=self.employee_img, text="Colleagues", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2], anchor=ANCHORS[3], command=self.employees)
+        self.employee_button = CTkButton(master=self.side_frame, image=self.employee_img, text="Colleagues",
+                                         fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2],
+                                         anchor=ANCHORS[3], command=self.employees)
         self.employee_button.pack(anchor=ANCHORS[4], ipady=5, pady=(16, 0))
 
-        self.project_button = CTkButton(master=self.side_frame, image=self.project_img, text="Projects", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2], anchor=ANCHORS[3], command=self.projects)
+        self.project_button = CTkButton(master=self.side_frame, image=self.project_img, text="Projects",
+                                        fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2],
+                                        anchor=ANCHORS[3], command=self.projects)
         self.project_button.pack(anchor=ANCHORS[4], ipady=5, pady=(16, 0))
 
         # self.salary_button = CTkButton(master=self.side_frame, image=self.salary_img, text="Salary", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2], anchor=ANCHORS[3], command=self.salary)
         # self.salary_button.pack(anchor=ANCHORS[4], ipady=5, pady=(16, 0))
 
-        self.settings_button = CTkButton(master=self.side_frame, image=self.settings_img, text="Settings", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2], anchor=ANCHORS[3], command=self.settings)
+        self.settings_button = CTkButton(master=self.side_frame, image=self.settings_img, text="Settings",
+                                         fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2],
+                                         anchor=ANCHORS[3], command=self.settings)
         self.settings_button.pack(anchor=ANCHORS[4], ipady=5, pady=(16, 0))
 
-        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2], anchor=ANCHORS[3], command=self.logout_listner)
+        self.logout_button = CTkButton(master=self.side_frame, image=self.logout_img, text="Log Out",
+                                       fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[2],
+                                       anchor=ANCHORS[3], command=self.logout_listner)
         self.logout_button.pack(anchor=ANCHORS[4], ipady=5, pady=(160, 0))
 
         self.window_count = 0
@@ -105,18 +114,18 @@ class DashboardWindow(customtkinter.CTk):
             cursor = db.cursor()
 
             sql = "UPDATE salary SET working_hours = working_hours + %s WHERE username=%s"
-            val = (time, self.username, )
+            val = (time, self.username,)
             cursor.execute(sql, val)
 
             sql2 = "SELECT hourly_salary FROM salary WHERE username=%s"
-            val2 = (self.username, )
+            val2 = (self.username,)
             cursor.execute(sql2, val2)
             result = cursor.fetchall()
             result = result[0][0]
             print(result)
 
             sql1 = "UPDATE salary SET salary = salary * %s WHERE username=%s"
-            val1 = (int(result), self.username, )
+            val1 = (int(result), self.username,)
             cursor.execute(sql1, val1)
             db.commit()
         except mysql.connector.Error as e:
@@ -146,7 +155,7 @@ class DashboardWindow(customtkinter.CTk):
                 cursor = db.cursor()
 
                 sql = "SELECT employee_name FROM employee_details WHERE username=%s"
-                val = (self.username, )
+                val = (self.username,)
                 cursor.execute(sql, val)
                 result = cursor.fetchall()
                 username = result[0][0]
@@ -155,10 +164,13 @@ class DashboardWindow(customtkinter.CTk):
                 messagebox.showerror("Database Error", f"Error Occured:{e}")
 
             # self.user_button = CTkButton(master=self.main_frame, text="username", fg_color="transparent", font=(FONTS[1], 14), hover_color=COLORS[0], anchor=ANCHORS[2])
-            self.profile_button = CTkButton(master=self.main_frame, image=self.user_img, text=f"{username}", text_color="#000000", fg_color="transparent", width=200, height=35, font=(FONTS[1], 16), hover_color=COLORS[0], compound="left")
+            self.profile_button = CTkButton(master=self.main_frame, image=self.user_img, text=f"{username}",
+                                            text_color="#000000", fg_color="transparent", width=200, height=35,
+                                            font=(FONTS[1], 16), hover_color=COLORS[0], compound="left")
             self.profile_button.pack(anchor=ANCHORS[1], ipady=5, padx=(600, 0), pady=(15, 0))
 
-            self.graph_frame = CTkFrame(master=self.main_frame, fg_color=COLORS[4], width=720, height=280, corner_radius=13)
+            self.graph_frame = CTkFrame(master=self.main_frame, fg_color=COLORS[4], width=720, height=280,
+                                        corner_radius=13)
             self.graph_frame.pack(anchor=ANCHORS[4], padx=27, pady=(15, 0))
 
             global df
@@ -188,7 +200,6 @@ class DashboardWindow(customtkinter.CTk):
             plt.title('analytics')
             plt.legend()
 
-
             self.add = plt.gcf()
             canvas = FigureCanvasTkAgg(self.add, master=self.graph_frame)
             ctk_canvas = canvas.get_tk_widget()
@@ -198,7 +209,7 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
                 sql = "SELECT unique_id, project_name, total_tasks, tasks_done FROM project WHERE username = %s"
-                val = (self.username, )
+                val = (self.username,)
                 cursor.execute(sql, val)
                 result = cursor.fetchall()
                 print(result)
@@ -207,10 +218,12 @@ class DashboardWindow(customtkinter.CTk):
 
             self.task_number = int(result[0][2])
             self.complete_task = int(result[0][3])
-            self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[4], width=345, height=210, corner_radius=13)
+            self.task_progress_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[4], width=345,
+                                                          height=210, corner_radius=13)
             self.task_progress_frame.pack(anchor=ANCHORS[1], side="left", padx=(27, 0), pady=(20, 0))
 
-            self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[4], width=310, height=210,
+            self.description_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[4], width=310,
+                                                        height=210,
                                                         corner_radius=13)
             self.description_frame.pack(anchor=ANCHORS[1], side="right", padx=(0, 27), pady=(20, 0))
 
@@ -218,8 +231,8 @@ class DashboardWindow(customtkinter.CTk):
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
-                sql = "SELECT working_task , total_task,project_id FROM project_details WHERE username=%s"
-                val = (self.username, )
+                sql = "SELECT working_task , total_task, project_id FROM project_details WHERE username=%s"
+                val = (self.username,)
                 cursor.execute(sql, val)
                 data_fetch = cursor.fetchall()
                 print(data_fetch)
@@ -233,8 +246,8 @@ class DashboardWindow(customtkinter.CTk):
             prjt = 0
             for i in range(len(data_fetch)):
                 self.task_number = data_fetch[index][task_index]
-                self.complete_task = data_fetch[index][task_index+1]
-                self.project = data_fetch[index][prjt+2]
+                self.complete_task = data_fetch[index][task_index + 1]
+                self.project = data_fetch[index][prjt + 2]
 
                 try:
                     db = connection.Connection().get_connection()
@@ -253,18 +266,21 @@ class DashboardWindow(customtkinter.CTk):
                 except mysql.connector.Error as e:
                     print(e)
                 index += 1
-                progress = self.task_number/self.complete_task
-                print(i,progress)
+                progress = self.task_number / self.complete_task
+                print(i, progress)
 
                 self.name_frame = CTkFrame(master=self.task_progress_frame, width=50, fg_color="transparent")
                 self.name_frame.pack(anchor=ANCHORS[1], fill="x", pady=(10, 0))
                 self.label2 = (CTkLabel(master=self.name_frame, text=f"{project_name[0][0]}",
-                                        width=30, fg_color="transparent").pack(anchor=ANCHORS[3], side="left", padx=(25, 25), pady=(5, 0)))
+                                        width=30, fg_color="transparent").pack(anchor=ANCHORS[3], side="left",
+                                                                               padx=(25, 25), pady=(5, 0)))
                 self.label1 = (CTkLabel(master=self.name_frame, text=f"{self.task_number}/{self.complete_task}",
-                                        width=30, fg_color="transparent").pack(anchor=ANCHORS[3], side="right", padx=(25, 25), pady=(5, 0)))
+                                        width=30, fg_color="transparent").pack(anchor=ANCHORS[3], side="right",
+                                                                               padx=(25, 25), pady=(5, 0)))
                 self.progress_bar1 = CTkProgressBar(master=self.task_progress_frame, fg_color=COLORS[3],
                                                     width=self.progress_bar_width, height=20, corner_radius=8,
-                                                    progress_color=PROGRESS_COLORS[0], border_color=COLORS[2], border_width=2)
+                                                    progress_color=PROGRESS_COLORS[0], border_color=COLORS[2],
+                                                    border_width=2)
                 self.progress_bar1.pack(anchor=ANCHORS[1], padx=10, pady=(5, 0))
 
                 self.progress_bar1.set(progress)
@@ -306,11 +322,13 @@ class DashboardWindow(customtkinter.CTk):
             self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
             self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-            self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Colleague with its ID or Name",
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Colleague with its ID or Name",
                                          border_color=COLORS[1], border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1], hover_color=COLORS[2], width=28, command=self.search)
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                           fg_color=COLORS[1], hover_color=COLORS[2], width=28, command=self.search)
             self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
             try:
@@ -329,7 +347,7 @@ class DashboardWindow(customtkinter.CTk):
                     emp = result1[index][0]
                     print(emp)
                     sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details WHERE username=%s"
-                    val = (emp, )
+                    val = (emp,)
                     cursor.execute(sql, val)
                     results = cursor.fetchall()
                     table_data.append(results[0])
@@ -348,7 +366,8 @@ class DashboardWindow(customtkinter.CTk):
 
             self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
             self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", COLORS[6]], header_color=COLORS[1],
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", COLORS[6]],
+                                  header_color=COLORS[1],
                                   hover_color=COLORS[3])
             self.table.edit_row(0, font=(FONTS[1], 14))
             self.table.edit_row(0, text_color="#fff", hover_color=COLORS[2])
@@ -372,7 +391,7 @@ class DashboardWindow(customtkinter.CTk):
                     cursor = db.cursor()
 
                     sql = "SELECT employee_id, employee_name, profession, contact_no FROM employee_details WHERE employee_name=%s"
-                    val = (search_data, )
+                    val = (search_data,)
 
                     cursor.execute(sql, val)
                     data_fetch = cursor.fetchall()
@@ -407,7 +426,8 @@ class DashboardWindow(customtkinter.CTk):
                                              border_color=COLORS[1], border_width=2)
                 self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-                self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],
+                self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                               fg_color=COLORS[1],
                                                hover_color=COLORS[2], width=28, command=self.search)
                 self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
@@ -448,18 +468,20 @@ class DashboardWindow(customtkinter.CTk):
             self.label.pack(anchor=ANCHORS[0], side="left", pady=(8, 0))
 
             self.tasks_button = CTkButton(master=title_frame, text="My Tasks", font=("Arial Black", 15),
-                                                text_color="#fff", fg_color=COLORS[1], hover_color=COLORS[2],
-                                                corner_radius=15, command=self.task_manager)
+                                          text_color="#fff", fg_color=COLORS[1], hover_color=COLORS[2],
+                                          corner_radius=15, command=self.task_manager)
             self.tasks_button.pack(anchor=ANCHORS[2], side="right", ipady=10)
 
             self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
             self.search_container.pack(fill="x", pady=(30, 0), padx=27)
 
-            self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Project with Unique ID",
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Project with Unique ID",
                                          border_color=COLORS[1], border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                           fg_color=COLORS[1],
                                            hover_color=COLORS[2], width=28, command=self.search_project)
             self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
@@ -478,7 +500,7 @@ class DashboardWindow(customtkinter.CTk):
                     project = result1[index][0]
                     print(project)
                     sql = "SELECT unique_id, project_name, start_date, due_date, username FROM project WHERE unique_id=%s"
-                    val = (project, )
+                    val = (project,)
                     cursor.execute(sql, val)
                     results = cursor.fetchall()
                     table_data.append(results[0])
@@ -497,7 +519,8 @@ class DashboardWindow(customtkinter.CTk):
 
             self.table_frame = CTkScrollableFrame(master=self.main_frame, fg_color="transparent")
             self.table_frame.pack(expand=True, fill="both", padx=27, pady=21)
-            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", COLORS[6]], header_color=COLORS[1],
+            self.table = CTkTable(master=self.table_frame, values=self.table_data, colors=["#E6E6E6", COLORS[6]],
+                                  header_color=COLORS[1],
                                   hover_color=COLORS[3])
             self.table.edit_row(0, font=(FONTS[1], 14))
             self.table.edit_row(0, text_color="#fff", hover_color=COLORS[2])
@@ -521,7 +544,7 @@ class DashboardWindow(customtkinter.CTk):
                     cursor = db.cursor()
 
                     sql = "SELECT unique_id, project_name, start_date, due_date, employee_name FROM project WHERE %s IN (unique_id, project_name, start_date, due_date, employee_name)"
-                    val = (search_project, )
+                    val = (search_project,)
                     cursor.execute(sql, val)
 
                     fetch_project = cursor.fetchall()
@@ -544,8 +567,8 @@ class DashboardWindow(customtkinter.CTk):
                 self.label.pack(anchor=ANCHORS[0], side="left", pady=(8, 0))
 
                 self.tasks_button = CTkButton(master=title_frame, text="My Tasks", font=("Arial Black", 15),
-                                                    text_color="#fff", fg_color=COLORS[1], hover_color=COLORS[2],
-                                                    corner_radius=15)
+                                              text_color="#fff", fg_color=COLORS[1], hover_color=COLORS[2],
+                                              corner_radius=15)
                 self.tasks_button.pack(anchor=ANCHORS[2], side="right", ipady=10)
 
                 self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[4])
@@ -556,7 +579,8 @@ class DashboardWindow(customtkinter.CTk):
                                              border_color=COLORS[1], border_width=2)
                 self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-                self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],
+                self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                               fg_color=COLORS[1],
                                                hover_color=COLORS[2], width=28)
                 self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
@@ -590,46 +614,94 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.pack_propagate(False)
             self.main_frame.pack(side="left")
 
-
             title_frame = CTkFrame(master=self.main_frame, fg_color="transparent")
             title_frame.pack(anchor=ANCHORS[1], fill="x", padx=27, pady=(10, 0))
 
             self.label = CTkLabel(master=title_frame, text="Your Tasks", font=("Arial Black", 23),
                                   text_color=COLORS[1])
             self.label.pack(anchor=ANCHORS[0], side="left", pady=(8, 0))
+
+            self.sc_frame = CTkScrollableFrame(master=self.main_frame, width=780, height=650, fg_color=COLORS[4],
+                                               corner_radius=10)
+            self.sc_frame.pack(anchor=ANCHORS[1], padx=10, pady=5)
             try:
                 db = connection.Connection().get_connection()
                 cursor = db.cursor()
 
                 sql = "SELECT project FROM employee_details WHERE username = %s"
-                val = (self.username, )
+                val = (self.username,)
                 cursor.execute(sql, val)
-                results = cursor.fetchone()
+                result = cursor.fetchall()
+                print(result)
+                results = result[0][0]
                 print(results)
-                results = results[0]
+
+                sql1 = "SELECT project_name FROM project where username=%s"
+                val1 = (self.username,)
+                cursor.execute(sql1, val1)
+                result = cursor.fetchall()
+                print(result)
 
                 import ast
-                results = ast.literal_eval(results)
+                result1 = ast.literal_eval(results)
+                print("Omkar Korgaonkar")
                 # print(type(result1))
-                print(results)
+                print(result1)
             except mysql.connector.Error as e:
                 print(e)
-            for frame in range(len(results)):
-                self.project_name_container = CTkFrame(master=self.main_frame, height=50, fg_color="transparent")
-                self.project_name_container.pack(fill="x", pady=(15, 0), padx=27)
+            for frame in range(len(result1)):
+                try:
+                    db = connection.Connection().get_connection()
+                    cursor = db.cursor()
 
-                self.project_name = CTkLabel(master=self.project_name_container, text=f"{frame+1}. PROJECT_NAME",
-                                             font=(FONTS[1], 14))
-                self.project_name.pack(anchor=ANCHORS[0], padx=(5, 0))
+                    sql1 = "SELECT project_name FROM project WHERE unique_id = %s"
+                    val1 = (result1[frame],)
 
-                self.tasks_frame = CTkScrollableFrame(master=self.main_frame, fg_color=COLORS[6])
-                self.tasks_frame.pack(expand=True, fill="both", padx=27, pady=(0, 21))
+                    cursor.execute(sql1, val1)
+                    name = cursor.fetchall()
+                    print(name)
+                    name = name[0][0]
+                    print(name)
 
-                for task in range(10):
-                    self.task_checkbox = CTkCheckBox(master=self.tasks_frame, checkbox_height=15, checkbox_width=15,
-                                                     text=f"Task {task+1}", text_color="#7E7E7E", onvalue=1, offvalue=0)
-                    self.task_checkbox.pack(anchor=ANCHORS[0], padx=(15, 0), pady=(15, 0))
+                    sql2 = ("SELECT total_task , working_task, number_of_tasks FROM project_details WHERE project_id = %s  AND username "
+                            "= %s")
+                    val2 = (result1[frame], self.username,)
 
+                    cursor.execute(sql2, val2)
+                    tasks = cursor.fetchall()
+                    print(tasks)
+
+                    task = int(tasks[0][0])-int(tasks[0][1])
+                    number = task[0][2]
+                    number = ast.literal_eval(number)
+                    print(number)
+
+                    import ast
+
+                    self.project_name_container = CTkFrame(master=self.sc_frame, height=50, fg_color="transparent")
+                    self.project_name_container.pack(fill="x", pady=(15, 0), padx=27)
+
+                    self.project_name = CTkLabel(master=self.project_name_container, text=f"{name}",
+                                                 font=(FONTS[1], 14))
+                    self.project_name.pack(anchor=ANCHORS[0], padx=(5, 0), pady=5)
+
+                    self.tasks_frame = CTkScrollableFrame(master=self.sc_frame, fg_color=COLORS[6])
+                    self.tasks_frame.pack(expand=True, fill="both", padx=27, pady=(0, 21))
+
+                    for f in range(task):
+                        self.task_checkbox = CTkCheckBox(master=self.tasks_frame, checkbox_height=15, checkbox_width=15,
+                                                         text=f"Task {f + 1}", text_color="#7E7E7E", onvalue=1, offvalue=0, variable=self.s_pass)
+                        # self.task_checkbox.configure(onvalue=1, offvalue=0)
+                        self.task_checkbox.pack(anchor=ANCHORS[0], padx=(15, 0), pady=(15, 0))
+
+                    self.save_changes = CTkButton(master=self.tasks_frame, height=40, width=150, fg_color=COLORS[1],
+                                                  hover_color=COLORS[2], text="Save Changes", font=(FONTS[1], 14),
+                                                  command=self.task_manager_entries)
+                    self.save_changes.pack(anchor=ANCHORS[1], padx=(25, 25), pady=10)
+
+
+                except mysql.connector.Error as e:
+                    print(e)
 
             # self.project_name_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
             # self.project_name_container.pack(fill="x", pady=(10, 0), padx=27)
@@ -643,6 +715,9 @@ class DashboardWindow(customtkinter.CTk):
             # self.task1 = CTkCheckBox(master=self.tasks_frame1)
 
             self.window_count = 6
+
+    def task_manager_entries(self):
+        counter = 0
 
     def salary(self):
         if self.window_count != 7:
@@ -665,11 +740,13 @@ class DashboardWindow(customtkinter.CTk):
             self.search_container = CTkFrame(master=self.main_frame, height=50, fg_color=COLORS[3])
             self.search_container.pack(anchor=ANCHORS[1], fill="x", pady=(30, 0), padx=27)
 
-            self.search_entry = CTkEntry(master=self.search_container, width=650, placeholder_text="Search Employee with  its ID or Name",
+            self.search_entry = CTkEntry(master=self.search_container, width=650,
+                                         placeholder_text="Search Employee with  its ID or Name",
                                          border_color=COLORS[3], border_width=2)
             self.search_entry.pack(side="left", padx=(13, 0), pady=15)
 
-            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img, fg_color=COLORS[1],
+            self.search_button = CTkButton(master=self.search_container, text="", image=self.search_img,
+                                           fg_color=COLORS[1],
                                            hover_color=COLORS[2], width=28)
             self.search_button.pack(side="left", padx=(13, 0), pady=15)
 
@@ -703,9 +780,23 @@ class DashboardWindow(customtkinter.CTk):
             self.main_frame.pack_propagate(0)
             self.main_frame.pack(side="left")
 
-            self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Edit Profile                                                                                             ", width=620, height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2], anchor=ANCHORS[3], compound="right", command=self.update_profile).pack(anchor=ANCHORS[4], fill="x", padx=30, ipadx=10, ipady=10, pady=(70, 0))
-            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img, text="     Set appearance mode                                                                         ", height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2], anchor=ANCHORS[3], compound="right").pack(anchor=ANCHORS[4], fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
-            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2, text="     Log out                                                                                                    ", height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2], anchor=ANCHORS[3], compound="right", command=self.logout_listner).pack(anchor=ANCHORS[4], fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
+            self.edit_profile_button = CTkButton(master=self.main_frame, image=self.open_img,
+                                                 text="     Edit Profile                                                                                             ",
+                                                 width=620, height=60, fg_color=COLORS[1], font=(FONTS[2], 22),
+                                                 hover_color=COLORS[2], anchor=ANCHORS[3], compound="right",
+                                                 command=self.update_profile).pack(anchor=ANCHORS[4], fill="x", padx=30,
+                                                                                   ipadx=10, ipady=10, pady=(70, 0))
+            self.theme_button = CTkButton(master=self.main_frame, image=self.open_img,
+                                          text="     Set appearance mode                                                                         ",
+                                          height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],
+                                          anchor=ANCHORS[3], compound="right").pack(anchor=ANCHORS[4], fill="x",
+                                                                                    padx=30, ipadx=10, ipady=10,
+                                                                                    pady=(25, 0))
+            self.logout_button = CTkButton(master=self.main_frame, image=self.logout_img2,
+                                           text="     Log out                                                                                                    ",
+                                           height=60, fg_color=COLORS[1], font=(FONTS[2], 22), hover_color=COLORS[2],
+                                           anchor=ANCHORS[3], compound="right", command=self.logout_listner).pack(
+                anchor=ANCHORS[4], fill="x", padx=30, ipadx=10, ipady=10, pady=(25, 0))
 
             self.window_count = 8
 
@@ -726,7 +817,7 @@ class DashboardWindow(customtkinter.CTk):
                 cursor = db.cursor()
 
                 sql = "SELECT employee_id, employee_name, date_of_joining, contact_no, emergency_contact_no, username FROM employee_details WHERE username=%s"
-                val = (self.username, )
+                val = (self.username,)
                 cursor.execute(sql, val)
                 results = cursor.fetchall()
                 print(results)
@@ -743,36 +834,44 @@ class DashboardWindow(customtkinter.CTk):
                 e_contact = result[4]
                 username = result[5]
 
-            self.id_label = CTkLabel(master=self.main_frame, text="Employee ID:", width=350, font=(FONTS[1], 14), text_color=COLORS[1])
+            self.id_label = CTkLabel(master=self.main_frame, text="Employee ID:", width=350, font=(FONTS[1], 14),
+                                     text_color=COLORS[1])
             self.id_label.pack(anchor=ANCHORS[0], padx=(100, 25), pady=(60, 0))
-            self.employee_id = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1], fg_color=COLORS[6], font=(FONTS[1], 14))
+            self.employee_id = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1],
+                                        fg_color=COLORS[6], font=(FONTS[1], 14))
             self.employee_id.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(5, 0))
             self.employee_id.insert(0, id)
 
-            self.name_label = CTkLabel(master=self.main_frame, text="Name:", width=350, font=(FONTS[1], 14), text_color=COLORS[1])
+            self.name_label = CTkLabel(master=self.main_frame, text="Name:", width=350, font=(FONTS[1], 14),
+                                       text_color=COLORS[1])
             self.name_label.pack(anchor=ANCHORS[0], padx=(77, 25), pady=(10, 0))
-            self.employee_name = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1], fg_color=COLORS[6], font=(FONTS[1], 14))
+            self.employee_name = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1],
+                                          fg_color=COLORS[6], font=(FONTS[1], 14))
             self.employee_name.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(5, 0))
             self.employee_name.insert(0, name)
 
             self.doj_label = CTkLabel(master=self.main_frame, text="Date of Joining:", width=350, font=(FONTS[1], 14),
-                                       text_color=COLORS[1])
+                                      text_color=COLORS[1])
             self.doj_label.pack(anchor=ANCHORS[0], padx=(107, 25), pady=(10, 0))
-            self.date_of_joining = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1], fg_color=COLORS[6], font=(FONTS[1], 14))
+            self.date_of_joining = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1],
+                                            fg_color=COLORS[6], font=(FONTS[1], 14))
             self.date_of_joining.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(5, 0))
             self.date_of_joining.insert(0, doj)
 
             self.contact_label = CTkLabel(master=self.main_frame, text="Contact No.:", width=350, font=(FONTS[1], 14),
-                                       text_color=COLORS[1])
+                                          text_color=COLORS[1])
             self.contact_label.pack(anchor=ANCHORS[0], padx=(97, 25), pady=(10, 0))
-            self.contact_no = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1], fg_color=COLORS[6], font=(FONTS[1], 14))
+            self.contact_no = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1],
+                                       fg_color=COLORS[6], font=(FONTS[1], 14))
             self.contact_no.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(5, 0))
             self.contact_no.insert(0, contact)
 
-            self.e_contact_label = CTkLabel(master=self.main_frame, text="Emergency Contact No.:", width=350, font=(FONTS[1], 14),
-                                       text_color=COLORS[1])
+            self.e_contact_label = CTkLabel(master=self.main_frame, text="Emergency Contact No.:", width=350,
+                                            font=(FONTS[1], 14),
+                                            text_color=COLORS[1])
             self.e_contact_label.pack(anchor=ANCHORS[0], padx=(140, 25), pady=(10, 0))
-            self.emergency_contact = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1], fg_color=COLORS[6], font=(FONTS[1], 14))
+            self.emergency_contact = CTkEntry(master=self.main_frame, width=330, height=35, border_color=COLORS[1],
+                                              fg_color=COLORS[6], font=(FONTS[1], 14))
             self.emergency_contact.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(5, 0))
             self.emergency_contact.insert(0, e_contact)
 
@@ -787,10 +886,13 @@ class DashboardWindow(customtkinter.CTk):
             # self.show_password = CTkCheckBox(master=self.main_frame)
             # self.show_password.pack()
 
-            self.save_changes = CTkButton(master=self.main_frame, height=40, width=150, fg_color=COLORS[1], hover_color=COLORS[2], text="Save Changes", font=(FONTS[1], 14), command=self.save_changes)
+            self.save_changes = CTkButton(master=self.main_frame, height=40, width=150, fg_color=COLORS[1],
+                                          hover_color=COLORS[2], text="Save Changes", font=(FONTS[1], 14),
+                                          command=self.save_changes)
             self.save_changes.pack(anchor=ANCHORS[1], padx=(25, 25), pady=(25, 0))
 
             self.window_count = 9
+
     def save_changes(self):
         e_id = self.employee_id.get()
         e_name = self.employee_name.get()
